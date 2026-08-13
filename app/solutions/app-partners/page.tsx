@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { AppPartnersHero } from "@/components/solutions/appPartners/AppPartnersHero";
 import { AppPartnersProblem } from "@/components/solutions/appPartners/AppPartnersProblem";
 import { AppPartnersPillars } from "@/components/solutions/appPartners/AppPartnersPillars";
@@ -191,7 +190,6 @@ export default async function AppPartnersPage() {
       />
 
       {/* Site-wide "Questions?" widget per CLAUDE.md. */}
-      <CoachLauncher />
     </>
   );
 }

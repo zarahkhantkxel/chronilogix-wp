@@ -16,6 +16,7 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -441,7 +442,12 @@ export function PersonaDetailPopup({
             ) : null}
 
             <div className="mt-10 md:mt-12">
-              <a href="#book-a-demo" className="group/cta btn-primary w-fit">
+              <a
+                href={DEMO_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group/cta btn-primary w-fit"
+              >
                 Talk to our team
                 <span
                   aria-hidden

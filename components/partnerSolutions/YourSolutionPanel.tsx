@@ -1,6 +1,7 @@
 "use client";
 
 import { useReveal } from "@/components/hooks/useReveal";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 export type YourSolutionContent = {
   headingBrand?: string;
@@ -28,7 +29,7 @@ const DEFAULTS = {
   ctaBody:
     "Chronilogix can add a clinically grounded, Motivational Interviewing-based AI coaching layer that increases engagement, improves outcomes, and creates new value for your members.",
   ctaLabel: "Book a Demo",
-  ctaUrl: "#book-a-demo",
+  ctaUrl: DEMO_BOOKING_URL,
 };
 
 /**
@@ -151,6 +152,8 @@ export function YourSolutionPanel({
               <div className="mt-8 md:mt-10">
                 <a
                   href={c.ctaUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="btn-primary group/cta bg-brand-600 text-paper hover:bg-brand-500 hover:shadow-[0_20px_44px_-16px_rgba(249,144,77,0.55)]"
                 >
                   {c.ctaLabel}

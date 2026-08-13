@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { BrokersHero } from "@/components/solutions/brokers/BrokersHero";
 import { BrokersReality } from "@/components/solutions/brokers/BrokersReality";
 import { BrokersStrategy } from "@/components/solutions/brokers/BrokersStrategy";
@@ -180,7 +179,6 @@ export default async function BrokersPage() {
       />
 
       {/* Site-wide "Questions?" widget per CLAUDE.md. */}
-      <CoachLauncher />
     </>
   );
 }

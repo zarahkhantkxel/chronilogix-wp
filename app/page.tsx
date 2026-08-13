@@ -2,7 +2,6 @@ import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
 import { SectionGuide } from "@/components/widget/SectionGuide";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { HeroV5 } from "@/components/sections/HeroV5";
 import { StatementV5 } from "@/components/sections/StatementV5";
 import { MIExplainer } from "@/components/sections/MIExplainer";
@@ -43,7 +42,6 @@ export default async function HomePage() {
                 subtextEmphasis: s.hero_subtext_emphasis,
                 ctaLabel: s.hero_cta_label,
                 ctaUrl: s.hero_cta_url,
-                bgImage: s.hero_bg_image,
                 phoneImage: s.hero_phone_image,
                 avatarImage: s.hero_avatar_image,
                 stats: arr(s.hero_stats).map((r: any) => ({
@@ -262,7 +260,6 @@ export default async function HomePage() {
 
       <SectionGuide />
 
-      <CoachLauncher />
     </>
   );
 }

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { AboutTeam } from "@/components/about/AboutTeam";
 import { AboutScience } from "@/components/about/AboutScience";
 import { AboutMission } from "@/components/about/AboutMission";
@@ -162,7 +161,6 @@ export default async function AboutPage() {
       {/* "On this page" wayfinder, keyed to this page's own section anchors. */}
       <PageNav items={ABOUT_TOC} revealId="science" navLabel="About sections" />
 
-      <CoachLauncher />
     </>
   );
 }

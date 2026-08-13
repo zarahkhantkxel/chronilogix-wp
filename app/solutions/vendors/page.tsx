@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import {
   VendorsAudioProvider,
   VendorsStickyAudio,
@@ -205,7 +204,6 @@ export default async function VendorsPage() {
       />
 
       {/* Site-wide "Questions?" widget per CLAUDE.md. */}
-      <CoachLauncher />
     </>
   );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 /**
  * BrokersHero — opening beat for /solutions/brokers.
@@ -41,7 +42,7 @@ const DEFAULTS = {
   intro:
     "The real drivers are chronic conditions, behavioral health, and delayed care. Chronilogix reaches them with AI coaching that changes member behavior before expensive claims happen.",
   ctaLabel: "Book a Demo",
-  ctaUrl: "#book-a-demo",
+  ctaUrl: DEMO_BOOKING_URL,
 } satisfies Required<BrokersHeroContent>;
 
 // Strip null/undefined/empty-string values so partial ACF payloads never blank
@@ -219,8 +220,7 @@ export function BrokersHero({ content }: { content?: BrokersHeroContent }) {
               willChange: "opacity, transform",
             }}
           >
-            {/* TODO: Calendly URL */}
-            <a href={c.ctaUrl} className="group/cta btn-primary">
+            <a href={c.ctaUrl} target="_blank" rel="noopener noreferrer" className="group/cta btn-primary">
               {c.ctaLabel}
               <Arrow />
             </a>

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SessionWalkthrough } from "@/components/sections/SessionWalkthrough";
 import { LevelsOfCare } from "@/components/sections/LevelsOfCare";
+import { openAiWidget } from "@/lib/ai-widget";
 
 type Agent = {
   name: string;
@@ -138,9 +139,7 @@ export function Solution({ content }: { content?: SolutionContent }) {
   const c = { ...DEFAULTS, ...clean(content) };
   const agents = content?.agents?.length ? content.agents : DEFAULTS.agents;
   const handleTalkClick = () => {
-    if (typeof window !== "undefined") {
-      window.dispatchEvent(new CustomEvent("open-coach-chat"));
-    }
+    void openAiWidget();
   };
 
   return (

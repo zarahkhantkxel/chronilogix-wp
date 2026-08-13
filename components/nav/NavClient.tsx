@@ -14,6 +14,7 @@ import {
   type PartnerLogo,
 } from "@/components/partnerSolutions/partnerData";
 import { PartnerLogoChip } from "@/components/partnerSolutions/PartnerLogoChip";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 type MenuItem = {
   href: string;
@@ -469,9 +470,10 @@ export function NavClient({
 
         {/* Right: CTA (desktop) + hamburger (mobile) */}
         <div className="flex items-center justify-self-end gap-3">
-          {/* TODO: Calendly URL */}
           <a
-            href="#book-a-demo"
+            href={DEMO_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden btn-primary lg:inline-flex"
           >
             Book a Demo
@@ -630,7 +632,9 @@ export function NavClient({
                   );
                 })}
                 <a
-                  href="#book-a-demo"
+                  href={DEMO_BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
                   className="btn-primary mt-4 self-start"
                 >

@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 /**
  * AppPartnersHero — opening beat of the /solutions/app-partners page.
@@ -47,7 +48,7 @@ const DEFAULTS = {
   headingBright: "The engagement layer",
   headingMuted: "your platform is missing.",
   primaryLabel: "Explore the partnership",
-  primaryUrl: "#book-a-demo",
+  primaryUrl: DEMO_BOOKING_URL,
   secondaryLabel: "Download the whitepaper",
   secondaryUrl: "/chronilogix-mi-whitepaper.pdf",
 } satisfies Omit<Required<AppPartnersHeroContent>, "intro">;
@@ -215,8 +216,7 @@ export function AppPartnersHero({
                 willChange: "opacity, transform",
               }}
             >
-              {/* TODO: Calendly URL */}
-              <a href={c.primaryUrl} className="group/pc btn-primary">
+              <a href={c.primaryUrl} target="_blank" rel="noopener noreferrer" className="group/pc btn-primary">
                 {c.primaryLabel}
                 <Arrow group="pc" />
               </a>

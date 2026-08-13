@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { getPageAcf } from "@/lib/acf";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 /**
  * Aetna case study — /case-studies/aetna
@@ -40,7 +40,7 @@ const DEFAULTS = {
   hero_body:
     "A breakthrough partnership with MI pioneer Dr. Kenneth Resnicow reshaped how Aetna communicates with members — shifting from scripted calls to meaningful, human-centered conversations.",
   hero_primary_label: "Book a Demo",
-  hero_primary_url: "#book-a-demo",
+  hero_primary_url: DEMO_BOOKING_URL,
   hero_secondary_label: "See the platform",
   hero_secondary_url: "/product",
   outcomes_label: "What changed, in numbers",
@@ -88,7 +88,7 @@ const DEFAULTS = {
   bridge_body:
     "We’ve translated Dr. Resnicow’s thirty years of Motivational Interviewing research into the AI that powers every Chronilogix conversation — so every member gets the same evidence-based coaching, 24/7, at a fraction of the cost of live care.",
   bridge_primary_label: "Book a Demo",
-  bridge_primary_url: "#book-a-demo",
+  bridge_primary_url: DEMO_BOOKING_URL,
   bridge_secondary_label: "See How Chronilogix Works",
   bridge_secondary_url: "/product",
 };
@@ -167,7 +167,6 @@ export default async function AetnaCaseStudyPage() {
       <Footer />
 
       {/* Site-wide "Questions?" widget per CLAUDE.md. */}
-      <CoachLauncher />
     </>
   );
 }
@@ -235,7 +234,7 @@ function Hero({ c }: { c: Content }) {
           </dl>
 
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
-            <a href={c.hero_primary_url} className="group/cta btn-primary">
+            <a href={c.hero_primary_url} target="_blank" rel="noopener noreferrer" className="group/cta btn-primary">
               {c.hero_primary_label}
               <Arrow />
             </a>
@@ -662,7 +661,7 @@ function BridgeToChronilogix({ c }: { c: Content }) {
             {c.bridge_body}
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-            <a href={c.bridge_primary_url} className="group/cta btn-primary">
+            <a href={c.bridge_primary_url} target="_blank" rel="noopener noreferrer" className="group/cta btn-primary">
               {c.bridge_primary_label}
               <Arrow />
             </a>

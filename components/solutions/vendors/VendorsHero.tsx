@@ -1,6 +1,7 @@
 "use client";
 
 import { Fragment, useEffect, useMemo, useState } from "react";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 /**
  * VendorsHero — /solutions/vendors, repositioned for chronic-care product
@@ -39,7 +40,7 @@ const DEFAULTS = {
   intro:
     "Chronilogix helps chronic care vendors improve adherence, increase retention, and deliver measurable health outcomes through 24/7 AI-powered coaching that works alongside your existing products.",
   ctaLabel: "Book a Demo",
-  ctaUrl: "#book-a-demo",
+  ctaUrl: DEMO_BOOKING_URL,
 } satisfies Required<VendorsHeroContent>;
 
 function clean<T extends object>(obj: T | undefined): Partial<T> {
@@ -207,8 +208,7 @@ export function VendorsHero({ content }: { content?: VendorsHeroContent }) {
               willChange: "opacity, transform",
             }}
           >
-            {/* TODO: Calendly URL */}
-            <a href={c.ctaUrl} className="btn-primary group/cta">
+            <a href={c.ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-primary group/cta">
               {c.ctaLabel}
               <Arrow />
             </a>

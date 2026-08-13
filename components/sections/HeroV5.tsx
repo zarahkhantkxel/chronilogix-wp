@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 // V5 Hero — V2's three-band composition, but the static phone is
 // replaced with the animated chat-on-mobile from earlier V5 iterations.
@@ -46,7 +47,6 @@ export type HeroV5Content = {
   subtextEmphasis?: string;
   ctaLabel?: string;
   ctaUrl?: string;
-  bgImage?: string;
   phoneImage?: string;
   avatarImage?: string;
   stats?: { value: string; label: string }[];
@@ -63,8 +63,7 @@ const DEFAULTS = {
   subtextName: "Dr. Ken Resnicow",
   subtextEmphasis: "Motivational Interviewing",
   ctaLabel: "Book A Demo",
-  ctaUrl: "#book-a-demo",
-  bgImage: "/bg-low-saturation.png",
+  ctaUrl: DEMO_BOOKING_URL,
   phoneImage: "/new-mobile.svg",
   avatarImage: "/millie.png",
   stats: [
@@ -212,31 +211,15 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
         backgroundColor: "#FBF8F4",
       }}
     >
-      {/* Ambient backdrop — a low-saturation meadow image painted into
-          the cream page with very low opacity + soft-light blend so it
-          reads as gentle paper texture rather than a photographic
-          background. A radial mask fades it out behind the phone and
-          near the side columns, keeping the headline, mockup, and
-          subtext as the eye's focus. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={c.bgImage}
-        alt=""
-        aria-hidden
-        draggable={false}
-        className="pointer-events-none absolute inset-0 z-0 h-full w-full select-none object-cover"
-        style={{
-          opacity: 0.08,
-          mixBlendMode: "soft-light",
-          filter: "blur(18px) saturate(60%)",
-          WebkitFilter: "blur(18px) saturate(60%)",
-          transform: "scale(1.08)",
-          maskImage:
-            "radial-gradient(ellipse 70% 80% at 50% 60%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,0.95) 100%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 70% 80% at 50% 60%, rgba(0,0,0,0) 0%, rgba(0,0,0,0.35) 55%, rgba(0,0,0,0.7) 80%, rgba(0,0,0,0.95) 100%)",
-        }}
-      />
+      {/* Ambient backdrop. A low-saturation meadow photo was previously
+          painted in here at low opacity for "paper texture", but the
+          photo's horizon is a full-width tonal step that no amount of
+          blur removes (blur only softens the transition, the step
+          remains) — it read as a faint line beside the headline where
+          the radial mask revealed the periphery. The cream fill
+          (bg-color) plus the radial cream wash below already carry the
+          warm ground, so the photo is dropped entirely rather than
+          fought. */}
       {/* Cream wash to keep the centre area soft — ensures the phone
           and headline read on uniform paper, never on photographic
           texture. */}
@@ -346,9 +329,10 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
               .
             </p>
 
-            {/* TODO: Calendly URL */}
             <a
               href={c.ctaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group/herocta btn-primary mt-5 md:mt-6"
             >
               {c.ctaLabel}
@@ -449,6 +433,11 @@ function PhoneFrame({
             draggable={false}
             className="pointer-events-none absolute inset-0 h-full w-full select-none"
             style={{
+              // Top edge is feathered over the first ~2.6%: the source SVG's
+              // backdrop rect is very slightly rotated, so its top edge
+              // rendered as a faint angled line above the phone (the phone
+              // bezel itself doesn't start until ~4.2%, so this feather
+              // clears the artifact without touching the device).
               // Bottom of the image dissolves into the cream page so
               // the hand + arm visibly merge with the background rather
               // than ending at a rectangular edge. The fade starts just
@@ -456,9 +445,9 @@ function PhoneFrame({
               // half of the image — by the time the eye reaches the
               // section floor, the arm has fully dissolved into paper.
               maskImage:
-                "linear-gradient(180deg, #000 0%, #000 55%, rgba(0,0,0,0.92) 65%, rgba(0,0,0,0.7) 75%, rgba(0,0,0,0.42) 84%, rgba(0,0,0,0.18) 92%, rgba(0,0,0,0.05) 97%, transparent 100%)",
+                "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.35) 1.4%, #000 2.6%, #000 55%, rgba(0,0,0,0.92) 65%, rgba(0,0,0,0.7) 75%, rgba(0,0,0,0.42) 84%, rgba(0,0,0,0.18) 92%, rgba(0,0,0,0.05) 97%, transparent 100%)",
               WebkitMaskImage:
-                "linear-gradient(180deg, #000 0%, #000 55%, rgba(0,0,0,0.92) 65%, rgba(0,0,0,0.7) 75%, rgba(0,0,0,0.42) 84%, rgba(0,0,0,0.18) 92%, rgba(0,0,0,0.05) 97%, transparent 100%)",
+                "linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.35) 1.4%, #000 2.6%, #000 55%, rgba(0,0,0,0.92) 65%, rgba(0,0,0,0.7) 75%, rgba(0,0,0,0.42) 84%, rgba(0,0,0,0.18) 92%, rgba(0,0,0,0.05) 97%, transparent 100%)",
             }}
           />
 

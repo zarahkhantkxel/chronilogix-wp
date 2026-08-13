@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
 import { Footer } from "@/components/Footer";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { PartnerHero } from "@/components/partnerSolutions/PartnerHero";
 import { PartnerBundle } from "@/components/partnerSolutions/PartnerBundle";
 import { YourSolutionPanel } from "@/components/partnerSolutions/YourSolutionPanel";
@@ -90,7 +89,6 @@ export default async function PartnerSolutionsPage() {
       />
 
       {/* Site-wide "Questions?" widget per CLAUDE.md. */}
-      <CoachLauncher />
     </>
   );
 }

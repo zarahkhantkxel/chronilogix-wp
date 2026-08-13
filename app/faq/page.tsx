@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { FaqHero } from "@/components/faq/FaqHero";
 import { FaqList } from "@/components/faq/FaqList";
 import { FaqClosingCta } from "@/components/faq/FaqClosingCta";
@@ -59,7 +58,6 @@ export default async function FaqPage() {
           />
         </div>
       </main>
-      <CoachLauncher />
       <Footer />
     </>
   );

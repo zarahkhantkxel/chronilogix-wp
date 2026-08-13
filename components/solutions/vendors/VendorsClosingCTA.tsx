@@ -1,5 +1,7 @@
 "use client";
 
+import { DEMO_BOOKING_URL } from "@/site.config";
+
 /**
  * VendorsClosingCTA — the sign-off (Final CTA).
  *
@@ -41,7 +43,7 @@ const DEFAULTS = {
   headingEmph: "Without changing your product.",
   body: "Book a 30 minute demo. We’ll walk through a live coaching session, the clinical method behind it, and how it works alongside the product you already ship.",
   primaryLabel: "Book a Demo",
-  primaryUrl: "#book-a-demo",
+  primaryUrl: DEMO_BOOKING_URL,
   secondaryLabel: "Download the Whitepaper",
   secondaryUrl: "/chronilogix-mi-whitepaper.pdf",
 } satisfies Required<Omit<VendorsClosingCTAContent, "carousel">>;
@@ -122,8 +124,7 @@ export function VendorsClosingCTA({
         </h2>
         <p className="mx-auto mt-7 max-w-[52ch] body-quiet">{c.body}</p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          {/* TODO: Calendly URL */}
-          <a href={c.primaryUrl} className="btn-primary">
+          <a href={c.primaryUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
             {c.primaryLabel}
           </a>
           <a

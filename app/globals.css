@@ -812,3 +812,77 @@
     animation: none;
   }
 }
+
+/* ── Print: /privacy and /terms ──────────────────────────────────────
+   Legal pages get printed, signed off on, and attached to contracts, so
+   they need a real paper rendering rather than a screenshot of the site.
+   Scoped to `.legal-doc` so no marketing page is affected.
+
+   What changes: the site chrome, the in-page contents rail, and the
+   back-to-top link all drop out (navigation is meaningless on paper);
+   the measure opens to the full page width; rounded cards and tints
+   flatten to hairlines so a mono printer doesn't fill a notice block
+   with grey; and section headings avoid breaking away from the clause
+   they introduce. Link targets are printed after the label so a citation
+   stays followable off-screen. */
+@media print {
+  .legal-doc nav[aria-label="On this page"],
+  .legal-doc .legal-top {
+    display: none !important;
+  }
+
+  /* Site chrome — the fixed nav, the widget launcher, and the marketing
+     footer carousel/CTA have no business on a printed contract. */
+  body:has(.legal-doc) header,
+  body:has(.legal-doc) nav[aria-label="Main"],
+  body:has(.legal-doc) footer section,
+  body:has(.legal-doc) [data-coach-launcher] {
+    display: none !important;
+  }
+
+  .legal-doc {
+    padding: 0 !important;
+    border-radius: 0 !important;
+    background: #fff !important;
+  }
+
+  .legal-doc > div > div {
+    display: block !important;
+  }
+
+  .legal-doc .legal-prose {
+    max-width: none !important;
+    margin-top: 0 !important;
+  }
+
+  /* Flatten the tinted surfaces to a hairline box. */
+  .legal-doc .legal-notice,
+  .legal-doc dl > div {
+    background: #fff !important;
+    border: 1pt solid #111 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    page-break-inside: avoid;
+  }
+
+  .legal-doc h2,
+  .legal-doc h3 {
+    page-break-after: avoid;
+  }
+
+  .legal-doc section {
+    page-break-inside: auto;
+  }
+
+  .legal-doc li {
+    page-break-inside: avoid;
+  }
+
+  /* Keep citations followable on paper. mailto: and in-page anchors are
+     left bare — printing "(mailto:…)" after an address is just noise. */
+  .legal-doc a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.85em;
+    word-break: break-all;
+  }
+}

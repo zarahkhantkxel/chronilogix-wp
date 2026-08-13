@@ -125,11 +125,12 @@ chr_fields($pid, [
     'cta_contact_phone'     => '(646) 522 1447',
     'cta_contact_phone_href'=> 'tel:+16465221447',
 ]);
+// Two documents only, matching the global Footer strip. HIPAA and Security
+// were placeholder anchors with no page behind them; /terms and /privacy are
+// now real routes.
 update_field('cta_legal_links', [
-    [ 'label' => 'Terms', 'href' => '#terms' ],
-    [ 'label' => 'Privacy', 'href' => '#privacy' ],
-    [ 'label' => 'HIPAA', 'href' => '#hipaa' ],
-    [ 'label' => 'Security', 'href' => '#security' ],
+    [ 'label' => 'Terms', 'href' => '/terms' ],
+    [ 'label' => 'Privacy', 'href' => '/privacy' ],
 ], $pid);
 
 if (class_exists('WP_CLI')) {

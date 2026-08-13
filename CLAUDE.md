@@ -46,7 +46,6 @@ Headless WordPress starter using Next.js 16 App Router with TypeScript.
 
 ### Configuration Files
 - `site.config.ts` - Site metadata (domain, name, description)
-- `menu.config.ts` - Navigation menu structure (`mainMenu`, `contentMenu`)
 - `next.config.ts` - Image remotePatterns, /admin redirect to WordPress, standalone output
 
 ### Layout Components (`components/craft.tsx`)

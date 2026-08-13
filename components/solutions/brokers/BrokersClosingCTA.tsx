@@ -1,5 +1,7 @@
 "use client";
 
+import { DEMO_BOOKING_URL } from "@/site.config";
+
 /**
  * BrokersClosingCTA — the sign-off (Section 11, Final CTA).
  *
@@ -36,7 +38,7 @@ const DEFAULTS = {
   headingLine2: "before they become claims.",
   body: "Book a 30 minute demo. We’ll walk through a live coaching session, the clinical method behind it, and how it reduces avoidable spending for your self-funded clients.",
   primaryLabel: "Book a Demo",
-  primaryUrl: "#book-a-demo",
+  primaryUrl: DEMO_BOOKING_URL,
   secondaryLabel: "See How Chronilogix Works",
   secondaryUrl: "#how-it-works",
   signoff: "Chronilogix. Chronic care coaching that actually clicks.",
@@ -127,8 +129,7 @@ export function BrokersClosingCTA({
           {c.body}
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          {/* TODO: Calendly URL */}
-          <a href={c.primaryUrl} className="group/cta btn-primary">
+          <a href={c.primaryUrl} target="_blank" rel="noopener noreferrer" className="group/cta btn-primary">
             {c.primaryLabel}
             <Arrow />
           </a>

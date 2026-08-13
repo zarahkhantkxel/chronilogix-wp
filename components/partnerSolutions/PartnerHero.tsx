@@ -5,6 +5,7 @@ import {
   PARTNER_LOGOS,
   type PartnerLogo,
 } from "@/components/partnerSolutions/partnerData";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 export type PartnerHeroContent = {
   eyebrow?: string;
@@ -25,7 +26,7 @@ const DEFAULTS = {
     "Chronilogix doesn’t replace your product — we make it smarter, more engaging, and more effective through continuous AI coaching.",
   subintro: "Three examples of how we bundle with industry leaders.",
   ctaLabel: "Book a Demo",
-  ctaUrl: "#book-a-demo",
+  ctaUrl: DEMO_BOOKING_URL,
   logos: PARTNER_LOGOS,
 };
 
@@ -87,7 +88,7 @@ export function PartnerHero({ content }: { content?: PartnerHeroContent }) {
         </p>
 
         <div className="reveal-row mt-9 flex justify-center [transition-delay:340ms]">
-          <a href={c.ctaUrl} className="btn-primary group/cta">
+          <a href={c.ctaUrl} target="_blank" rel="noopener noreferrer" className="btn-primary group/cta">
             {c.ctaLabel}
             <svg
               width="12"

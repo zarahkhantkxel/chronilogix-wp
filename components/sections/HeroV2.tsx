@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 // V2 Hero — three-layer composition matching the 1920×1809 reference.
 //
@@ -172,9 +173,10 @@ export function HeroV2() {
                 coaching agents. 24/7
               </h1>
 
-              {/* TODO: Calendly URL */}
               <a
-                href="#book-a-demo"
+                href={DEMO_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group/herocta btn-primary mt-5 w-fit sm:mt-7 md:mt-8"
               >
                 Book A Demo

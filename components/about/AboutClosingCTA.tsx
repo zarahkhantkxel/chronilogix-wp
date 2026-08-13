@@ -35,11 +35,12 @@ const DEFAULTS = {
   contactEmail: "steven@chronilogix.com",
   contactPhone: "(646) 522 1447",
   contactPhoneHref: "tel:+16465221447",
+  // Two documents only. HIPAA and Security were placeholder anchors with no
+  // page behind them; the trust line beside this strip already carries the
+  // data-handling promise, so the strip links only what actually exists.
   legalLinks: [
-    { href: "#terms", label: "Terms" },
-    { href: "#privacy", label: "Privacy" },
-    { href: "#hipaa", label: "HIPAA" },
-    { href: "#security", label: "Security" },
+    { href: "/terms", label: "Terms" },
+    { href: "/privacy", label: "Privacy" },
   ],
 } satisfies Required<AboutClosingCTAContent>;
 
@@ -209,15 +210,20 @@ export function AboutClosingCTA({
           style={reveal(500)}
         >
           <div className="flex flex-col items-center justify-between gap-4 text-left md:flex-row md:gap-6">
-            <p className="text-[12.5px] text-ink-muted">
+            <p className="text-[13px] text-ink-muted md:text-sm">
               &copy; {new Date().getFullYear()} Chronilogix, Inc. All rights reserved.
             </p>
+            {/* Same two documents as the global Footer strip — the HIPAA and
+                Security entries were placeholder anchors with nothing behind
+                them, so they're gone rather than left dead. Type ramp matches
+                the global strip (13px / 14px) so /about doesn't read finer
+                than the rest of the site. */}
             <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
               {legalLinks.map((l) => (
                 <li key={l.label}>
                   <a
                     href={l.href}
-                    className="text-[12.5px] font-medium text-ink-muted transition-colors duration-200 ease-out hover:text-ink"
+                    className="text-[13px] font-medium text-ink-muted transition-colors duration-200 ease-out hover:text-ink md:text-sm"
                   >
                     {l.label}
                   </a>
