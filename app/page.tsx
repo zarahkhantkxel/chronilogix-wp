@@ -172,8 +172,6 @@ export default async function HomePage() {
                 measure: r.measure,
                 clause: r.clause,
                 source: r.source,
-                caseStudyHref: r.case_study_href,
-                caseStudyLabel: r.case_study_label,
               })),
             }}
           />

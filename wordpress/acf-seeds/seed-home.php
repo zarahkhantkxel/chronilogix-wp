@@ -270,7 +270,6 @@ update_field('stories_proofs', [
         'measure' => 'member engagement',
         'clause' => 'after Aetna’s care teams retrained in Dr. Resnicow’s method — dropouts cut by more than half.',
         'source' => 'Source · Aetna Care Management · post-MI integration',
-        'case_study_href' => '/case-studies/aetna', 'case_study_label' => 'Read the Aetna case study',
     ],
     [
         'logo' => chr_media('us-dpp-logo.png'), 'logo_alt' => 'Centers for Disease Control and Prevention',
@@ -278,7 +277,6 @@ update_field('stories_proofs', [
         'measure' => 'fewer new Type 2 diabetes cases',
         'clause' => 'when lifestyle support continues between appointments — the gap Chronilogix covers.',
         'source' => 'Source · US Diabetes Prevention Program · CDC and NIH',
-        'case_study_href' => '', 'case_study_label' => '',
     ],
 ], $home);
 

@@ -219,6 +219,8 @@ const CaseStudyIcon = (
   </Icon>
 );
 
+// Kept intact while the Resources nav entry is hidden (see NAV_LINKS below),
+// so restoring the entry is a one-line change.
 const RESOURCES_MENU: MegaMenu = {
   groups: [
     {
@@ -261,7 +263,8 @@ const NAV_LINKS: NavLink[] = [
   { href: "/solutions", label: "Solutions", personaMenu: true, icon: SolutionsIcon },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
-  { href: "/resources", label: "Resources", megaMenu: RESOURCES_MENU },
+  // Resources is hidden from the navbar for now. Restore by re-adding:
+  // { href: "/resources", label: "Resources", megaMenu: RESOURCES_MENU },
 ];
 
 export function NavClient({
