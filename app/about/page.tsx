@@ -54,9 +54,13 @@ export default async function AboutPage() {
               headingMuted: s.team_heading_muted,
               intro: s.team_intro,
               advisorsLabel: s.team_advisors_label,
+              // `role` is the short title, `bio` the sentence(s) of standing
+              // beneath it. Both render, so an ACF row with no bio field falls
+              // back to an empty string rather than dropping the whole person.
               leaders: arr(s.team_leaders).map((r: any) => ({
                 name: r.name,
                 role: r.role,
+                bio: r.bio ?? "",
                 photo: r.photo,
                 more:
                   r.more_href || r.more_label
@@ -66,6 +70,7 @@ export default async function AboutPage() {
               advisors: arr(s.team_advisors).map((r: any) => ({
                 name: r.name,
                 role: r.role,
+                bio: r.bio ?? "",
                 photo: r.photo,
               })),
             }}
