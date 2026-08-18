@@ -157,7 +157,24 @@ export function AboutScience({ content }: { content?: AboutScienceContent }) {
       // visually via border-radius on the background surface. The
       // radial wash gets its own overflow-hidden wrapper below so its
       // gradient stays inside the rounded shape.
-      className="relative rounded-[28px] bg-paper-warm pt-24 pb-24 md:pt-32 md:pb-28 lg:pt-40 lg:pb-32"
+      //
+      // scroll-mt-28 (7rem / 112px) because this section is an anchor target
+      // for two links — AboutTeam's same-page "Read the science" and the home
+      // page's "About Dr. Resnicow" deep link (/about#science) — and the top
+      // nav is `fixed`. Its pinned row is h-20 / md:h-24 (80 / 96px), so 112px
+      // lands this card's rounded top edge just clear of the nav instead of
+      // tucked underneath it. Same value the legal pages use for their
+      // anchored sections (components/legal/LegalDocument.tsx).
+      //
+      // Bottom padding is symmetric with the top again (was md:pb-28
+      // lg:pb-32) now that the recent-writing rail below the grid is
+      // commented out. The reduced pb existed to offset the rail's own
+      // vertical bulk — with the rail gone it left the deployments list
+      // sitting too close to the card's bottom edge, and the section read
+      // top-heavy. py-24/32/40 is also what the sibling cards on this page
+      // use (AboutPurpose, AboutClosingCTA). Restore md:pb-28 lg:pb-32 if
+      // the rail comes back.
+      className="relative scroll-mt-28 rounded-[28px] bg-paper-warm pt-24 pb-24 md:pt-32 md:pb-32 lg:pt-40 lg:pb-40"
     >
       {/* Brand-orange radial wash from the top-right — same idiom as the
           home page's Outcome section. Carries the "gravitational pull"
@@ -279,8 +296,15 @@ export function AboutScience({ content }: { content?: AboutScienceContent }) {
           </div>
         </div>
 
+        {/* Recent-writing rail — label AND card carousel — hidden for now.
+            Restore by un-commenting the two blocks below; BLOG_CARDS,
+            BlogScrollRail and BlogCardTile are all left intact below. The
+            label goes with the cards deliberately: an eyebrow reading
+            "Recent writing" over nothing is worse than no eyebrow. */}
+
         {/* Blog rail LABEL — sits close to the credentials block above
             (no oversized gap) and directly above the cards below. */}
+        {/*
         <div
           className="mt-12 flex items-baseline justify-between md:mt-14"
           style={reveal(520)}
@@ -295,13 +319,16 @@ export function AboutScience({ content }: { content?: AboutScienceContent }) {
             {c.blogAllLabel} &rarr;
           </a>
         </div>
+        */}
 
         {/* Blog rail CARDS — normal flow inside the section so the
             bottom of the section is a balanced editorial block instead
             of a straddling floating rail. */}
+        {/*
         <div className="mt-6 md:mt-8">
           <BlogScrollRail reveal={reveal} cards={blogCards} />
         </div>
+        */}
       </div>
     </section>
   );
@@ -340,9 +367,38 @@ function BlogCardTile({ card, index }: { card: BlogCard; index: number }) {
         transitionDelay: `${index * 60}ms`,
       }}
     >
+      {/* Elevation: these cards keep a shadow (they are real white surfaces
+          on the warm-paper ground, with their own border and radius — not
+          flat list rows), but the previous value was wrong in two ways.
+
+          1. Mismatched light color. It stacked a cool-neutral contact layer
+             `rgba(15,20,25,0.04)` under a near-black red-brown ambient
+             `rgba(20,8,2,0.16)`. Two different-colored lights in one stack,
+             and neither matched the warm `rgba(40,25,15,...)` tint that every
+             other paper surface on this page uses (DrPortrait below, the
+             AboutTeam portraits and pill). Against bg-paper-warm plus the
+             brand-orange radial wash, that cold-then-black mix grimed the
+             card edge instead of warming under it.
+
+          2. Wrong tier for the element's size. `0 18px 40px -18px` is the
+             large-element tier — a barely-shrunk copy of DrPortrait's
+             `0 22px 56px -24px`, which belongs to a full-column 4:5
+             portrait, not a 300px text card. The offset/spread ratio was the
+             real culprit: a 40px blur pulled back only 18px leaves ~22px
+             bleeding past the card on every side, so the card read as a
+             detached slab hovering over a dark halo rather than paper
+             lifting slightly off the page.
+
+          The new resting value is the established mid tier from this same
+          page (AboutTeam's portrait frames): a 30px blur pulled back 20px
+          leaves only ~10px of visible bleed, which keeps the shadow tucked
+          under the card's own bottom edge. Same warm tint on both layers, so
+          the light finally comes from one place. Hover nudges one step up
+          (18/38) while holding the same -20px pullback — the card rises
+          without the footprint spreading back out into slab territory. */}
       <a
         href={card.href}
-        className="group/blog flex h-full w-[300px] flex-col justify-between rounded-[20px] border border-ink/[0.06] bg-white p-7 shadow-[0_1px_2px_rgba(15,20,25,0.04),0_18px_40px_-18px_rgba(20,8,2,0.16)] transition-shadow duration-300 hover:border-brand-600/25 hover:shadow-[0_2px_4px_rgba(15,20,25,0.06),0_22px_50px_-18px_rgba(20,8,2,0.22)] md:w-[360px] md:p-8"
+        className="group/blog flex h-full w-[300px] flex-col justify-between rounded-[20px] border border-ink/[0.06] bg-white p-7 shadow-[0_1px_2px_rgba(40,25,15,0.05),0_14px_30px_-20px_rgba(40,25,15,0.22)] transition-shadow duration-300 hover:border-brand-600/25 hover:shadow-[0_1px_2px_rgba(40,25,15,0.06),0_18px_38px_-20px_rgba(40,25,15,0.26)] md:w-[360px] md:p-8"
       >
         <h3 className="font-serif text-[20px] font-normal leading-[1.25] tracking-[-0.008em] text-ink md:text-[22px]">
           {card.title}
@@ -377,7 +433,14 @@ function DrPortrait({ src, name }: { src: string; name: string }) {
         alt={`Portrait of ${name}`}
         draggable={false}
         className="h-full w-full select-none object-cover"
-        style={{ objectPosition: "30% 22%" }}
+        /* The source is a 1365x768 video still, so this 4/5 frame shows only
+           614px of its width and pans across 751px of slack. At the previous
+           30% the window opened at x=225 while his head starts around x=205,
+           which clipped his hairline against the left edge. 16% opens at
+           x=120, clearing the whole head with margin, and stops short of the
+           dark chair that creeps in below ~12%. Height fills exactly at this
+           ratio, so the vertical value is currently inert. */
+        style={{ objectPosition: "16% 22%" }}
       />
     </div>
   );
