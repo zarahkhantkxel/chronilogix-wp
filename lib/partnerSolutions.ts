@@ -118,9 +118,15 @@ export type PartnerTocItem = { id: string | null; label: string };
 
 /**
  * "On this page" wayfinder, derived from the bundles so adding a partner in
- * WordPress updates the TOC with no code change. The tail entries are the two
- * ids YourSolutionPanel carries: `ps-your-solution-label` on its <h2> and
- * `book-a-demo` on the <section> itself.
+ * WordPress updates the TOC with no code change.
+ *
+ * One row per SECTION, not per anchor. YourSolutionPanel is a single
+ * <section id="book-a-demo"> whose <h2> also carries
+ * `ps-your-solution-label`, and the rail resolves every id to its enclosing
+ * <section> — so two rows pointing into that panel collapse onto one target:
+ * the later id wins the scroll-spy and the earlier row can never light up,
+ * while still eating a rail slice and a slot in the "n / total" counter. The
+ * closing panel therefore gets exactly one row.
  */
 export function buildPartnerToc(bundles: Bundle[]): PartnerTocItem[] {
   return [
@@ -129,7 +135,6 @@ export function buildPartnerToc(bundles: Bundle[]): PartnerTocItem[] {
       id: `ps-${b.key}-label`,
       label: b.title,
     })),
-    { id: "ps-your-solution-label", label: "Your solution" },
     { id: "book-a-demo", label: "Book a demo" },
   ];
 }
