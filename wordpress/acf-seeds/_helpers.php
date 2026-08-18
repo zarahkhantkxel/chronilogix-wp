@@ -12,8 +12,32 @@ if (!defined('ABSPATH')) {
 }
 
 // Absolute path to the Next.js public/ folder that holds the source images.
+//
+// Resolved relative to this file (wordpress/acf-seeds/_helpers.php → ../../public)
+// so the seeders run unchanged on any machine — a hardcoded local path meant
+// every chr_media() call failed with "media missing:" anywhere but the author's
+// laptop. Override order, first match wins:
+//   1. A CHR_PUBLIC_DIR constant already defined by the caller.
+//   2. The CHR_PUBLIC_DIR environment variable — use this when the Next repo
+//      and WordPress live in different places on the server:
+//        CHR_PUBLIC_DIR=/var/www/next-wp-main/public wp eval-file …
+//   3. The repo-relative default below.
 if (!defined('CHR_PUBLIC_DIR')) {
-    define('CHR_PUBLIC_DIR', '/Users/zarah.sajjad/Documents/next-wp-main/public');
+    $chr_env_dir = getenv('CHR_PUBLIC_DIR');
+    define(
+        'CHR_PUBLIC_DIR',
+        $chr_env_dir !== false && $chr_env_dir !== ''
+            ? rtrim($chr_env_dir, '/')
+            : dirname(__DIR__, 2) . '/public',
+    );
+}
+
+if (!is_dir(CHR_PUBLIC_DIR) && class_exists('WP_CLI')) {
+    WP_CLI::warning(
+        'CHR_PUBLIC_DIR does not exist: ' . CHR_PUBLIC_DIR
+        . ' — every image import will be skipped. Point it at the Next.js'
+        . ' public/ folder with the CHR_PUBLIC_DIR environment variable.',
+    );
 }
 
 // WordPress blocks SVG uploads by default; allow them for the seed import so
