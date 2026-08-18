@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
+import { HashLanding } from "@/components/HashLanding";
 import { AboutTeam } from "@/components/about/AboutTeam";
 import { AboutScience } from "@/components/about/AboutScience";
 import { AboutMission } from "@/components/about/AboutMission";
@@ -37,6 +38,13 @@ export default async function AboutPage() {
   return (
     <>
       <PageLoader />
+      {/* This page is a deep-link destination — the home page's "About Dr.
+          Resnicow" CTA points at /about#science. The image-heavy team grid
+          above that anchor keeps moving for a few hundred ms after first
+          paint, so the browser's own load-time fragment scroll gets abandoned
+          and the visitor lands at the top. HashLanding waits for the layout to
+          settle and puts them where they asked to be. Renders nothing. */}
+      <HashLanding />
       <Nav />
       <main className="flex flex-col">
         <div className="flex flex-col gap-2 p-2 md:gap-3 md:p-3">
