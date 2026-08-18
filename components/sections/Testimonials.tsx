@@ -193,7 +193,7 @@ export function Testimonials({ content }: { content?: TestimonialsContent }) {
             onClick={prev}
             disabled={active === 0}
             aria-label="Previous testimonial"
-            className="absolute -left-1 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full border border-ink/15 bg-white text-ink shadow-soft transition-all duration-300 hover:border-brand-accent hover:bg-brand-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-ink/15 disabled:hover:bg-white disabled:hover:text-ink md:inline-flex md:h-12 md:w-12 lg:-left-2"
+            className="absolute -left-1 top-1/2 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-ink/15 bg-white text-ink shadow-soft transition-all duration-300 hover:border-brand-accent hover:bg-brand-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-ink/15 disabled:hover:bg-white disabled:hover:text-ink md:inline-flex md:h-12 md:w-12 lg:-left-2"
           >
             <ChevronLeft />
           </button>
@@ -202,7 +202,7 @@ export function Testimonials({ content }: { content?: TestimonialsContent }) {
             onClick={next}
             disabled={active === testimonials.length - 1}
             aria-label="Next testimonial"
-            className="absolute -right-1 top-1/2 hidden -translate-y-1/2 items-center justify-center rounded-full border border-ink/15 bg-white text-ink shadow-soft transition-all duration-300 hover:border-brand-accent hover:bg-brand-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-ink/15 disabled:hover:bg-white disabled:hover:text-ink md:inline-flex md:h-12 md:w-12 lg:-right-2"
+            className="absolute -right-1 top-1/2 hidden -translate-y-1/2 cursor-pointer items-center justify-center rounded-full border border-ink/15 bg-white text-ink shadow-soft transition-all duration-300 hover:border-brand-accent hover:bg-brand-accent hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:border-ink/15 disabled:hover:bg-white disabled:hover:text-ink md:inline-flex md:h-12 md:w-12 lg:-right-2"
           >
             <ChevronRight />
           </button>
@@ -225,7 +225,7 @@ export function Testimonials({ content }: { content?: TestimonialsContent }) {
                 aria-selected={isActive}
                 aria-label={`Show testimonial from ${t.name}`}
                 onClick={() => scrollToIndex(i)}
-                className={`h-1.5 rounded-full transition-all duration-300 ease-out-quart ${
+                className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 ease-out-quart ${
                   isActive
                     ? "w-8 bg-brand-600"
                     : "w-1.5 bg-ink/20 hover:bg-ink/40"

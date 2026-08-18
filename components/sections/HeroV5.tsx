@@ -62,7 +62,7 @@ const DEFAULTS = {
   subtextLead: "Built on the life’s work of world renowned",
   subtextName: "Dr. Ken Resnicow",
   subtextEmphasis: "Motivational Interviewing",
-  ctaLabel: "Book A Demo",
+  ctaLabel: "Book a Demo",
   ctaUrl: DEMO_BOOKING_URL,
   phoneImage: "/new-mobile.svg",
   avatarImage: "/millie.png",

@@ -376,7 +376,7 @@ export function PageNavRail({
                 ? "rgba(15,20,25,0.62)"
                 : "rgba(15,20,25,0.4)";
             return (
-              <li key={item.label}>
+              <li key={item.label} className="cursor-pointer">
                 <button
                   type="button"
                   onClick={() => scrollToItem(item.id)}

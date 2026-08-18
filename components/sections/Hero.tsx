@@ -312,7 +312,7 @@ export function Hero() {
                   willChange: "opacity, transform",
                 }}
               >
-                Book A Demo
+                Book a Demo
                 <Arrow />
               </a>
             </div>
