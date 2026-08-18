@@ -22,6 +22,7 @@
 //   - Respects prefers-reduced-motion (rests at final state).
 
 import { useEffect, useRef, useState } from "react";
+import { useScrollLock } from "@/components/hooks/useScrollLock";
 import { createPortal } from "react-dom";
 
 type Fact = {
@@ -374,14 +375,10 @@ function ProblemDetailPopup({
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!open) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [open]);
+  /* This popup is the Problem section's second overlay, and it carried the
+     same ineffective `body` overflow lock as the rest of the site — the
+     scroller here is `html`, so the page kept moving behind it. */
+  useScrollLock(open);
 
   useEffect(() => {
     if (open) {
