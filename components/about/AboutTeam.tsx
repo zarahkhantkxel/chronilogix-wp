@@ -182,7 +182,7 @@ export function AboutTeam({ content }: { content?: AboutTeamContent }) {
             gaps here and you must change them there too, or the rows will
             drift out of alignment. */}
         <ul
-          className="mt-14 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 md:mt-16 lg:mt-20 lg:grid-cols-4 lg:gap-x-8"
+          className="mt-14 grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 md:mt-16 lg:mt-20 lg:grid-cols-4 lg:gap-x-28"
           style={reveal(280)}
         >
           {leaders.map((leader, i) => (
@@ -228,7 +228,7 @@ export function AboutTeam({ content }: { content?: AboutTeamContent }) {
                 columns leaves the fourth cell empty by nature — there is
                 no placeholder card or spacer <li>, and none should be
                 added: an empty grid cell is exactly the intent. */}
-            <ul className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+            <ul className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-28">
               {advisors.map((a, i) => (
                 <PersonCard
                   key={a.name}
@@ -273,6 +273,14 @@ function PersonCard({
           columns read as one continuous full-width band. Size is owned by
           the grid: change the column count or the gap and the portraits
           follow, with no px values left to drift out of sync.
+
+          That is also how the portraits get sized down without the row
+          stopping short of the edges. The 4-up gutter is `lg:gap-x-28`
+          (112px), far wider than the 24px used when the cards stack: with
+          4W + 3G fixed to the content width, spending more on the gutter
+          spends less on each column, so the circles shrink while the band
+          still runs edge to edge. Reach for the gutter to resize these,
+          not for a width on the portrait.
 
           RESOLUTION CAVEAT: the source files are 400x400, which was the
           crisp ceiling for the previous 192px step at 2x DPR. Filling the
