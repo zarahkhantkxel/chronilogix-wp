@@ -33,17 +33,21 @@ import {
 
 // TOC labels trace the homepage's actual argument as a buyer scans it:
 // Overview → the premise → the method (MI) → the coaches → the gap →
-// outcomes → who it's for → proof → voices. Clear over clever, each short
-// enough to keep the compact rail's single-column rhythm.
+// proof → who it's for → voices. Clear over clever, each short enough to
+// keep the compact rail's single-column rhythm.
+//
+// Order mirrors app/page.tsx top-to-bottom and must be kept in sync with
+// it: the rail's fill, knob and "n / total" all derive from position, so a
+// row whose section sits elsewhere on the page — or isn't rendered at all —
+// silently skews the reader's sense of place.
 const HOME_TOC: TocItem[] = [
   { id: null, label: "Overview" },
   { id: "statement", label: "The premise" },
   { id: "motivational-interviewing", label: "Method" },
   { id: "solution", label: "The coaches" },
   { id: "problem", label: "The gap" },
-  { id: "outcome", label: "Outcomes" },
-  { id: "who-we-serve", label: "Who it's for" },
   { id: "customer-stories", label: "Proof" },
+  { id: "who-we-serve", label: "Who it's for" },
   { id: "testimonials", label: "Voices" },
 ];
 

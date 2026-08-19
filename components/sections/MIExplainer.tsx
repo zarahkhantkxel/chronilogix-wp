@@ -174,7 +174,10 @@ const DEFAULTS = {
     </>
   ),
   scienceCtaLabel: "About Dr. Resnicow",
-  scienceCtaUrl: "/about",
+  // Deep-link to his section, not the top of /about — the team grid sits
+  // above it and the visitor would have to hunt for him. AboutScience owns
+  // the #science anchor and its matching scroll-mt.
+  scienceCtaUrl: "/about#science",
   videoPoster: "/ken-thumbnail.png",
   videoSrc: "/video/ken-resnicow-60s.mp4",
   videoRole: "Chief Science Officer",
@@ -407,6 +410,16 @@ function ScienceMovement({
           </h3>
           <p className="mt-6 body-prose md:mt-7">{body}</p>
           <div className="mt-8 md:mt-9">
+            {/* Deep-links to the about page's science section rather than the
+                top of /about (see the ctaUrl default). The promise of this CTA
+                is "more about the man," so landing on the team grid and making
+                the visitor hunt for him breaks that promise. `#science` is
+                owned by AboutScience, which carries the matching `scroll-mt`
+                so the card clears the fixed nav. Plain <a> (not next/link) to
+                match this file and the rest of components/sections — a full
+                load also sidesteps the smooth-scroll animation
+                `html { scroll-behavior: smooth }` would otherwise apply to a
+                client-side hash landing. */}
             <a href={ctaUrl} className="btn-primary group/mi-cta">
               {ctaLabel}
               <Arrow />

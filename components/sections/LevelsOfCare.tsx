@@ -161,7 +161,12 @@ export function LevelsOfCare({
           above separation is carried by Solution.tsx's wrapper. */}
       <div className="mt-6 flex flex-col md:mt-7">
         {LEVELS.map((level, i) => (
-          <LevelRow key={level.ordinal} level={level} index={i} />
+          <LevelRow
+            key={level.ordinal}
+            level={level}
+            index={i}
+            isLast={i === LEVELS.length - 1}
+          />
         ))}
       </div>
 
@@ -179,7 +184,15 @@ export function LevelsOfCare({
   );
 }
 
-function LevelRow({ level, index }: { level: Level; index: number }) {
+function LevelRow({
+  level,
+  index,
+  isLast,
+}: {
+  level: Level;
+  index: number;
+  isLast: boolean;
+}) {
   const { ref, inView } = useInView<HTMLElement>(0.15);
   const { Artifact } = level;
   // Alternate image/text placement on odd rows so the row cadence
@@ -215,7 +228,7 @@ function LevelRow({ level, index }: { level: Level; index: number }) {
       {index > 0 && (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 -top-40 hidden h-40 md:block md:-top-80 md:h-80"
+          className="pointer-events-none absolute inset-x-0 -top-40 hidden h-40 md:block md:-top-40 md:h-40"
           style={{
             // Symmetric smoothstep ramp (eases in AND out) over a taller
             // veil so the previous row dissolves evenly across the whole
@@ -234,8 +247,14 @@ function LevelRow({ level, index }: { level: Level; index: number }) {
           on the same paper-warm background. The fog veil above carries
           the layering transition so the three rows still read as one
           continuous paper surface as they stack. */}
+      {/* Rows that get stacked over (all but the last) carry extra bottom
+          padding so their content clears the next row's incoming fog veil
+          (md:h-40 above) — the whole row reads at rest, and the veil only
+          dissolves empty paper during the scroll-stack transition. */}
       <div
-        className="relative bg-paper-warm pb-8 pt-10 md:pb-10 md:pt-[4.5rem]"
+        className={`relative bg-paper-warm pb-8 pt-10 md:pt-[4.5rem] ${
+          isLast ? "md:pb-10" : "md:pb-40"
+        }`}
       >
         {/* Two-column layout: image in one column, text (header + lead
             + bullets) in the other. The header now sits at the top of

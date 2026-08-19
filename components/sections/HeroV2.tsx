@@ -179,7 +179,7 @@ export function HeroV2() {
                 rel="noopener noreferrer"
                 className="group/herocta btn-primary mt-5 w-fit sm:mt-7 md:mt-8"
               >
-                Book A Demo
+                Book a Demo
                 <Arrow />
               </a>
             </div>

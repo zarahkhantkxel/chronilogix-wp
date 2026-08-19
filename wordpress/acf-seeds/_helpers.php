@@ -64,6 +64,8 @@ function chr_media($rel)
 {
     $rel = ltrim($rel, '/');
 
+    $abs = CHR_PUBLIC_DIR . '/' . $rel;
+
     $found = get_posts([
         'post_type'      => 'attachment',
         'posts_per_page' => 1,
@@ -72,10 +74,35 @@ function chr_media($rel)
         'meta_value'     => $rel,
     ]);
     if ($found) {
-        return $found[0];
-    }
+        // Reuse the existing attachment only while the source file is
+        // unchanged. Matching on the path alone made this permanently
+        // idempotent: when upstream REPLACED the team portraits, the new
+        // bytes in public/ were never imported and WordPress kept serving
+        // the old photos — invisible, because the filename and the URL were
+        // identical. `_chr_size` makes "same path, different file" a
+        // re-import instead of a silent no-op.
+        $size   = file_exists($abs) ? (string) filesize($abs) : '';
+        $stored = (string) get_post_meta($found[0], '_chr_size', true);
 
-    $abs = CHR_PUBLIC_DIR . '/' . $rel;
+        // No local file to compare against (production imports over HTTP, or
+        // the asset lives outside this checkout) — keep what is already there.
+        if ($size === '' || $stored === $size) {
+            return $found[0];
+        }
+
+        // A missing $stored means the attachment predates this check, so
+        // whether the bytes still match is unknown. Re-import rather than
+        // assume: that is the case this fix exists for, and it is a one-time
+        // cost per asset since the marker is written on the way out.
+
+        // Source changed. Unmark the stale attachment rather than deleting
+        // it — anything still pointing at the old URL keeps working — and
+        // fall through to import the new bytes.
+        delete_post_meta($found[0], '_chr_src');
+        if (class_exists('WP_CLI')) {
+            WP_CLI::log("media changed, re-importing: {$rel} ({$stored} -> {$size} bytes)");
+        }
+    }
     if (!file_exists($abs)) {
         if (class_exists('WP_CLI')) {
             WP_CLI::warning("media missing: {$rel}");
@@ -110,6 +137,9 @@ function chr_media($rel)
         wp_update_attachment_metadata($attach_id, $meta);
     }
     update_post_meta($attach_id, '_chr_src', $rel);
+    // Size of the bytes actually imported, so a later run can tell whether the
+    // source file in public/ has been replaced. See the lookup above.
+    update_post_meta($attach_id, '_chr_size', (string) filesize($abs));
     return $attach_id;
 }
 

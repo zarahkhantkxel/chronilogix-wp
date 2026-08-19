@@ -22,6 +22,7 @@
 //   - Respects prefers-reduced-motion (rests at final state).
 
 import { useEffect, useRef, useState } from "react";
+import { useScrollLock } from "@/components/hooks/useScrollLock";
 import { createPortal } from "react-dom";
 
 type Fact = {
@@ -374,14 +375,10 @@ function ProblemDetailPopup({
     setMounted(true);
   }, []);
 
-  useEffect(() => {
-    if (!open) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [open]);
+  /* This popup is the Problem section's second overlay, and it carried the
+     same ineffective `body` overflow lock as the rest of the site — the
+     scroller here is `html`, so the page kept moving behind it. */
+  useScrollLock(open);
 
   useEffect(() => {
     if (open) {
@@ -446,7 +443,13 @@ function ProblemDetailPopup({
             </svg>
           </button>
 
-          <div className="overflow-y-auto px-7 py-12 md:px-14 md:py-16">
+          {/* Scroll area is inset vertically by the panel's 28px corner
+              radius (my-7) so the scrollbar runs only along the straight
+              part of the edge — flush with the panel, its ends were being
+              clipped by the rounded corners. The inset is taken out of the
+              content's own vertical padding (py-12 → my-7 + py-5, md:py-16
+              → my-7 + md:py-9) so the resting layout is unchanged. */}
+          <div className="my-7 overflow-y-auto px-7 py-5 [scrollbar-gutter:stable] md:px-14 md:py-9">
             <p className="eyebrow">{eyebrow}</p>
             <h2
               id="problem-detail-heading"

@@ -175,6 +175,21 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    /* Clickable controls get a pointer cursor. Browsers only give <a href>
+       a pointer — <button> inherits the plain arrow — so without this every
+       button in the app reads as non-interactive. Lives in the base layer so
+       any explicit cursor-* utility still wins, and skips disabled states so
+       disabled:cursor-not-allowed keeps working. */
+    button:not(:disabled):not([aria-disabled="true"]):not([data-disabled]),
+    [role="button"]:not(:disabled):not([aria-disabled="true"]):not(
+            [data-disabled]
+        ),
+    input:where([type="button"], [type="submit"], [type="reset"]):not(
+            :disabled
+        ) {
+        cursor: pointer;
+    }
 }
 
 /* =====================================================================

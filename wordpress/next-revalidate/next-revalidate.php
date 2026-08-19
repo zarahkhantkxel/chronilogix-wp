@@ -363,7 +363,28 @@ class NextRevalidate {
         $url = $options['nextjs_url'] . '/api/revalidate';
         $secret = $options['webhook_secret'] ?? '';
 
+        // app/api/revalidate/route.ts destructures { contentType, contentId }
+        // from the body and returns 400 when contentType is absent, so those
+        // two keys are required. Map this plugin's ($type, $data) shape onto
+        // that contract; the original keys stay so the admin log table and its
+        // slug/action columns still render.
+        //
+        // contentType carries the *post type* ("page"/"post") rather than the
+        // literal "post", because the route branches on it: "post" busts the
+        // posts tags, while an unmatched value like "page" still falls through
+        // to the "wordpress" tag bust plus revalidatePath("/", "layout") —
+        // which is what a page edit actually needs.
+        $content_type = $type;
+        if ($type === 'post' && !empty($data['type'])) {
+            $content_type = $data['type'];
+        } elseif ($type === 'term' && !empty($data['taxonomy'])) {
+            // The route knows "tag", not WordPress's internal "post_tag".
+            $content_type = $data['taxonomy'] === 'post_tag' ? 'tag' : $data['taxonomy'];
+        }
+
         $payload = [
+            'contentType' => $content_type,
+            'contentId'   => $data['id'] ?? null,
             'type' => $type,
             'data' => $data,
             'timestamp' => time()
@@ -450,7 +471,12 @@ add_action('wp_ajax_next_revalidate_test', function() {
             'Content-Type' => 'application/json',
             'x-webhook-secret' => $secret
         ],
+        // contentType is mandatory for the route (see send_request above);
+        // "all" is the site-wide form, so the Test Connection button exercises
+        // the same path a real revalidation takes instead of 400ing.
         'body' => json_encode([
+            'contentType' => 'all',
+            'contentId' => null,
             'type' => 'test',
             'data' => ['message' => 'Test from WordPress'],
             'timestamp' => time()
