@@ -73,11 +73,7 @@ chr_fields($home, [
     'mi_science_heading_muted'  => 'behind our AI.',
     'mi_science_body'           => 'At the heart of our platform is not just technology. It is 30 years of global experience and research from Dr. Ken Resnicow, one of the world’s foremost experts in Motivational Interviewing and Cultural Tailoring. He has spent decades guiding patients across diverse backgrounds, conditions, and cultures toward real, lasting change.',
     'mi_science_cta_label'      => 'About Dr. Resnicow',
-    // Deep-link to his section, not the top of /about — the team grid sits
-    // above it, so the visitor had to hunt for him. AboutScience owns the
-    // #science anchor and its matching scroll-mt; HashLanding on /about
-    // re-aligns once the image-heavy grid above settles.
-    'mi_science_cta_url'        => '/about#science',
+    'mi_science_cta_url'        => '/about',
     'mi_video_src'              => '/video/ken-resnicow-60s.mp4',
     'mi_video_role'             => 'Chief Science Officer',
     'mi_video_name'             => 'Dr. Ken Resnicow',
