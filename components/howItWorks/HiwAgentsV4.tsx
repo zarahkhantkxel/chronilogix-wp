@@ -376,7 +376,9 @@ function PersonaColumn({
               alt={persona.avatarAlt}
               className="h-full w-full object-cover"
               draggable={false}
-            />
+          loading="lazy"
+          decoding="async"
+        />
           </div>
         </div>
         <div className="min-w-0">

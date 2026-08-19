@@ -61,7 +61,7 @@ const DEFAULTS = {
   headingEmph: "before claims start.",
   intro:
     "A front-door claims-mitigation strategy for self-funded plans, working across chronic and behavioral health to reach members long before a quiet risk becomes an expensive claim.",
-  image: "/for-employees.png",
+  image: "/for-employees.webp",
   imageAlt: "Four members outdoors in warm sunlight, smiling together.",
   stats: DEFAULT_STATS,
   footerTitle: "Grounded in Motivational Interviewing",
@@ -106,7 +106,9 @@ function CardBackdrop() {
           maskImage: CARD_MASK,
           WebkitMaskImage: CARD_MASK,
         }}
-      />
+          loading="lazy"
+          decoding="async"
+        />
       <div aria-hidden className="absolute inset-0" style={{ background: CARD_WASH }} />
     </>
   );

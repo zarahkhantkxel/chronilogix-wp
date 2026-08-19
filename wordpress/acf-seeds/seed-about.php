@@ -54,7 +54,7 @@ chr_fields($pid, [
     'science_blog_label'            => 'Recent writing',
     'science_blog_all_label'        => 'All posts',
     'science_blog_all_href'         => '/resources/blog',
-    'science_portrait_image'        => chr_media('ken-thumbnail.png'),
+    'science_portrait_image'        => chr_media('ken-thumbnail.webp'),
 ]);
 update_field('science_metrics', [
     [ 'value' => '400+', 'label' => 'Peer reviewed publications', 'sub' => 'On Motivational Interviewing' ],

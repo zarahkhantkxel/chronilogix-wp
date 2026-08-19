@@ -121,7 +121,9 @@ export function PartnerHero({ content }: { content?: PartnerHeroContent }) {
               alt={logo.alt}
               className="h-9 w-auto object-contain md:h-11"
               draggable={false}
-            />
+          loading="lazy"
+          decoding="async"
+        />
           ))}
         </div>
       </div>

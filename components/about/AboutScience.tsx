@@ -88,7 +88,7 @@ const DEFAULTS = {
     "Caritas",
     "Active Health",
   ],
-  portraitImage: "/ken-thumbnail.png",
+  portraitImage: "/ken-thumbnail.webp",
   portraitName: "Dr. Kenneth Resnicow",
   portraitRole: "Chief Science Officer",
   portraitInstitution1: "Professor,",
@@ -441,7 +441,9 @@ function DrPortrait({ src, name }: { src: string; name: string }) {
            dark chair that creeps in below ~12%. Height fills exactly at this
            ratio, so the vertical value is currently inert. */
         style={{ objectPosition: "16% 22%" }}
-      />
+          loading="lazy"
+          decoding="async"
+        />
     </div>
   );
 }

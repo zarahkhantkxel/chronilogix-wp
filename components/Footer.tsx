@@ -9,7 +9,7 @@ const CAROUSEL = [
     w: "w-[260px] md:w-[300px]",
   },
   {
-    src: "/generated-images/chronilogix-soft-flower-senior-portrait.png",
+    src: "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
     aspect: "3/4",
     w: "w-[260px] md:w-[300px]",
   },
@@ -19,7 +19,7 @@ const CAROUSEL = [
     w: "w-[260px] md:w-[300px]",
   },
   {
-    src: "/generated-images/chronilogix-soft-flower-family-portrait.png",
+    src: "/generated-images/chronilogix-soft-flower-family-portrait.webp",
     aspect: "3/4",
     w: "w-[260px] md:w-[300px]",
   },
@@ -80,7 +80,9 @@ export function Footer() {
                         alt=""
                         className="h-full w-full object-cover"
                         draggable={false}
-                      />
+          loading="lazy"
+          decoding="async"
+        />
                     </div>
                   </li>
                 );
@@ -167,7 +169,9 @@ export function Footer() {
                   src="/Logo%20Packs/Primary%20Logo/Chronilogix_Logo-FullColor.svg"
                   alt="Chronilogix"
                   className="h-5 w-auto"
-                />
+          loading="lazy"
+          decoding="async"
+        />
                 <span className="text-ink-muted">© 2026</span>
               </div>
 

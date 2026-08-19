@@ -62,7 +62,7 @@ const DEFAULTS = {
   body: "Employers, brokers, health plans, product vendors, and wellness platforms each get a different return from the same engine — and the people who’d otherwise go unreached get a way in.",
   ctaLabel: "Talk to our team",
   ctaUrl: DEMO_BOOKING_URL,
-  portraitImage: "/who-we-serve.png",
+  portraitImage: "/who-we-serve.webp",
   portraitAlt:
     "Two people in unhurried conversation in a warm, light-filled space.",
   personas: PERSONAS,
@@ -192,6 +192,8 @@ function PortraitVisual({ image, alt }: { image: string; alt: string }) {
           src={image}
           alt={alt}
           className="absolute inset-0 h-full w-full object-cover object-[50%_45%]"
+          loading="lazy"
+          decoding="async"
         />
         <div
           aria-hidden

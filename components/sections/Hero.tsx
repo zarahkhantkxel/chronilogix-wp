@@ -264,7 +264,7 @@ export function Hero() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[78%] w-full select-none object-cover object-bottom"
-          src="/hero-bg-enhanced.png"
+          src="/hero-bg-enhanced.webp"
           alt=""
           aria-hidden
           draggable={false}

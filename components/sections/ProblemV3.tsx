@@ -205,7 +205,7 @@ const OBSERVATIONS = [
 ];
 
 const DEFAULTS = {
-  imageUrl: "/problem-portrait.png",
+  imageUrl: "/problem-portrait.webp",
   imageAlt:
     "A man sits cross-legged on a bed in afternoon light, alone, mid-thought.",
   headingLead: "The most expensive moments",
@@ -264,7 +264,9 @@ export function ProblemV3({ content }: { content?: ProblemV3Content }) {
               src={c.imageUrl}
               alt={c.imageAlt}
               className="absolute inset-0 h-full w-full object-cover"
-            />
+          loading="lazy"
+          decoding="async"
+        />
             <div
               aria-hidden
               className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 to-transparent"

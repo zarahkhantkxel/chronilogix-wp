@@ -296,7 +296,9 @@ function AgentCard({ agent }: { agent: Agent }) {
           transition:
             "opacity 900ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1)",
         }}
-      />
+          loading="lazy"
+          decoding="async"
+        />
       {/* Soft milky wash over the (already-masked) pattern — keeps the
           bottom-anchored texture quiet enough that the type stays the
           hero. */}
@@ -576,6 +578,8 @@ function CoachAvatar({ agent, active }: { agent: Agent; active: boolean }) {
           style={{
             boxShadow: `0 2px 4px rgba(15,20,25,0.08), 0 20px 40px -14px ${agent.haloColor}60`,
           }}
+          loading="lazy"
+          decoding="async"
         />
         {/* Always-on indicator — small green dot signals the coach is
             available 24/7 (mirrors the hero "24/7" narrative). */}

@@ -205,7 +205,9 @@ function ProofStatement({ proof, index }: { proof: Proof; index: number }) {
         alt={proof.logoAlt}
         className={`${logoClass} w-auto`}
         draggable={false}
-      />
+          loading="lazy"
+          decoding="async"
+        />
 
       <blockquote>
         <p className="mt-5 font-serif text-[21px] font-normal leading-[1.28] text-ink md:text-[24px] lg:text-[26px]">
@@ -272,7 +274,7 @@ function KenVideo() {
           near-square card that matches the MI dialogue panel's height. */}
       <video
         ref={videoRef}
-        poster="/ken-thumbnail.png"
+        poster="/ken-thumbnail.webp"
         src="/video/ken-resnicow-60s.mp4"
         playsInline
         preload="none"

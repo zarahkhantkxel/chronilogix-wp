@@ -311,6 +311,8 @@ function PersonCard({
           draggable={false}
           className="h-full w-full select-none object-cover"
           style={{ objectPosition: "50% 30%" }}
+          loading="lazy"
+          decoding="async"
         />
       </div>
 

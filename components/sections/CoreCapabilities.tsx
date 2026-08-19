@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEffect, useRef, useState } from "react";
 import { AIOrb } from "@/components/AIOrb";
 
@@ -475,12 +477,13 @@ function MethodVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-1-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/70" />
 
       <div className="relative flex h-full flex-col items-stretch justify-center gap-5 p-8 md:p-10">
@@ -560,12 +563,13 @@ function AccessVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/pattern.png"
+      <Image
+        src="/pattern.webp"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/70" />
 
       <div className="relative flex h-full flex-col justify-center gap-3 p-8 md:p-10">
@@ -625,12 +629,13 @@ function OversightVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-1-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/70" />
 
       <div className="relative flex h-full flex-col items-center justify-center gap-10 p-8 md:p-10">
@@ -748,12 +753,13 @@ function MultilingualVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-1-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/70" />
 
       <div className="relative flex h-full flex-col justify-center gap-3.5 p-8 md:p-10">
@@ -823,12 +829,13 @@ function EmotionAwareVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src="/pattern.png"
+      <Image
+        src="/pattern.webp"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/70" />
 
       <div className="relative flex h-full flex-col justify-center gap-6 p-8 md:p-10">
@@ -890,12 +897,13 @@ function CrisisSafeVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-3-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/70" />
 
       <div className="relative flex h-full flex-col justify-center gap-4 p-8 md:p-10">

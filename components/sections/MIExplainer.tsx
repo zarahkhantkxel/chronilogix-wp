@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 // MIExplainer — Section 3 of the homepage.
 //
 // Sits directly below StatementV5 ("MI is how people actually change")
@@ -178,7 +180,7 @@ const DEFAULTS = {
   // above it and the visitor would have to hunt for him. AboutScience owns
   // the #science anchor and its matching scroll-mt.
   scienceCtaUrl: "/about#science",
-  videoPoster: "/ken-thumbnail.png",
+  videoPoster: "/ken-thumbnail.webp",
   videoSrc: "/video/ken-resnicow-60s.mp4",
   videoRole: "Chief Science Officer",
   videoName: "Dr. Ken Resnicow",
@@ -698,12 +700,13 @@ function ComparisonColumn({
       >
         {/* Warm background wash, matching the product page's capability cards:
             a soft reddish texture rather than a near-white veil. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/pattern.png"
+        <Image
+          src="/pattern.webp"
           alt=""
           aria-hidden
           className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
         />
         <div aria-hidden className="absolute inset-0 bg-paper/70" />
 

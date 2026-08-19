@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEffect, useRef, useState } from "react";
 
 type Row = {
@@ -322,12 +324,13 @@ function WhiteLabelVisual({ active }: { active: boolean }) {
   return (
     <div className="absolute inset-0">
       {/* Soft warm wash behind the device. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-1-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/60" />
 
       {/* Caption — sits above the phone so the eye reads "same coach, any
@@ -471,7 +474,9 @@ function WhiteLabelVisual({ active }: { active: boolean }) {
                     alt=""
                     className="mt-0.5 h-6 w-6 shrink-0 rounded-full object-cover ring-2 ring-white"
                     draggable={false}
-                  />
+          loading="lazy"
+          decoding="async"
+        />
                   <div
                     className="max-w-[88%] rounded-[14px] rounded-bl-[6px] border border-white/70 bg-white/95 px-3.5 py-2.5 text-[13px] leading-snug text-ink"
                     style={{
@@ -565,12 +570,13 @@ function CoverageVisual({
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-3-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-paper/65" />
 
       <div className="relative flex h-full flex-col justify-center gap-4 p-6 md:gap-5 md:p-8">

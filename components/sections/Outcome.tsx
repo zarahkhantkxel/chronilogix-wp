@@ -44,13 +44,13 @@ const DEFAULTS = {
   gallerySubhead: "(Between visits. After discharge. At 11 PM.)",
   cards: [
     {
-      src: "/for-employees.png",
+      src: "/for-employees.webp",
       alt: "A quiet, open frame, the kind of moment between scheduled care.",
       label: "The moments care can't schedule for",
       body: "11 PM stress eating. Anxiety at midnight. The skipped evening dose. Chronilogix is there when the appointment isn't.",
     },
     {
-      src: "/for-universities.png",
+      src: "/for-universities.webp",
       alt: "A still frame from the long stretch after an appointment ends.",
       label: "The space after the appointment",
       body: "After discharge, after the session, after motivation slips. Continuous reinforcement that keeps people from quietly falling through.",
@@ -351,6 +351,8 @@ function CardColumn({
           alt={card.alt}
           className="h-full w-full object-cover"
           draggable={false}
+          loading="lazy"
+          decoding="async"
         />
       </figure>
 

@@ -281,7 +281,9 @@ function Slide({
             height={40}
             className="inline-flex shrink-0 rounded-full object-cover"
             style={{ width: 40, height: 40 }}
-          />
+          loading="lazy"
+          decoding="async"
+        />
         ) : (
           <Avatar name={testimonial.name} size={40} />
         )}

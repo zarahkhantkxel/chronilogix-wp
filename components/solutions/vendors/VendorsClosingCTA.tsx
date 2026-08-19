@@ -18,9 +18,9 @@ const CARD_W = "w-[260px] md:w-[300px]";
 
 const DEFAULT_CAROUSEL = [
   "/card-1-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-senior-portrait.png",
+  "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
   "/card-3-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-family-portrait.png",
+  "/generated-images/chronilogix-soft-flower-family-portrait.webp",
 ];
 
 // Editable content (ACF-backed). Every field falls back to the original
@@ -101,7 +101,9 @@ export function VendorsClosingCTA({
                       alt=""
                       className="h-full w-full object-cover"
                       draggable={false}
-                    />
+          loading="lazy"
+          decoding="async"
+        />
                   </div>
                 </li>
               );
