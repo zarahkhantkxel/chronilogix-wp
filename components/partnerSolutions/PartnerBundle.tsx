@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { Fragment, useState, type ReactNode } from "react";
 import { useReveal } from "@/components/hooks/useReveal";
 import type { Bundle } from "@/components/partnerSolutions/partnerData";
@@ -117,7 +119,9 @@ function BundleHeading({ bundle }: { bundle: Bundle }) {
         alt={bundle.logo.alt}
         className="reveal-row h-9 w-auto object-contain [transition-delay:40ms] md:h-11"
         draggable={false}
-      />
+          loading="lazy"
+          decoding="async"
+        />
       <p className="reveal-row eyebrow mt-6 text-[16px] [transition-delay:80ms]">
         {bundle.category}
       </p>
@@ -309,14 +313,15 @@ function GraphicStepsCard({
 function BlurredCardBackground({ washClass }: { washClass: string }) {
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-1-bg.jpg"
         alt=""
         aria-hidden
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
         draggable={false}
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div aria-hidden className={`absolute inset-0 ${washClass}`} />
     </>
   );
@@ -369,7 +374,9 @@ function ZennCard({
                 aria-hidden
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-500 ease-out-quart group-hover/vid:scale-[1.03] motion-reduce:transition-none"
                 draggable={false}
-              />
+          loading="lazy"
+          decoding="async"
+        />
               <span
                 aria-hidden
                 className="absolute inset-0"

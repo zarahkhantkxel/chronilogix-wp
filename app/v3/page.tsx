@@ -43,7 +43,9 @@ export default function HomePageV3() {
         alt="Roni AI agent"
         className="pointer-events-none fixed bottom-5 right-5 z-50 h-auto w-[180px] select-none drop-shadow-[0_12px_28px_rgba(15,20,25,0.22)] md:bottom-6 md:right-6 md:w-[200px]"
         draggable={false}
-      />
+          loading="lazy"
+          decoding="async"
+        />
     </>
   );
 }

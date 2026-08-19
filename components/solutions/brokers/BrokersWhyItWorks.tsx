@@ -197,7 +197,9 @@ export function BrokersWhyItWorks({
                     maskImage: CARD_MASK,
                     WebkitMaskImage: CARD_MASK,
                   }}
-                />
+          loading="lazy"
+          decoding="async"
+        />
                 {/* Milky white overlay — keeps the texture quiet under type. */}
                 <div
                   aria-hidden

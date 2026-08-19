@@ -37,9 +37,9 @@ chr_fields($pid, [
 ]);
 update_field('reality_pressures', [
     [ 'title' => 'Diabetes', 'detail' => 'One of the most predictable, highest-cost drivers on every renewal.', 'image' => chr_media('diabetes-glucose.jpg'), 'alt' => 'A person checking their blood glucose level with a meter.' ],
-    [ 'title' => 'Obesity', 'detail' => 'Compounds risk across nearly every other chronic condition on the plan.', 'image' => chr_media('obesity-reflective.jpg'), 'alt' => 'A woman sitting alone on the edge of a bed in low evening light.' ],
+    [ 'title' => 'Obesity', 'detail' => 'Compounds risk across nearly every other chronic condition on the plan.', 'image' => chr_media('obesity-reflective.webp'), 'alt' => 'A woman sitting alone on the edge of a bed in low evening light.' ],
     [ 'title' => 'Behavioral health', 'detail' => 'Utilization climbs quietly, alongside the productivity loss beside it.', 'image' => chr_media('behavioral-health-sunlit.jpg'), 'alt' => 'Two young women resting close together in warm sunlight through leaves.' ],
-    [ 'title' => 'Delayed care', 'detail' => 'Employees postpone treatment until small issues become expensive claims.', 'image' => chr_media('delayed-care-caregiver.jpg'), 'alt' => 'A caregiver helping an older man with his shoes beside a wheelchair.' ],
+    [ 'title' => 'Delayed care', 'detail' => 'Employees postpone treatment until small issues become expensive claims.', 'image' => chr_media('delayed-care-caregiver.webp'), 'alt' => 'A caregiver helping an older man with his shoes beside a wheelchair.' ],
 ], $pid);
 
 // ── Strategy ─────────────────────────────────────────────────────────────────
@@ -48,7 +48,7 @@ chr_fields($pid, [
     'strategy_heading_lead'    => 'AI coaches in front of every member,',
     'strategy_heading_emph'    => 'before claims start.',
     'strategy_intro'           => 'A front-door claims-mitigation strategy for self-funded plans, working across chronic and behavioral health to reach members long before a quiet risk becomes an expensive claim.',
-    'strategy_image'           => chr_media('for-employees.png'),
+    'strategy_image'           => chr_media('for-employees.webp'),
     'strategy_image_alt'       => 'Four members outdoors in warm sunlight, smiling together.',
     'strategy_footer_title'    => 'Grounded in Motivational Interviewing',
     'strategy_footer_subtitle' => 'Dr. Ken Resnicow’s clinically validated framework',
@@ -112,9 +112,9 @@ chr_fields($pid, [
 ]);
 update_field('cta_carousel', [
     [ 'image' => chr_media('card-1-bg.jpg') ],
-    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-senior-portrait.png') ],
+    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-senior-portrait.webp') ],
     [ 'image' => chr_media('card-3-bg.jpg') ],
-    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-family-portrait.png') ],
+    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-family-portrait.webp') ],
 ], $pid);
 
 // ── Audio ────────────────────────────────────────────────────────────────────

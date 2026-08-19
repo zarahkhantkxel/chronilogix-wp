@@ -26,7 +26,9 @@ export function PartnerLogoChip({
         alt={logo.alt}
         className={imgClassName}
         draggable={false}
-      />
+          loading="lazy"
+          decoding="async"
+        />
     </span>
   );
 }

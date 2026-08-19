@@ -39,7 +39,7 @@ chr_fields($pid, [
     'reply_coach_avatar'         => chr_media('roni.png'),
     'reply_coach_reply'          => 'You’re noticing it. That’s not nothing. What got in the way today?',
     'reply_thinking_label'       => 'Thinking',
-    'reply_mockup_image'         => chr_media('hand-tilted-mockup.png'),
+    'reply_mockup_image'         => chr_media('hand-tilted-mockup.webp'),
     'reply_mockup_alt'           => 'Chronilogix on a member\'s phone showing daily greeting, upcoming Roni session, goals in flight',
 ]);
 update_field('reply_reasoning_rows', [

@@ -59,8 +59,8 @@ const DEFAULTS = {
     "Motivational Interviewing is designed to change people’s behaviours.",
   ctaLabel: "Read the full white paper",
   ctaUrl: "#motivational-interviewing",
-  bgFull: "/statement-bg.png",
-  bgLow: "/statement-bg-low.png",
+  bgFull: "/statement-bg.webp",
+  bgLow: "/statement-bg-low.webp",
 } satisfies Required<StatementV5Content>;
 
 export function StatementV5({ content }: { content?: StatementV5Content }) {
@@ -162,7 +162,9 @@ export function StatementV5({ content }: { content?: StatementV5Content }) {
             draggable={false}
             className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
             style={{ opacity: crossFade }}
-          />
+          loading="lazy"
+          decoding="async"
+        />
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src={c.bgLow}
@@ -171,7 +173,9 @@ export function StatementV5({ content }: { content?: StatementV5Content }) {
             draggable={false}
             className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
             style={{ opacity: 1 - crossFade }}
-          />
+          loading="lazy"
+          decoding="async"
+        />
 
           {/* Top scrim — dissolves the top of the image into the white page
               above. Kept short (18%): at 30% it merged with the hero's own

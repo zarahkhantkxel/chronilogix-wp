@@ -139,7 +139,9 @@ function DemoCard({ reducedMotion }: { reducedMotion: boolean }) {
                     ? "none"
                     : `transform 600ms ${RAIL_EASE}`,
                 }}
-              />
+          loading="lazy"
+          decoding="async"
+        />
               <span
                 aria-hidden
                 className="absolute inset-0"

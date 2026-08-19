@@ -85,7 +85,7 @@ chr_fields($pid, [
     'behavior_heading_lead' => 'The real barriers to adherence aren’t medical.',
     'behavior_heading_emph' => 'They’re human.',
     'behavior_body'         => 'Chronilogix addresses the emotional, behavioral, and socio-economic barriers that cause drop-off, without relying on expensive, hard-to-scale clinical teams.',
-    'behavior_image'        => chr_media('behavior-gap-supplements.jpg'),
+    'behavior_image'        => chr_media('behavior-gap-supplements.webp'),
     'behavior_image_alt'    => 'A person taking daily supplement capsules alongside breakfast.',
     'behavior_caption_lead' => 'We close the gap between',
     'behavior_caption_emph' => 'prescription and progress.',
@@ -143,9 +143,9 @@ chr_fields($pid, [
 ]);
 update_field('cta_carousel', [
     [ 'image' => chr_media('card-1-bg.jpg') ],
-    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-senior-portrait.png') ],
+    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-senior-portrait.webp') ],
     [ 'image' => chr_media('card-3-bg.jpg') ],
-    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-family-portrait.png') ],
+    [ 'image' => chr_media('generated-images/chronilogix-soft-flower-family-portrait.webp') ],
 ], $pid);
 
 // ── Audio ────────────────────────────────────────────────────────────────────

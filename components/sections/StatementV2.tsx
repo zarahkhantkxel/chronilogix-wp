@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 // V2 — merged Section 2.
 //
 // Previously two separate sections sat between the hero and Solution:
@@ -207,12 +209,13 @@ function EngageVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-1-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-gradient-to-b from-paper/65 via-paper/55 to-paper/70" />
 
       <div className="relative flex h-full flex-col justify-center gap-3 p-5 md:p-6">
@@ -270,11 +273,13 @@ function FocusVisual({ active }: { active: boolean }) {
     <div className="absolute inset-0">
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src="/pattern.png"
+        src="/pattern.webp"
         alt=""
         className="absolute left-0 top-0 h-full w-auto max-w-none scale-110 select-none blur-md"
         draggable={false}
-      />
+          loading="lazy"
+          decoding="async"
+        />
       <div
         aria-hidden
         className="absolute inset-0 bg-gradient-to-b from-paper-warm/70 via-paper-warm/60 to-paper-warm/75"
@@ -332,12 +337,13 @@ function EvokeVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-3-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-gradient-to-b from-paper/65 via-paper/55 to-paper/70" />
 
       <div className="relative flex h-full flex-col justify-center gap-3 p-5 md:p-6">
@@ -381,12 +387,13 @@ function PlanVisual({ active }: { active: boolean }) {
 
   return (
     <div className="absolute inset-0">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src="/card-1-bg.jpg"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
       <div className="absolute inset-0 bg-gradient-to-b from-paper/65 via-paper/55 to-paper/70" />
 
       <div className="relative flex h-full items-center justify-center p-5 md:p-6">

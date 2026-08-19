@@ -2,23 +2,26 @@
 
 import { useEffect, useState } from "react";
 
-// Images that live above the fold across the first three sections
-// (Hero, Statement, Solution) plus the persistent floating agent pill.
-// The loader stays mounted until all of these are decoded, with a soft
-// minimum display so cached loads don't flicker.
+// Only what is genuinely painted above the fold on arrival: the hero
+// backdrop and the wordmark in the loader itself.
+//
+// This list used to cover the first THREE sections — the Roni and Millie
+// portraits and their pattern backdrops sit in Statement and Solution,
+// below the fold, so nobody could see the page until assets they were not
+// looking at had finished decoding. Combined with a 5.18MB PNG hero that
+// meant ~6MB gating first paint: roughly four seconds on a 10Mbps line and
+// about eight on 4G, behind a spinner. Anything below the fold has scroll
+// time to load on its own; keep this list to the arrival viewport.
 const CRITICAL_IMAGES = [
-  "/hero-bg-enhanced.png",
-  "/roni-pattern.webp",
-  "/roni.png",
-  "/millie-pattern.webp",
-  "/millie.png",
-  "/agent.png",
+  "/hero-bg-enhanced.webp",
   "/Logo Packs/Primary Logo/Chronilogix_Logo-FullColor.svg",
-  "/Logo Packs/Primary Logo/Chronilogix_Logo-White.svg",
 ];
 
 const MIN_DISPLAY_MS = 650;
-const HARD_TIMEOUT_MS = 6000;
+// Ceiling for a slow connection, not a target. Was 6000, when the gate had
+// ~6MB to pull; the payload is now well under 500KB, so a visitor who would
+// have waited the full six seconds is revealed far sooner.
+const HARD_TIMEOUT_MS = 2500;
 const SESSION_KEY = "chronilogix:loader-shown";
 
 export function PageLoader() {

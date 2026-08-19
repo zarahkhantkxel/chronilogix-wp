@@ -28,9 +28,9 @@ export type BrokersClosingCTAContent = {
 
 const DEFAULT_CAROUSEL_SRCS = [
   "/card-1-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-senior-portrait.png",
+  "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
   "/card-3-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-family-portrait.png",
+  "/generated-images/chronilogix-soft-flower-family-portrait.webp",
 ];
 
 const DEFAULTS = {
@@ -105,7 +105,9 @@ export function BrokersClosingCTA({
                       alt=""
                       className="h-full w-full object-cover"
                       draggable={false}
-                    />
+          loading="lazy"
+          decoding="async"
+        />
                   </div>
                 </li>
               );

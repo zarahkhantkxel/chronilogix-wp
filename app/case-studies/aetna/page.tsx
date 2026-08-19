@@ -68,7 +68,7 @@ const DEFAULTS = {
   conv_mi_text:
     "That took honesty — thank you. What’s made taking them feel hard lately?",
   conv_bg: "/card-1-bg.jpg",
-  bio_image: "/ken-thumbnail.png",
+  bio_image: "/ken-thumbnail.webp",
   bio_role: "Chief Science Officer, Chronilogix",
   bio_name: "Dr. Kenneth Resnicow",
   bio_body:
@@ -204,7 +204,9 @@ function Hero({ c }: { c: Content }) {
             alt={c.hero_logo_alt}
             className="mx-auto mt-6 h-9 w-auto md:h-10"
             draggable={false}
-          />
+          loading="lazy"
+          decoding="async"
+        />
 
           <h1
             id="aetna-hero-label"
@@ -386,7 +388,9 @@ function Solution({ c }: { c: Content }) {
               alt={c.bio_name}
               className="h-24 w-24 shrink-0 rounded-full object-cover object-top ring-1 ring-ink/10"
               draggable={false}
-            />
+          loading="lazy"
+          decoding="async"
+        />
             <div>
               <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brand-700">
                 {c.bio_role}
@@ -411,7 +415,9 @@ function ConversationFrame({ c }: { c: Content }) {
         src={c.conv_bg}
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          loading="lazy"
+          decoding="async"
+        />
       <div className="absolute inset-0 bg-paper/[0.72]" />
 
       <div className="relative flex h-full flex-col justify-center gap-3.5 p-7 md:p-10">

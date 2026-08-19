@@ -58,7 +58,7 @@ function chr_page($slug, $title)
  * Import a file from the Next.js public/ folder into the media library and
  * return its attachment ID. Idempotent via the `_chr_src` meta marker.
  *
- * @param string $rel Path relative to CHR_PUBLIC_DIR, e.g. "statement-bg.png".
+ * @param string $rel Path relative to CHR_PUBLIC_DIR, e.g. "statement-bg.webp".
  */
 function chr_media($rel)
 {

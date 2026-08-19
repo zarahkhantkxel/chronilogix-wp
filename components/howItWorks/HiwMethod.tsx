@@ -258,7 +258,9 @@ function CredentialBlock() {
               alt="Aetna"
               className="h-7 w-auto md:h-8"
               draggable={false}
-            />
+          loading="lazy"
+          decoding="async"
+        />
             <p className="mt-6 font-serif text-5xl font-normal leading-none tracking-tight text-ink tabular-nums md:text-6xl">
               53%{" "}
               <span className="text-brand-600">&rarr;</span>{" "}

@@ -53,7 +53,7 @@ const DEFAULT_PRESSURES: Pressure[] = [
   {
     title: "Obesity",
     detail: "Compounds risk across nearly every other chronic condition on the plan.",
-    image: "/obesity-reflective.jpg",
+    image: "/obesity-reflective.webp",
     alt: "A woman sitting alone on the edge of a bed in low evening light.",
   },
   {
@@ -65,7 +65,7 @@ const DEFAULT_PRESSURES: Pressure[] = [
   {
     title: "Delayed care",
     detail: "Employees postpone treatment until small issues become expensive claims.",
-    image: "/delayed-care-caregiver.jpg",
+    image: "/delayed-care-caregiver.webp",
     alt: "A caregiver helping an older man with his shoes beside a wheelchair.",
   },
 ];

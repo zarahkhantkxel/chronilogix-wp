@@ -61,7 +61,7 @@ const LEVELS: Level[] = [
     visualBg: "/card-1-bg.jpg",
     Artifact: AvailabilityArtifact,
     image: {
-      src: "/generated-images/family-low-angle-chronilogix-aesthetic.png",
+      src: "/generated-images/family-low-angle-chronilogix-aesthetic.webp",
       alt: "A family from below, the people who fall through the cracks of traditional care, where Chronilogix steps in as the first line.",
     },
   },
@@ -75,10 +75,10 @@ const LEVELS: Level[] = [
       "Continuously collects information for the therapist so no progress is lost",
       "Delivers cost efficiency and scalability without sacrificing quality of care",
     ],
-    visualBg: "/pattern.png",
+    visualBg: "/pattern.webp",
     Artifact: BriefingArtifact,
     image: {
-      src: "/generated-images/caregiver-senior-chronilogix-aesthetic.png",
+      src: "/generated-images/caregiver-senior-chronilogix-aesthetic.webp",
       alt: "A caregiver beside an older adult, the human plus AI hybrid Chronilogix supports.",
     },
   },
@@ -96,7 +96,7 @@ const LEVELS: Level[] = [
     visualBg: "/card-3-bg.jpg",
     Artifact: ConsistencyArtifact,
     image: {
-      src: "/generated-images/home-phone-man-chronilogix-aesthetic.png",
+      src: "/generated-images/home-phone-man-chronilogix-aesthetic.webp",
       alt: "A man at home with his phone, the members who get better outcomes with a fully digital coach.",
     },
   },
@@ -328,7 +328,9 @@ function LevelImage({
         alt={image.alt}
         className="absolute inset-0 h-full w-full object-cover"
         draggable={false}
-      />
+          loading="lazy"
+          decoding="async"
+        />
     </div>
   );
 }
@@ -361,7 +363,9 @@ function ArtifactFrame({
         src={bg}
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          loading="lazy"
+          decoding="async"
+        />
       <div className="absolute inset-0 bg-gradient-to-b from-paper/65 via-paper/55 to-paper/70" />
 
       <div className="relative flex h-full items-center justify-center p-6 md:p-7">

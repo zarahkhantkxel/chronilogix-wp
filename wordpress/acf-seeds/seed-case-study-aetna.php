@@ -62,7 +62,7 @@ chr_fields($pid, [
     'conv_mi_label'        => 'With MI',
     'conv_mi_text'         => 'That took honesty — thank you. What’s made taking them feel hard lately?',
     'conv_bg'              => chr_media('card-1-bg.jpg'),
-    'bio_image'            => chr_media('ken-thumbnail.png'),
+    'bio_image'            => chr_media('ken-thumbnail.webp'),
     'bio_role'             => 'Chief Science Officer, Chronilogix',
     'bio_name'             => 'Dr. Kenneth Resnicow',
     'bio_body'             => 'One of the world’s leading experts in Motivational Interviewing, whose work spans healthcare, behavior change, chronic illness, and health equity. His partnership with Aetna helped operationalize MI at scale — and set a national precedent for member-centered coaching.',

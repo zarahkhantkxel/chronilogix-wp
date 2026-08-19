@@ -340,7 +340,9 @@ function FloatingAvatar({
               alt={`${agent.name}, ${agent.role}`}
               className="h-full w-full object-cover transition-transform duration-500 ease-out motion-reduce:transition-none group-hover/agent:scale-[1.04]"
               draggable={false}
-            />
+          loading="lazy"
+          decoding="async"
+        />
           </span>
 
           {/* Role pill — anchored to the bottom rim, ~half above and
