@@ -68,7 +68,16 @@ export function AppPartnersHero({
   content?: AppPartnersHeroContent;
 }) {
   const c = { ...DEFAULTS, ...clean(content) };
-  const intro = content?.intro ?? DEFAULT_INTRO;
+  // clean(), not content, and for the reason the rest of this file exists:
+  // `intro` is a ReactNode carrying inline emphasis spans, so it sits outside
+  // DEFAULTS (see the Omit above) and gets resolved by hand. Reading
+  // content?.intro raw with `??` only fell back on null/undefined — and ACF
+  // returns "" for a field that exists but was deliberately left unseeded,
+  // which is exactly how this one is managed. The empty string won, both
+  // sentences of DEFAULT_INTRO vanished, and the hero shipped with no intro
+  // copy. clean() already drops "", null, undefined and false, so routing
+  // through it restores the fallback this comment always claimed.
+  const intro = clean(content).intro ?? DEFAULT_INTRO;
 
   const [revealProgress, setRevealProgress] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
