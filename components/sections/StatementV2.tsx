@@ -210,7 +210,7 @@ function EngageVisual({ active }: { active: boolean }) {
   return (
     <div className="absolute inset-0">
       <Image
-        src="/card-1-bg.jpg"
+        src="/card-1-bg.webp"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
           fill
@@ -388,7 +388,7 @@ function PlanVisual({ active }: { active: boolean }) {
   return (
     <div className="absolute inset-0">
       <Image
-        src="/card-1-bg.jpg"
+        src="/card-1-bg.webp"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
           fill

@@ -17,7 +17,7 @@ const CARD_ASPECT = "3/4";
 const CARD_W = "w-[260px] md:w-[300px]";
 
 const DEFAULT_CAROUSEL = [
-  "/card-1-bg.jpg",
+  "/card-1-bg.webp",
   "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
   "/card-3-bg.jpg",
   "/generated-images/chronilogix-soft-flower-family-portrait.webp",

@@ -111,7 +111,7 @@ chr_fields($pid, [
     'cta_signoff'         => 'Chronilogix. Chronic care coaching that actually clicks.',
 ]);
 update_field('cta_carousel', [
-    [ 'image' => chr_media('card-1-bg.jpg') ],
+    [ 'image' => chr_media('card-1-bg.webp') ],
     [ 'image' => chr_media('generated-images/chronilogix-soft-flower-senior-portrait.webp') ],
     [ 'image' => chr_media('card-3-bg.jpg') ],
     [ 'image' => chr_media('generated-images/chronilogix-soft-flower-family-portrait.webp') ],

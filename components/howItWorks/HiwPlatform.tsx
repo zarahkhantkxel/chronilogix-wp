@@ -325,7 +325,7 @@ function WhiteLabelVisual({ active }: { active: boolean }) {
     <div className="absolute inset-0">
       {/* Soft warm wash behind the device. */}
       <Image
-        src="/card-1-bg.jpg"
+        src="/card-1-bg.webp"
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
           fill

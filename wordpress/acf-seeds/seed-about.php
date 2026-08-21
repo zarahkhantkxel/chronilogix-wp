@@ -28,18 +28,18 @@ chr_fields($pid, [
 // AboutTeam renders them as two separate blocks. Keep both populated or the
 // cards render with a visible gap where the bio belongs.
 update_field('team_leaders', [
-    [ 'name' => 'Steven Amiel', 'role' => 'CEO and Cofounder', 'bio' => 'Visionary leader with a track record of scaling disruptive healthcare solutions.', 'photo' => chr_media('team/steven.png') ],
-    [ 'name' => 'Dr. Kenneth Resnicow', 'role' => 'Chief Science Officer', 'bio' => 'Globally recognized expert in Motivational Interviewing, with 30+ years of evidence-based research behind our behavioral and chronic care coaching.', 'photo' => chr_media('team/ken.png'), 'more_href' => '#science', 'more_label' => 'Read the science' ],
-    [ 'name' => 'Lou Ramery', 'role' => 'Chief Marketing Officer', 'bio' => 'Built and ran the CRM and loyalty programs for Sears and Kmart under Eddie Lampert. Global SVP at Digitas.', 'photo' => chr_media('team/lou.png') ],
-    [ 'name' => 'Michael Lazor', 'role' => 'Fractional CTO', 'bio' => 'Manages the development team building the platform.', 'photo' => chr_media('team/michael.png') ],
+    [ 'name' => 'Steven Amiel', 'role' => 'CEO and Cofounder', 'bio' => 'Visionary leader with a track record of scaling disruptive healthcare solutions.', 'photo' => chr_media('team/steven.webp') ],
+    [ 'name' => 'Dr. Kenneth Resnicow', 'role' => 'Chief Science Officer', 'bio' => 'Globally recognized expert in Motivational Interviewing, with 30+ years of evidence-based research behind our behavioral and chronic care coaching.', 'photo' => chr_media('team/ken.webp'), 'more_href' => '#science', 'more_label' => 'Read the science' ],
+    [ 'name' => 'Lou Ramery', 'role' => 'Chief Marketing Officer', 'bio' => 'Built and ran the CRM and loyalty programs for Sears and Kmart under Eddie Lampert. Global SVP at Digitas.', 'photo' => chr_media('team/lou.webp') ],
+    [ 'name' => 'Michael Lazor', 'role' => 'Fractional CTO', 'bio' => 'Manages the development team building the platform.', 'photo' => chr_media('team/michael.webp') ],
 ], $pid);
 // Each advisor has their own portrait. These previously pointed at the
 // leaders' files (steven/lou/michael) as stand-ins, so the board row showed
 // the founders' faces under the advisors' names.
 update_field('team_advisors', [
-    [ 'name' => 'Nelson Griswold', 'role' => 'CEO, NextGen Benefits', 'bio' => 'One of the benefits industry’s most recognized strategic voices.', 'photo' => chr_media('team/nelson.png') ],
-    [ 'name' => 'Geoffrey C. Williams, M.D., Ph.D.', 'role' => 'Clinical advisor', 'bio' => 'Global expert in the treatment of behavioral and chronic conditions.', 'photo' => chr_media('team/geoffrey.png') ],
-    [ 'name' => 'Julian Lago', 'role' => 'Advisor', 'bio' => 'Entrepreneur with deep connections across healthcare and technology. Two healthcare tech exits in the last 24 months.', 'photo' => chr_media('team/julian.png') ],
+    [ 'name' => 'Nelson Griswold', 'role' => 'CEO, NextGen Benefits', 'bio' => 'One of the benefits industry’s most recognized strategic voices.', 'photo' => chr_media('team/nelson.webp') ],
+    [ 'name' => 'Geoffrey C. Williams, M.D., Ph.D.', 'role' => 'Clinical advisor', 'bio' => 'Global expert in the treatment of behavioral and chronic conditions.', 'photo' => chr_media('team/geoffrey.webp') ],
+    [ 'name' => 'Julian Lago', 'role' => 'Advisor', 'bio' => 'Entrepreneur with deep connections across healthcare and technology. Two healthcare tech exits in the last 24 months.', 'photo' => chr_media('team/julian.webp') ],
 ], $pid);
 
 // ── Science (prose + aetna_quote intentionally not seeded) ───────────────────
