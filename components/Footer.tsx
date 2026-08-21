@@ -4,7 +4,7 @@ import { DEMO_BOOKING_URL } from "@/site.config";
 
 const CAROUSEL = [
   {
-    src: "/card-1-bg.jpg",
+    src: "/card-1-bg.webp",
     aspect: "3/4",
     w: "w-[260px] md:w-[300px]",
   },
@@ -30,8 +30,8 @@ const CAROUSEL = [
    already carries the data-handling promise — so the strip now links
    the two documents that actually exist. */
 const LEGAL_LINKS = [
-  { href: "/terms", label: "Terms" },
-  { href: "/privacy", label: "Privacy" },
+  { href: "/terms-and-conditions", label: "Terms" },
+  { href: "/privacy-policy", label: "Privacy" },
 ];
 
 export function Footer() {

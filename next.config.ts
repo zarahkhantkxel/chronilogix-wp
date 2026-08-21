@@ -34,6 +34,24 @@ const nextConfig: NextConfig = {
           "/resources/blog/inside-roni-ai-clinical-grade-coaching-at-scale",
         permanent: true,
       },
+      // Legal pages renamed to spell out what they are. The old paths were
+      // live and are referenced from outside this codebase — email footers,
+      // app store listings, anything already indexed — so they 301 rather
+      // than 404. The `:path*` variants carry the deep anchors across too,
+      // since the documents cross-reference each other by fragment
+      // (e.g. /terms#s-10-3 from the arbitration clause).
+      { source: "/privacy", destination: "/privacy-policy", permanent: true },
+      { source: "/terms", destination: "/terms-and-conditions", permanent: true },
+      {
+        source: "/privacy/:path*",
+        destination: "/privacy-policy/:path*",
+        permanent: true,
+      },
+      {
+        source: "/terms/:path*",
+        destination: "/terms-and-conditions/:path*",
+        permanent: true,
+      },
     ];
     if (wordpressUrl) {
       redirects.push({

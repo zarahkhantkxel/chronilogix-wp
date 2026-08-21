@@ -19,6 +19,10 @@ export default async function PrivacyPage() {
   // structure (conspicuous notices, definition lists, lettered subsections with
   // their own anchors) has no faithful ACF representation, and a WYSIWYG would
   // let a clause be reworded without review. See docs/legal-open-items.md.
+  // "privacy", not "privacy-policy": this is the WordPress post_name, which
+  // was deliberately left alone when the public route was renamed. The ACF
+  // field group's location rule matches on that slug too, so changing one
+  // without the other blanks every field on this page.
   const acf = await getPageAcf<Record<string, string>>("privacy");
   const c = withAcfDefaults(
     {
@@ -58,7 +62,7 @@ export default async function PrivacyPage() {
             preamble={PRIVACY_DOC.preamble}
           />
           <LegalCrossLink
-            companionHref="/terms"
+            companionHref="/terms-and-conditions"
             companionLabel="Terms & Conditions"
             companionBlurb="The agreement governing your use of Chronilogix — including the medical and crisis disclaimers, the arbitration clause, and the class action waiver."
             contactEmail={c.contactEmail}

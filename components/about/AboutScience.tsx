@@ -376,7 +376,7 @@ function BlogCardTile({ card, index }: { card: BlogCard; index: number }) {
              `rgba(20,8,2,0.16)`. Two different-colored lights in one stack,
              and neither matched the warm `rgba(40,25,15,...)` tint that every
              other paper surface on this page uses (DrPortrait below, the
-             AboutTeam portraits and pill). Against bg-paper-warm plus the
+             AboutTeam advisory pill). Against bg-paper-warm plus the
              brand-orange radial wash, that cold-then-black mix grimed the
              card edge instead of warming under it.
 
@@ -389,8 +389,10 @@ function BlogCardTile({ card, index }: { card: BlogCard; index: number }) {
              detached slab hovering over a dark halo rather than paper
              lifting slightly off the page.
 
-          The new resting value is the established mid tier from this same
-          page (AboutTeam's portrait frames): a 30px blur pulled back 20px
+          The new resting value is the established mid tier for a paper
+          card on this page — these blog cards are now the only place it
+          lives, since AboutTeam's portraits dropped their shadow when the
+          circular cutouts were unframed: a 30px blur pulled back 20px
           leaves only ~10px of visible bleed, which keeps the shadow tucked
           under the card's own bottom edge. Same warm tint on both layers, so
           the light finally comes from one place. Hover nudges one step up
@@ -412,8 +414,10 @@ function BlogCardTile({ card, index }: { card: BlogCard; index: number }) {
 }
 
 /**
- * Editorial portrait of Dr. Resnicow on the warm-paper register. 4:5 aspect
- * to match the leader band on AboutTeam. Object-position biases left+up so
+ * Editorial portrait of Dr. Resnicow on the warm-paper register. A 4:5
+ * rounded rectangle, deliberately unlike the circular cutouts in the
+ * AboutTeam band — this is the one full-scale editorial portrait on the
+ * page and reads as a plate, not an avatar. Object-position biases left+up so
  * the face stays in the visual centre of the crop (source is landscape).
  * Subtle drop shadow + cream backdrop keep the photo sitting on paper, not
  * floating as a stark rectangle.

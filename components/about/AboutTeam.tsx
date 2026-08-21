@@ -35,26 +35,26 @@ const DEFAULTS = {
       name: "Steven Amiel",
       role: "CEO and Cofounder",
       bio: "Visionary leader with a track record of scaling disruptive healthcare solutions.",
-      photo: "/team/steven.png",
+      photo: "/team/steven.webp",
     },
     {
       name: "Dr. Kenneth Resnicow",
       role: "Chief Science Officer",
       bio: "Globally recognized expert in Motivational Interviewing, with 30+ years of evidence-based research behind our behavioral and chronic care coaching.",
-      photo: "/team/ken.png",
+      photo: "/team/ken.webp",
       more: { href: "#science", label: "Read the science" },
     },
     {
       name: "Lou Ramery",
       role: "Chief Marketing Officer",
       bio: "Built and ran the CRM and loyalty programs for Sears and Kmart under Eddie Lampert. Global SVP at Digitas.",
-      photo: "/team/lou.png",
+      photo: "/team/lou.webp",
     },
     {
       name: "Michael Lazor",
       role: "Fractional CTO",
       bio: "Manages the development team building the platform.",
-      photo: "/team/michael.png",
+      photo: "/team/michael.webp",
     },
   ],
   advisorsLabel: "Advisory board",
@@ -66,19 +66,19 @@ const DEFAULTS = {
       name: "Nelson Griswold",
       role: "CEO, NextGen Benefits",
       bio: "One of the benefits industry’s most recognized strategic voices.",
-      photo: "/team/nelson.png",
+      photo: "/team/nelson.webp",
     },
     {
       name: "Geoffrey C. Williams, M.D., Ph.D.",
       role: "Clinical advisor",
       bio: "Global expert in the treatment of behavioral and chronic conditions.",
-      photo: "/team/geoffrey.png",
+      photo: "/team/geoffrey.webp",
     },
     {
       name: "Julian Lago",
       role: "Advisor",
       bio: "Entrepreneur with deep connections across healthcare and technology. Two healthcare tech exits in the last 24 months.",
-      photo: "/team/julian.png",
+      photo: "/team/julian.webp",
     },
   ],
 } satisfies Required<AboutTeamContent>;
@@ -263,10 +263,11 @@ function PersonCard({
   const isLead = rank === "lead";
   return (
     <li style={style} className="flex flex-col">
-      {/* Circular avatar rather than a rectangular crop: the supplied
-          headshots are circular cutouts on a transparent ground, so a
-          rectangular frame would slice the circle and leave transparent
-          corners. A round frame matches the source crop exactly.
+      {/* The circle comes from the artwork, not from CSS. The supplied
+          headshots are circular cutouts on a transparent ground, so the
+          frame here is a plain square box: the round silhouette you see is
+          the image's own alpha, and the transparent corners need no
+          clipping because there is nothing in them to clip.
 
           `aspect-square w-full` rather than fixed pixel steps, so the
           portrait always fills its grid column exactly and the four
@@ -282,12 +283,50 @@ function PersonCard({
           still runs edge to edge. Reach for the gutter to resize these,
           not for a width on the portrait.
 
-          RESOLUTION CAVEAT: the source files are 400x400, which was the
-          crisp ceiling for the previous 192px step at 2x DPR. Filling the
-          column puts these near 294px on a wide screen, so on a retina
-          display they are upscaled roughly 1.5x and will read slightly
-          soft. That is a limit of the supplied assets, not of the layout —
-          the fix is higher-resolution originals, not a smaller frame.
+          NO FRAME CHROME, deliberately. This carried a `ring-1` hairline,
+          a `bg-paper` fill and a drop shadow, and all three fought the
+          artwork: the ring drew a second contour just outside the cutout
+          and the cream fill lit up the seam at its edge, so together they
+          read as a border the portraits were never meant to have. Do not
+          reintroduce a ring, a background fill, or a shadow here — any of
+          them puts the rim back.
+
+          NO `overflow-hidden rounded-full` EITHER, and that one is subtler.
+          It looked free, but it clipped the artwork with a second
+          antialiased circle at exactly the same radius as the artwork's
+          own mask. Two independently rasterised circles do not agree at the
+          subpixel level, and their coverage multiplies: measured against an
+          analytic circle, the clip destroyed 50-100% of the alpha in the
+          boundary band, collapsing a soft edge into a near-binary one. A
+          binary curve is a staircase, and on the sitters whose photograph
+          ends dark — Ken, Nelson, Geoffrey, Steven — that staircase read as
+          a thin ragged dark arc, i.e. exactly the "border" nobody put
+          there. It stayed invisible on Lou and Michael only because their
+          edges are near-white against the tint. Clipping a shape that is
+          already transparent outside itself buys nothing and costs the
+          antialiasing, so the clip is gone.
+
+          Sources are 780x780, re-exported from the client's 390x390
+          originals (kept pristine in `Profiles/New profiles/`) with the
+          circular mask redrawn at 16x supersampling and the photo colour
+          bled outward before masking, so no black backdrop can wash into
+          the new edge. Framing, centre and radius are unchanged. 780 is
+          deliberate, not arbitrary: `max-w-page` caps the column at 234px,
+          so 780 clears 2x DPR with room to spare and every viewport
+          downsamples rather than upsamples — the case where an edge stays
+          clean. The old 390px files upscaled ~1.2x at 2x DPR, which
+          magnified the very band this section is about.
+
+          Encoded as WebP, and the choice is load-bearing rather than
+          housekeeping. These are plain `<img>` tags with no Next/Image
+          pipeline, so whatever is on disk is shipped weight, and at 780px
+          the seven PNGs came to ~2.9MB. WebP q88 takes them to ~214KB —
+          7% — while encoding the alpha channel *losslessly*: the mask this
+          whole comment is about survives bit-exact (max per-pixel alpha
+          delta 0 across all seven), and RGB drifts under 1/255 on average
+          inside the circle. So there is no tension here between edge
+          quality and page weight. Re-encode from `Profiles/New profiles/`
+          if these are ever rebuilt, and keep alpha out of any lossy path.
 
           One size for leaders and advisors alike. The advisors used to
           render two steps smaller, which broke the vertical alignment
@@ -297,17 +336,13 @@ function PersonCard({
           portrait — serif name and brand-colored role for leaders, plain
           sans for advisors — which is enough of a signal without shrinking
           the faces. */}
-      <div
-        className="relative aspect-square w-full shrink-0 overflow-hidden rounded-full bg-paper ring-1 ring-ink/[0.06]"
-        style={{
-          boxShadow:
-            "0 1px 2px rgba(40,25,15,0.05), 0 18px 40px -24px rgba(40,25,15,0.22)",
-        }}
-      >
+      <div className="relative aspect-square w-full shrink-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src={person.photo}
           alt={`Portrait of ${person.name}`}
+          width={780}
+          height={780}
           draggable={false}
           className="h-full w-full select-none object-cover"
           style={{ objectPosition: "50% 30%" }}

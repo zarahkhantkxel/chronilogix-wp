@@ -27,7 +27,7 @@ export type BrokersClosingCTAContent = {
 };
 
 const DEFAULT_CAROUSEL_SRCS = [
-  "/card-1-bg.jpg",
+  "/card-1-bg.webp",
   "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
   "/card-3-bg.jpg",
   "/generated-images/chronilogix-soft-flower-family-portrait.webp",

@@ -58,7 +58,7 @@ const LEVELS: Level[] = [
       "Bridges the typical 2 to 6 week wait for a human appointment",
       "Cost efficient access for virtually anyone",
     ],
-    visualBg: "/card-1-bg.jpg",
+    visualBg: "/card-1-bg.webp",
     Artifact: AvailabilityArtifact,
     image: {
       src: "/generated-images/family-low-angle-chronilogix-aesthetic.webp",

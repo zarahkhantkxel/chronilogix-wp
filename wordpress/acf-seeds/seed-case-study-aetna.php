@@ -61,7 +61,7 @@ chr_fields($pid, [
     'conv_scripted_text'   => 'On a scale of 1 to 5, how would you rate your medication adherence this week?',
     'conv_mi_label'        => 'With MI',
     'conv_mi_text'         => 'That took honesty — thank you. What’s made taking them feel hard lately?',
-    'conv_bg'              => chr_media('card-1-bg.jpg'),
+    'conv_bg'              => chr_media('card-1-bg.webp'),
     'bio_image'            => chr_media('ken-thumbnail.webp'),
     'bio_role'             => 'Chief Science Officer, Chronilogix',
     'bio_name'             => 'Dr. Kenneth Resnicow',
