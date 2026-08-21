@@ -36,7 +36,7 @@ export type LegalBlock =
   | { type: "notice"; tone: "warn" | "affirm"; text: string }
   | { type: "defs"; items: { term: string; text: string }[] }
   /* A lettered or decimal subsection — A., B. in Privacy; 2.1, 2.2 in
-     Terms. Rendered with its own anchor so `/terms#s-10-3` works. */
+     Terms. Rendered with its own anchor so `/terms-and-conditions#s-10-3` works. */
   | { type: "sub"; label: string; heading: string; blocks: LegalBlock[] }
   | { type: "address"; org: string; lines: string[]; email: string };
 
@@ -522,7 +522,7 @@ export const PRIVACY_DOC: LegalDoc = {
       blocks: [
         {
           type: "para",
-          text: "Chronilogix AI is generally intended for individuals who are at least eighteen (18) years of age, or the age of legal majority in their jurisdiction of residence. An individual under eighteen (18), or under the applicable age of majority, may use the Products only with the involvement and consent of a parent or legal guardian and under that person’s account, as set out in our [Terms and Conditions](/terms).",
+          text: "Chronilogix AI is generally intended for individuals who are at least eighteen (18) years of age, or the age of legal majority in their jurisdiction of residence. An individual under eighteen (18), or under the applicable age of majority, may use the Products only with the involvement and consent of a parent or legal guardian and under that person’s account, as set out in our [Terms and Conditions](/terms-and-conditions).",
         },
         {
           type: "para",
@@ -623,7 +623,7 @@ export const TERMS_DOC: LegalDoc = {
         },
         {
           type: "para",
-          text: "By accessing, downloading, installing, or using Chronilogix, you acknowledge that you have read and understood these Terms and agree to be bound by them, together with our [Privacy Policy](/privacy), which is incorporated into this Agreement by reference. If you do not agree to these Terms, you must not access, download, install, or use Chronilogix.",
+          text: "By accessing, downloading, installing, or using Chronilogix, you acknowledge that you have read and understood these Terms and agree to be bound by them, together with our [Privacy Policy](/privacy-policy), which is incorporated into this Agreement by reference. If you do not agree to these Terms, you must not access, download, install, or use Chronilogix.",
         },
         {
           type: "para",
@@ -682,7 +682,7 @@ export const TERMS_DOC: LegalDoc = {
             },
             {
               term: "Privacy Policy",
-              text: "The separate document setting out how Chronilogix collects, uses, stores, and protects your personal data, available at [/privacy](/privacy).",
+              text: "The separate document setting out how Chronilogix collects, uses, stores, and protects your personal data, available at [/privacy-policy](/privacy-policy).",
             },
             {
               term: "Site",
@@ -979,7 +979,7 @@ export const TERMS_DOC: LegalDoc = {
               type: "list",
               items: [
                 "Chronilogix does not claim any ownership right in your User Content. You retain all rights in and to your User Content — that is, your direct inputs, prompts, and communications with Chronilogix AI — to the extent you hold such rights.",
-                "By submitting User Content, you grant Chronilogix a worldwide, royalty-free, perpetual, irrevocable, non-exclusive, sublicensable, and transferable license to use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, perform, and display your User Content, in whole or in part, in connection with operating, maintaining, improving, and developing Chronilogix AI and other Chronilogix products and services, including for the purpose of training, analyzing, and enhancing the AI models — provided that such use is carried out in an anonymized and aggregated manner in order to protect your privacy, as further described in our [Privacy Policy](/privacy). This license survives termination of these Terms.",
+                "By submitting User Content, you grant Chronilogix a worldwide, royalty-free, perpetual, irrevocable, non-exclusive, sublicensable, and transferable license to use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, perform, and display your User Content, in whole or in part, in connection with operating, maintaining, improving, and developing Chronilogix AI and other Chronilogix products and services, including for the purpose of training, analyzing, and enhancing the AI models — provided that such use is carried out in an anonymized and aggregated manner in order to protect your privacy, as further described in our [Privacy Policy](/privacy-policy). This license survives termination of these Terms.",
               ],
             },
           ],
@@ -1016,7 +1016,7 @@ export const TERMS_DOC: LegalDoc = {
             {
               type: "list",
               items: [
-                "Your privacy is critically important to us. These Terms incorporate our [Privacy Policy](/privacy) by reference. That policy describes in detail how Chronilogix collects, uses, stores, processes, and protects your personal data and User Content in connection with your use of Chronilogix AI.",
+                "Your privacy is critically important to us. These Terms incorporate our [Privacy Policy](/privacy-policy) by reference. That policy describes in detail how Chronilogix collects, uses, stores, processes, and protects your personal data and User Content in connection with your use of Chronilogix AI.",
                 "By agreeing to these Terms, you also acknowledge that you have read and agree to the terms of our Privacy Policy. Please review it carefully.",
               ],
             },
@@ -1031,7 +1031,7 @@ export const TERMS_DOC: LegalDoc = {
               type: "list",
               items: [
                 "You explicitly consent to Chronilogix collecting and using your anonymized and aggregated User Content and interaction data for the purpose of continuously training, improving, and developing Chronilogix AI and other Chronilogix products and services, and of ensuring their safety and performance.",
-                "Chronilogix employs robust anonymization techniques so that data used for AI training does not directly identify you. This process is described further in our [Privacy Policy](/privacy).",
+                "Chronilogix employs robust anonymization techniques so that data used for AI training does not directly identify you. This process is described further in our [Privacy Policy](/privacy-policy).",
               ],
             },
           ],
@@ -1406,7 +1406,7 @@ export const TERMS_DOC: LegalDoc = {
               type: "list",
               items: [
                 "On termination, your right to use Chronilogix AI ceases immediately. All provisions of these Terms that by their nature should survive termination — including without limitation the provisions on intellectual property ownership, disclaimers, limitation of liability, indemnification, governing law, and dispute resolution — survive termination.",
-                "Termination of your account may involve deletion of the User Content associated with it, although aggregated and anonymized data used for AI improvement will be retained as described in the [Privacy Policy](/privacy). Chronilogix will not be liable to you or to any third party for any termination of your access to the Service.",
+                "Termination of your account may involve deletion of the User Content associated with it, although aggregated and anonymized data used for AI improvement will be retained as described in the [Privacy Policy](/privacy-policy). Chronilogix will not be liable to you or to any third party for any termination of your access to the Service.",
               ],
             },
           ],

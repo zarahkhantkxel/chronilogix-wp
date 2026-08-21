@@ -39,8 +39,8 @@ const DEFAULTS = {
   // page behind them; the trust line beside this strip already carries the
   // data-handling promise, so the strip links only what actually exists.
   legalLinks: [
-    { href: "/terms", label: "Terms" },
-    { href: "/privacy", label: "Privacy" },
+    { href: "/terms-and-conditions", label: "Terms" },
+    { href: "/privacy-policy", label: "Privacy" },
   ],
 } satisfies Required<AboutClosingCTAContent>;
 

@@ -16,6 +16,10 @@ export const metadata: Metadata = {
 export default async function TermsPage() {
   // Hero and contact fields only — see the note in app/privacy/page.tsx for why
   // the clause body deliberately stays in legal-content.ts.
+  // "terms", not "terms-and-conditions": this is the WordPress post_name,
+  // deliberately left alone when the public route was renamed. The ACF field
+  // group's location rule matches on that slug too, so changing one without
+  // the other blanks every field on this page.
   const acf = await getPageAcf<Record<string, string>>("terms");
   const c = withAcfDefaults(
     {
@@ -55,7 +59,7 @@ export default async function TermsPage() {
             preamble={TERMS_DOC.preamble}
           />
           <LegalCrossLink
-            companionHref="/privacy"
+            companionHref="/privacy-policy"
             companionLabel="Privacy Policy"
             companionBlurb="What we collect, how we use it, who we share it with, how long we keep it, and the data protection rights you can exercise."
             contactEmail={c.contactEmail}

@@ -12,7 +12,7 @@ import type { LegalBlock, LegalSection } from "./legal-content";
  *
  *  - The document's own numbering, never a render-time index. Privacy is
  *    I–XII, Terms is 1–17 with 2.1-style subsections, and every one of
- *    them is an anchor — so `/terms#s-10-3` lands on the arbitration
+ *    them is an anchor — so `/terms-and-conditions#s-10-3` lands on the arbitration
  *    clause, which is how these get cited.
  *  - A sticky table of contents on desktop, tracking the section in view.
  *  - Clauses that must be *conspicuous* to be enforceable (arbitration,

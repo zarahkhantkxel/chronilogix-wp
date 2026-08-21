@@ -30,8 +30,8 @@ const CAROUSEL = [
    already carries the data-handling promise — so the strip now links
    the two documents that actually exist. */
 const LEGAL_LINKS = [
-  { href: "/terms", label: "Terms" },
-  { href: "/privacy", label: "Privacy" },
+  { href: "/terms-and-conditions", label: "Terms" },
+  { href: "/privacy-policy", label: "Privacy" },
 ];
 
 export function Footer() {
