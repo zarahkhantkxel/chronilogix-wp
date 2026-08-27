@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
@@ -13,11 +14,16 @@ import { DEMO_BOOKING_URL } from "@/site.config";
  * is empty or WordPress is down. Layout/structure/decorative glyphs unchanged.
  */
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("case-study-aetna", "/case-studies/aetna", {
   title: "Aetna Case Study · Chronilogix",
   description:
     "How Aetna transformed member engagement with Motivational Interviewing. A partnership with MI pioneer Dr. Kenneth Resnicow lifted engagement 53.1% → 76% and cut program dropouts by more than half — the same method that powers Chronilogix.",
-};
+});
+}
 
 type Content = ReturnType<typeof buildContent>;
 

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
 import { HashLanding } from "@/components/HashLanding";
@@ -21,11 +22,16 @@ const ABOUT_TOC: TocItem[] = [
   { id: "get-in-touch", label: "Get in touch" },
 ];
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("about", "/about", {
   title: "About · Chronilogix",
   description:
     "Chronilogix is the AI native behavioral health and chronic care coaching platform built on Dr. Ken Resnicow's three decades of Motivational Interviewing research. Meet the team and the mission behind the work.",
-};
+});
+}
 
 // ACF returns `false` (not undefined) for an empty repeater, so guard every
 // collection before mapping.
