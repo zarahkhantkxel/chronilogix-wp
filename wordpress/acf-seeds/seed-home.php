@@ -23,7 +23,7 @@ chr_fields($home, [
     'hero_subtext_lead'       => 'Built on the life’s work of world renowned',
     'hero_subtext_name'       => 'Dr. Ken Resnicow',
     'hero_subtext_emphasis'   => 'Motivational Interviewing',
-    'hero_cta_label'          => 'Book A Demo',
+    'hero_cta_label'          => 'Book a Demo',
     'hero_cta_url'            => '#book-a-demo',
     'hero_bg_image'           => chr_media('bg-low-saturation.webp'),
     'hero_phone_image'        => chr_media('new-mobile.svg'),
