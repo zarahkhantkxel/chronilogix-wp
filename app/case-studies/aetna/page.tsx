@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -158,6 +159,7 @@ export default async function AetnaCaseStudyPage() {
   return (
     <>
       <PageLoader />
+      <YoastSchema slug="case-study-aetna" path="/case-studies/aetna" />
       <Nav />
       <main className="flex flex-col">
         <div className="flex flex-col gap-2 p-2 md:gap-3 md:p-3">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
@@ -48,6 +49,7 @@ export default async function BrokersPage() {
   return (
     <>
       <PageLoader />
+      <YoastSchema slug="solutions-brokers" path="/solutions/brokers" />
       <Nav />
       <BrokersAudioProvider
         content={{
