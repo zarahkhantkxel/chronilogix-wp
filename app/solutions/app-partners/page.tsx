@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
@@ -51,6 +52,7 @@ export default async function AppPartnersPage() {
   return (
     <>
       <PageLoader />
+      <YoastSchema slug="solutions-app-partners" path="/solutions/app-partners" />
       <Nav />
       <main className="flex flex-col">
         {/* Single padded card system — same rhythm as /about and

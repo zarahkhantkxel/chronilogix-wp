@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -68,6 +69,7 @@ export default async function ProductPage() {
 
   return (
     <>
+      <YoastSchema slug="product" path="/product" />
       <Nav />
       <main className="flex flex-col">
         {/* Tier 1 — opening: rounded, gapped, matches the home shell.

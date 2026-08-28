@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -51,6 +52,7 @@ export default async function PrivacyPage() {
 
   return (
     <>
+      <YoastSchema slug="privacy" path="/privacy-policy" />
       <Nav />
       <main className="flex flex-col">
         {/* Padded card shell — same rhythm as FAQ, About, and Product. */}

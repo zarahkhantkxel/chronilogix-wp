@@ -22,8 +22,10 @@
  * route. Same reasoning for og_url.
  */
 import type { Metadata } from "next";
+import { siteConfig } from "@/site.config";
 
 const baseUrl = process.env.WORDPRESS_URL;
+const SITE_ORIGIN = siteConfig.site_domain;
 const CACHE_TTL = 3600; // 1 hour, matching lib/acf.ts and lib/wordpress.ts
 const USER_AGENT = "Next.js WordPress Client";
 
@@ -44,6 +46,7 @@ export type YoastHead = {
   og_image?: Array<{ url?: string; width?: number; height?: number }>;
   article_modified_time?: string;
   twitter_card?: string;
+  schema?: { "@context"?: string; "@graph"?: unknown[] };
 };
 
 type RestType = "pages" | "posts";
@@ -158,4 +161,80 @@ export async function yoastMetadata(
   type: RestType = "pages",
 ): Promise<Metadata> {
   return toMetadata(await getYoastHead(slug, type), fallback, path);
+}
+
+/**
+ * Yoast's schema graph, with every reference to the WordPress host rewritten to
+ * the public site.
+ *
+ * Yoast builds the JSON-LD from the WordPress site URL, so a page's graph
+ * arrives describing the headless backend:
+ *
+ *   WebPage        https://nextwp.chronilogix.com/home/
+ *   BreadcrumbList https://nextwp.chronilogix.com/home/#breadcrumb
+ *   WebSite        https://nextwp.chronilogix.com/#website
+ *   Organization   https://nextwp.chronilogix.com/#organization
+ *
+ * Emitting that verbatim would publish structured data declaring the CMS host
+ * as the site, the organization and the canonical page — the same failure as
+ * Yoast's `canonical` field, but worse, because @id values are the identifiers
+ * search engines use to tie the graph together. Every string in the graph is
+ * therefore rewritten from the WordPress origin to site_domain, which leaves
+ * paths and fragments (#website, #organization) intact.
+ */
+function rewriteHost<T>(value: T, from: string, to: string): T {
+  if (typeof value === "string") {
+    return (value.startsWith(from) ? to + value.slice(from.length) : value) as T;
+  }
+  if (Array.isArray(value)) {
+    return value.map((v) => rewriteHost(v, from, to)) as T;
+  }
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [k, v] of Object.entries(value)) out[k] = rewriteHost(v, from, to);
+    return out as T;
+  }
+  return value;
+}
+
+export type SchemaGraph = { "@context"?: string; "@graph"?: unknown[] };
+
+/**
+ * Fetch the Yoast schema graph for a slug, host-corrected and ready to render.
+ * Returns null when Yoast, WordPress or the page is unavailable — callers then
+ * emit no JSON-LD, which is the correct degradation: absent structured data is
+ * fine, wrong structured data is not.
+ */
+export async function getYoastSchema(
+  slug: string,
+  path: string,
+  type: RestType = "pages",
+): Promise<SchemaGraph | null> {
+  const head = await getYoastHead(slug, type);
+  const schema = (head as (YoastHead & { schema?: SchemaGraph }) | null)?.schema;
+  if (!schema?.["@graph"]?.length) return null;
+
+  const wpOrigin = baseUrl ? baseUrl.replace(/\/$/, "") : "";
+  const siteOrigin = SITE_ORIGIN.replace(/\/$/, "");
+  if (!wpOrigin) return schema;
+
+  // Two rewrites, and the order matters.
+  //
+  // First the page itself. Yoast addresses it as <wp>/<slug>/, which is the
+  // WordPress permalink, not the route it is published at here — the homepage
+  // is /home/ rather than /, and several routes deliberately differ from their
+  // slug (/privacy-policy vs privacy, /solutions/brokers vs solutions-brokers,
+  // /case-studies/aetna vs case-study-aetna). Rewriting only the host would
+  // leave @id and url pointing at URLs that 404, and contradicting the
+  // canonical this page already declares.
+  const wpPageUrl = `${wpOrigin}/${slug}/`;
+  const sitePageUrl =
+    siteOrigin + (path === "/" ? "" : path.startsWith("/") ? path : `/${path}`);
+
+  // Then whatever is left on the WordPress origin — the site-wide #website and
+  // #organization nodes, which have no per-page path.
+  const withPage = rewriteHost(schema, wpPageUrl, sitePageUrl);
+  return wpOrigin === siteOrigin
+    ? withPage
+    : rewriteHost(withPage, wpOrigin, siteOrigin);
 }

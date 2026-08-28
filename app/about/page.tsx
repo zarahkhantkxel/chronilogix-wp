@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
@@ -51,6 +52,7 @@ export default async function AboutPage() {
           and the visitor lands at the top. HashLanding waits for the layout to
           settle and puts them where they asked to be. Renders nothing. */}
       <HashLanding />
+      <YoastSchema slug="about" path="/about" />
       <Nav />
       <main className="flex flex-col">
         <div className="flex flex-col gap-2 p-2 md:gap-3 md:p-3">

@@ -1,4 +1,5 @@
 import { Nav } from "@/components/Nav";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
 import { SectionGuide } from "@/components/widget/SectionGuide";
@@ -42,6 +43,7 @@ export default async function HomePage() {
   return (
     <>
       <PageLoader />
+      <YoastSchema slug="home" path="/" />
       <Nav />
       <main className="flex flex-col">
         <div className="flex flex-col gap-2 p-2 md:gap-3 md:p-3">
