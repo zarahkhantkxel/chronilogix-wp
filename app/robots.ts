@@ -1,5 +1,6 @@
 import { MetadataRoute } from "next";
 import { siteConfig } from "@/site.config";
+import { BLOG_PUBLISHED } from "./sitemap";
 
 /**
  * robots.txt
@@ -45,6 +46,12 @@ export default function robots(): MetadataRoute.Robots {
           "/v4",
           "/product/v4",
           "/api/",
+          // Resources has not launched: its nav entry is hidden and nothing
+          // links to it, but the routes still resolve, so without this a
+          // crawler that finds them any other way could index the blog before
+          // it ships. Reads the same flag as the sitemap so the two cannot
+          // disagree about whether the section is public.
+          ...(BLOG_PUBLISHED ? [] : ["/resources", "/resources/"]),
         ],
       },
     ],
