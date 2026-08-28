@@ -30,6 +30,20 @@ import { siteConfig } from "@/site.config";
 
 const BASE = siteConfig.site_domain.replace(/\/$/, "");
 
+/**
+ * The Resources section is not public yet. Its nav entry is hidden (see
+ * NAV_LINKS in components/nav/NavClient.tsx, where RESOURCES_MENU is kept
+ * intact for exactly this reason) and nothing in the footer links to it, so
+ * neither the blog index nor its articles belong in the sitemap: submitting
+ * URLs a visitor cannot reach through the site invites them into search
+ * results ahead of launch.
+ *
+ * The routes still resolve, so this is a publishing decision rather than a
+ * technical one. Flip to true when Resources ships and both the index and
+ * every article return, no other edit needed — robots.ts reads the same flag.
+ */
+export const BLOG_PUBLISHED = false;
+
 type Entry = MetadataRoute.Sitemap[number];
 
 const page = (
@@ -61,9 +75,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // Proof.
     page("/case-studies/aetna", 0.7),
 
-    // Blog index changes whenever an article ships.
-    page("/resources/blog", 0.7, "weekly"),
-
     // Legal. Low priority but they should be indexable: people search for
     // them by name, and linking them from the footer without letting them be
     // found is worse than useless.
@@ -71,6 +82,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     page("/terms-and-conditions", 0.3, "yearly"),
   ];
 
+  // Articles are omitted entirely while BLOG_PUBLISHED is false — see the flag.
   // getAllPostsForSitemap rather than getBlogArticles: articles are WordPress
   // posts, and only this helper carries `modified`. BlogArticle exposes `date`
   // (published), so using it would have reported every article as freshly
@@ -78,16 +90,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // configured; the catch covers it being configured but unreachable, since a
   // sitemap that fails the build is worse than one missing its articles.
   let articleUrls: MetadataRoute.Sitemap = [];
-  try {
-    const posts = await getAllPostsForSitemap();
-    articleUrls = posts.map((post) => ({
-      url: `${BASE}/resources/blog/${post.slug}`,
-      lastModified: new Date(post.modified),
-      changeFrequency: "monthly" as const,
-      priority: 0.6,
-    }));
-  } catch {
-    articleUrls = [];
+  if (BLOG_PUBLISHED) {
+    staticUrls.push(page("/resources/blog", 0.7, "weekly"));
+    try {
+      const posts = await getAllPostsForSitemap();
+      articleUrls = posts.map((post) => ({
+        url: `${BASE}/resources/blog/${post.slug}`,
+        lastModified: new Date(post.modified),
+        changeFrequency: "monthly" as const,
+        priority: 0.6,
+      }));
+    } catch {
+      articleUrls = [];
+    }
   }
 
   return [...staticUrls, ...articleUrls];

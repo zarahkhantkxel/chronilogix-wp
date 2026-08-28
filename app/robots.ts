@@ -45,6 +45,19 @@ export default function robots(): MetadataRoute.Robots {
           "/v4",
           "/product/v4",
           "/api/",
+          // /resources is deliberately NOT disallowed while it is unlaunched,
+          // even though it is hidden. Those routes now serve
+          // `noindex, nofollow` (see app/resources/blog/page.tsx), and the two
+          // directives work against each other: a crawler told not to fetch a
+          // URL never reads the noindex on it. A URL discovered some other way
+          // — a shared link, an external mention — can then still be indexed
+          // as a bare URL, with no way to drop it back out.
+          //
+          // Disallow saves crawl budget on pages that are already out of the
+          // index. noindex is what removes them and keeps them out. The list
+          // above is the former case: /posts and /pages are duplicates of
+          // content indexed under its real URL, and the version routes are
+          // scratch. Resources is the latter.
         ],
       },
     ],
