@@ -1,4 +1,14 @@
 import type { Metadata } from "next";
+import { BLOG_PUBLISHED } from "@/app/sitemap";
+
+// Spread into every metadata return on this route. See the note in
+// app/resources/blog/page.tsx for why noindex rather than a robots Disallow:
+// the section is unlaunched, the routes still resolve, and noindex is the only
+// instruction that keeps them out of an index (and removes them if they are
+// already in one). Lifts automatically when BLOG_PUBLISHED flips.
+const NOINDEX_WHILE_UNLAUNCHED = BLOG_PUBLISHED
+  ? {}
+  : ({ robots: { index: false, follow: false } } satisfies Partial<Metadata>);
 import { notFound } from "next/navigation";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
@@ -23,11 +33,15 @@ export async function generateMetadata({
   const { slug } = await params;
   const result = await getBlogArticle(slug);
   if (!result) {
-    return { title: "Article not found · Chronilogix Blog" };
+    return {
+      title: "Article not found · Chronilogix Blog",
+      ...NOINDEX_WHILE_UNLAUNCHED,
+    };
   }
   return {
     title: `${result.article.title} · Chronilogix Blog`,
     description: result.article.dek || result.article.title,
+    ...NOINDEX_WHILE_UNLAUNCHED,
   };
 }
 
