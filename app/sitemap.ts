@@ -2,54 +2,93 @@ import { MetadataRoute } from "next";
 import { getAllPostsForSitemap } from "@/lib/wordpress";
 import { siteConfig } from "@/site.config";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const posts = await getAllPostsForSitemap();
+/**
+ * sitemap.xml
+ *
+ * This replaces the next-wp starter's version, which listed the starter's own
+ * routes (/posts, /posts/authors, /posts/categories, /posts/tags, /pages) and
+ * nothing this site actually publishes — no /about, no /product, no solutions
+ * pages, no legal pages. Every URL in it also pointed at next-wp.com, so the
+ * published sitemap described a different website entirely.
+ *
+ * Two rules for anything added here:
+ *
+ * 1. One URL per piece of content. Articles are reachable at BOTH
+ *    /resources/blog/<slug> and the starter's /posts/<slug>; the nav, footer
+ *    and every internal link use /resources/blog, so that is the canonical
+ *    form and the only one listed. Advertising both would ask search engines
+ *    to pick a canonical for us.
+ *
+ * 2. Only pages meant for the public. /v2, /v3, /v4 and /product/v4 are
+ *    version explorations that are routable but not linked from anywhere, and
+ *    /pages plus /posts* are starter scaffolding. They stay out here and are
+ *    disallowed in robots.ts.
+ *
+ * lastModified for articles comes from WordPress, so re-crawls follow real
+ * edits rather than deploy time.
+ */
 
+const BASE = siteConfig.site_domain.replace(/\/$/, "");
+
+type Entry = MetadataRoute.Sitemap[number];
+
+const page = (
+  path: string,
+  priority: number,
+  changeFrequency: Entry["changeFrequency"] = "monthly",
+): Entry => ({
+  url: `${BASE}${path}`,
+  lastModified: new Date(),
+  changeFrequency,
+  priority,
+});
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticUrls: MetadataRoute.Sitemap = [
-    {
-      url: `${siteConfig.site_domain}`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 1,
-    },
-    {
-      url: `${siteConfig.site_domain}/posts`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: `${siteConfig.site_domain}/pages`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${siteConfig.site_domain}/posts/authors`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${siteConfig.site_domain}/posts/categories`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
-    {
-      url: `${siteConfig.site_domain}/posts/tags`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.5,
-    },
+    page("", 1, "weekly"),
+
+    // Primary marketing surfaces.
+    page("/product", 0.9),
+    page("/about", 0.8),
+    page("/faq", 0.7),
+
+    // Audience pages — the paid-acquisition landing targets.
+    page("/solutions/brokers", 0.8),
+    page("/solutions/vendors", 0.8),
+    page("/solutions/app-partners", 0.8),
+    page("/partner-solutions", 0.8),
+
+    // Proof.
+    page("/case-studies/aetna", 0.7),
+
+    // Blog index changes whenever an article ships.
+    page("/resources/blog", 0.7, "weekly"),
+
+    // Legal. Low priority but they should be indexable: people search for
+    // them by name, and linking them from the footer without letting them be
+    // found is worse than useless.
+    page("/privacy-policy", 0.3, "yearly"),
+    page("/terms-and-conditions", 0.3, "yearly"),
   ];
 
-  const postUrls: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${siteConfig.site_domain}/posts/${post.slug}`,
-    lastModified: new Date(post.modified),
-    changeFrequency: "weekly",
-    priority: 0.5,
-  }));
+  // getAllPostsForSitemap rather than getBlogArticles: articles are WordPress
+  // posts, and only this helper carries `modified`. BlogArticle exposes `date`
+  // (published), so using it would have reported every article as freshly
+  // changed on each deploy. It already returns [] when WordPress is not
+  // configured; the catch covers it being configured but unreachable, since a
+  // sitemap that fails the build is worse than one missing its articles.
+  let articleUrls: MetadataRoute.Sitemap = [];
+  try {
+    const posts = await getAllPostsForSitemap();
+    articleUrls = posts.map((post) => ({
+      url: `${BASE}/resources/blog/${post.slug}`,
+      lastModified: new Date(post.modified),
+      changeFrequency: "monthly" as const,
+      priority: 0.6,
+    }));
+  } catch {
+    articleUrls = [];
+  }
 
-  return [...staticUrls, ...postUrls];
+  return [...staticUrls, ...articleUrls];
 }

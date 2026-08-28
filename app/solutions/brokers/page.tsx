@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
 import { BrokersHero } from "@/components/solutions/brokers/BrokersHero";
@@ -26,11 +27,16 @@ const BROKERS_TOC: TocItem[] = [
   { id: "book-a-demo", label: "Book a demo" },
 ];
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("solutions-brokers", "/solutions/brokers", {
   title: "Brokers · Chronilogix",
   description:
     "Help your self-funded clients reduce healthcare costs before claims escalate. Chronilogix gives benefits brokers a proactive, AI-powered coaching strategy that addresses chronic conditions, behavioral health, and delayed care at the root — not just another point solution.",
-};
+});
+}
 
 // ACF returns `false` (not undefined) for an empty repeater, so guard every
 // collection before mapping.

@@ -11,6 +11,22 @@ import { WhoWeServe } from "@/components/sections/WhoWeServe";
 import { AetnaProof } from "@/components/sections/CustomerStories";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { getPageAcf } from "@/lib/acf";
+import { yoastMetadata } from "@/lib/yoast";
+import type { Metadata } from "next";
+
+// Title and description come from Yoast's Search appearance panel on the "home"
+// page in wp-admin. Previously this route declared no metadata at all and
+// inherited the layout's, so editing the SEO title there changed nothing.
+// The fallback below is the layout's copy, kept so a blank Yoast field or an
+// unreachable WordPress leaves the homepage titled exactly as before.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("home", "/", {
+    title:
+      "Chronilogix — Clinical grade AI coaching for behavioral health and chronic care",
+    description:
+      "Chronilogix is the AI native behavioral health and chronic care coaching platform built on Dr. Ken Resnicow's 30 years of Motivational Interviewing research. Clinical grade outcomes at a fraction of the cost of live care.",
+  });
+}
 
 // Home (V1) — the current canonical design. Content is ACF-driven (WordPress
 // page slug "home"). Every section component falls back to its built-in copy
