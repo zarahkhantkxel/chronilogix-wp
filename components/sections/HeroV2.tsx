@@ -1,6 +1,9 @@
 "use client";
 
+import Image from "next/image";
+
 import { useEffect, useState } from "react";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 // V2 Hero — three-layer composition matching the 1920×1809 reference.
 //
@@ -172,12 +175,13 @@ export function HeroV2() {
                 coaching agents. 24/7
               </h1>
 
-              {/* TODO: Calendly URL */}
               <a
-                href="#book-a-demo"
+                href={DEMO_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group/herocta btn-primary mt-5 w-fit sm:mt-7 md:mt-8"
               >
-                Book A Demo
+                Book a Demo
                 <Arrow />
               </a>
             </div>
@@ -216,10 +220,9 @@ export function HeroV2() {
         className="relative z-0 w-full"
         style={{ height: "max(440px, 34vw)" }}
       >
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover object-bottom"
-          src="/hero-bg-enhanced.png"
+          src="/hero-bg-enhanced.webp"
           alt=""
           aria-hidden
           draggable={false}
@@ -230,6 +233,8 @@ export function HeroV2() {
             WebkitMaskImage:
               "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.65) 10%, #000 18%, #000 58%, rgba(0,0,0,0.78) 70%, rgba(0,0,0,0.5) 80%, rgba(0,0,0,0.25) 90%, rgba(0,0,0,0.08) 96%, transparent 100%)",
           }}
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
         />
       </div>
     </section>

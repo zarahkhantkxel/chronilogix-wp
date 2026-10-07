@@ -101,6 +101,13 @@ export function AboutTimeline({
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   return (
+    // `overflow-hidden` here stays. It is what keeps the warm gradient wash
+    // below inside the 28px radius (the page wraps every about-page section
+    // as a rounded card), so relaxing it would square off the corners and let
+    // the wash paint over its neighbours. The journey line does not need it
+    // relaxed: the line's clipping happens on the inner `overflow-x-auto`
+    // track, and the line only ever needs to reach this card's edge — which is
+    // itself already outside the padded content column — not the raw viewport.
     <section
       id="timeline"
       className="group/timeline relative overflow-hidden rounded-[28px]"
@@ -267,18 +274,56 @@ function HorizontalTimeline({
           touchAction: "pan-x",
           // Soft fade on BOTH edges of the track so the row feels continuous —
           // implies lineage extending past the visible window in both directions.
+          // This mask is a dissolve, not a truncation: it is anchored to the
+          // scrollport (not to the content), so it sits at the same two card
+          // edges at every scroll offset and always has live wave underneath
+          // it. That is the difference from the bug this section had — that
+          // line genuinely ended mid-content and the ending travelled with the
+          // scroll. Keep the fade narrow; widening it would start eating into
+          // the milestone copy as well as the line.
           maskImage:
             "linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%)",
           WebkitMaskImage:
             "linear-gradient(to right, transparent 0, #000 6%, #000 94%, transparent 100%)",
         }}
       >
-        <div className="relative flex select-none">
+        {/* `w-max` is load-bearing, not cosmetic — it is the fix for the
+            truncated journey line, so do not drop it.
+
+            WHY: this row is a *block-level* flex box inside the
+            `overflow-x-auto` track above, so with no explicit width its used
+            width resolves to the width of the SCROLLPORT (one card width,
+            roughly one viewport) while its `shrink-0` children happily
+            overflow well past that. The wave band below is absolutely
+            positioned against this row, which means its `inset-x-0` was
+            resolving against that one-viewport box rather than against the
+            full scroll track (~3.2k px: two fillers + seven 400px columns).
+            The dotted line therefore died a single viewport in — around the
+            "2023 / Chronilogix founded" column — and every milestone after it
+            had bare background above it, so the timeline read as broken.
+
+            Sizing the row to `max-content` makes its box exactly as wide as
+            the track it scrolls, so `inset-x-0` now measures the whole
+            journey. The columns are all `shrink-0` with fixed widths, so
+            max-content is identical to the width they already occupied —
+            nothing about the milestone layout moves. */}
+        <div className="relative flex w-max select-none">
           {/* Continuous wave band — one element spans the entire row width,
               sitting behind the columns. The columns layer on top and
               contribute only the markers at their left edges; the wave is
               unbroken end-to-end so the journey reads as a single, living
-              current rather than a chain of segments. */}
+              current rather than a chain of segments.
+
+              Because the row above is `w-max`, this band is now as wide as the
+              full scroll track, which is what makes it bleed rather than stop:
+              at scrollLeft 0 it runs off the right edge of the card, at max
+              scroll it runs off the left, and at every position between it
+              fills the entire visible width. There is no scroll offset at
+              which a line end is visible inside the card. The leading and
+              trailing DottedFillers push the band past the first and last
+              milestone's content, and the track's edge mask dissolves it into
+              the card's rounded edge — so both ends read as "continues outside
+              the container" instead of "terminates here". */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-x-0 top-0 h-[44px] md:h-[52px]"
@@ -379,6 +424,13 @@ function WaveBand() {
  * Width-only spacer for the leading/trailing edges. The continuous wave
  * layer above is the visual; this just reserves horizontal space so the
  * lineage feels like it extends past the visible window in both directions.
+ *
+ * These two fillers are what give the line its bleed. Because the wave band
+ * spans the row's full `max-content` width, the filler at each end is track
+ * that carries the line but no milestone content — so when the visitor drags
+ * to either extreme, the last thing at the card edge is still line, never the
+ * end of a milestone column. Widening these lengthens the run-off; they must
+ * not be removed or the line would stop flush against the outer milestones.
  */
 function DottedFiller() {
   return (

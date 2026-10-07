@@ -1,17 +1,23 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { FaqHero } from "@/components/faq/FaqHero";
 import { FaqList } from "@/components/faq/FaqList";
 import { FaqClosingCta } from "@/components/faq/FaqClosingCta";
 import { getPageAcf } from "@/lib/acf";
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("faq", "/faq", {
   title: "FAQ · Chronilogix",
   description:
     "Plain-language answers to the questions we hear most about Chronilogix — how it works, how care stays safe, how deployment works, and what makes the science defensible.",
-};
+});
+}
 
 // ACF returns `false` (not undefined) for an empty repeater, so guard before mapping.
 const arr = (x: unknown): any[] => (Array.isArray(x) ? x : []);
@@ -22,6 +28,7 @@ export default async function FaqPage() {
 
   return (
     <>
+      <YoastSchema slug="faq" path="/faq" />
       <Nav />
       <main className="flex flex-col">
         {/* Padded card shell — same rhythm as About and Product. Each
@@ -59,7 +66,6 @@ export default async function FaqPage() {
           />
         </div>
       </main>
-      <CoachLauncher />
       <Footer />
     </>
   );

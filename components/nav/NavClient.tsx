@@ -14,6 +14,7 @@ import {
   type PartnerLogo,
 } from "@/components/partnerSolutions/partnerData";
 import { PartnerLogoChip } from "@/components/partnerSolutions/PartnerLogoChip";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 type MenuItem = {
   href: string;
@@ -218,6 +219,8 @@ const CaseStudyIcon = (
   </Icon>
 );
 
+// Kept intact while the Resources nav entry is hidden (see NAV_LINKS below),
+// so restoring the entry is a one-line change.
 const RESOURCES_MENU: MegaMenu = {
   groups: [
     {
@@ -260,7 +263,8 @@ const NAV_LINKS: NavLink[] = [
   { href: "/solutions", label: "Solutions", personaMenu: true, icon: SolutionsIcon },
   { href: "/about", label: "About" },
   { href: "/faq", label: "FAQ" },
-  { href: "/resources", label: "Resources", megaMenu: RESOURCES_MENU },
+  // Resources is hidden from the navbar for now. Restore by re-adding:
+  // { href: "/resources", label: "Resources", megaMenu: RESOURCES_MENU },
 ];
 
 export function NavClient({
@@ -498,9 +502,10 @@ export function NavClient({
 
         {/* Right: CTA (desktop) + hamburger (mobile) */}
         <div className="flex items-center justify-self-end gap-3">
-          {/* TODO: Calendly URL */}
           <a
-            href="#book-a-demo"
+            href={DEMO_BOOKING_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="hidden btn-primary lg:inline-flex"
           >
             Book a Demo
@@ -659,7 +664,9 @@ export function NavClient({
                   );
                 })}
                 <a
-                  href="#book-a-demo"
+                  href={DEMO_BOOKING_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   onClick={() => setOpen(false)}
                   className="btn-primary mt-4 self-start"
                 >

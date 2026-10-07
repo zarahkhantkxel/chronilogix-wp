@@ -1,5 +1,7 @@
 "use client";
 
+import { DEMO_BOOKING_URL } from "@/site.config";
+
 /**
  * FAQ hero — the first block on /faq.
  *
@@ -31,7 +33,9 @@ const DEFAULTS = {
       how care stays safe, how deployment works, and what makes the
       science defensible. If your question isn&rsquo;t here,{" "}
       <a
-        href="#book-a-demo"
+        href={DEMO_BOOKING_URL}
+        target="_blank"
+        rel="noopener noreferrer"
         className="underline decoration-brand-500/40 decoration-1 underline-offset-[3px] transition-colors hover:text-brand-700 hover:decoration-brand-600"
       >
         book a demo

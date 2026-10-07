@@ -1,8 +1,8 @@
 import { Nav } from "@/components/Nav";
+import { YoastSchema } from "@/components/seo/YoastSchema";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
 import { SectionGuide } from "@/components/widget/SectionGuide";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { HeroV5 } from "@/components/sections/HeroV5";
 import { StatementV5 } from "@/components/sections/StatementV5";
 import { MIExplainer } from "@/components/sections/MIExplainer";
@@ -12,6 +12,22 @@ import { WhoWeServe } from "@/components/sections/WhoWeServe";
 import { AetnaProof } from "@/components/sections/CustomerStories";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { getPageAcf } from "@/lib/acf";
+import { yoastMetadata } from "@/lib/yoast";
+import type { Metadata } from "next";
+
+// Title and description come from Yoast's Search appearance panel on the "home"
+// page in wp-admin. Previously this route declared no metadata at all and
+// inherited the layout's, so editing the SEO title there changed nothing.
+// The fallback below is the layout's copy, kept so a blank Yoast field or an
+// unreachable WordPress leaves the homepage titled exactly as before.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("home", "/", {
+    title:
+      "Chronilogix — Clinical grade AI coaching for behavioral health and chronic care",
+    description:
+      "Chronilogix is the AI native behavioral health and chronic care coaching platform built on Dr. Ken Resnicow's 30 years of Motivational Interviewing research. Clinical grade outcomes at a fraction of the cost of live care.",
+  });
+}
 
 // Home (V1) — the current canonical design. Content is ACF-driven (WordPress
 // page slug "home"). Every section component falls back to its built-in copy
@@ -27,6 +43,7 @@ export default async function HomePage() {
   return (
     <>
       <PageLoader />
+      <YoastSchema slug="home" path="/" />
       <Nav />
       <main className="flex flex-col">
         <div className="flex flex-col gap-2 p-2 md:gap-3 md:p-3">
@@ -43,7 +60,6 @@ export default async function HomePage() {
                 subtextEmphasis: s.hero_subtext_emphasis,
                 ctaLabel: s.hero_cta_label,
                 ctaUrl: s.hero_cta_url,
-                bgImage: s.hero_bg_image,
                 phoneImage: s.hero_phone_image,
                 avatarImage: s.hero_avatar_image,
                 stats: arr(s.hero_stats).map((r: any) => ({
@@ -174,8 +190,6 @@ export default async function HomePage() {
                 measure: r.measure,
                 clause: r.clause,
                 source: r.source,
-                caseStudyHref: r.case_study_href,
-                caseStudyLabel: r.case_study_label,
               })),
             }}
           />
@@ -262,7 +276,6 @@ export default async function HomePage() {
 
       <SectionGuide />
 
-      <CoachLauncher />
     </>
   );
 }

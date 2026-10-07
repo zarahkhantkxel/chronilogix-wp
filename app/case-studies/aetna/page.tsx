@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { PageLoader } from "@/components/PageLoader";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { getPageAcf } from "@/lib/acf";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 /**
  * Aetna case study — /case-studies/aetna
@@ -13,11 +15,16 @@ import { getPageAcf } from "@/lib/acf";
  * is empty or WordPress is down. Layout/structure/decorative glyphs unchanged.
  */
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("case-study-aetna", "/case-studies/aetna", {
   title: "Aetna Case Study · Chronilogix",
   description:
     "How Aetna transformed member engagement with Motivational Interviewing. A partnership with MI pioneer Dr. Kenneth Resnicow lifted engagement 53.1% → 76% and cut program dropouts by more than half — the same method that powers Chronilogix.",
-};
+});
+}
 
 type Content = ReturnType<typeof buildContent>;
 
@@ -40,7 +47,7 @@ const DEFAULTS = {
   hero_body:
     "A breakthrough partnership with MI pioneer Dr. Kenneth Resnicow reshaped how Aetna communicates with members — shifting from scripted calls to meaningful, human-centered conversations.",
   hero_primary_label: "Book a Demo",
-  hero_primary_url: "#book-a-demo",
+  hero_primary_url: DEMO_BOOKING_URL,
   hero_secondary_label: "See the platform",
   hero_secondary_url: "/product",
   outcomes_label: "What changed, in numbers",
@@ -67,8 +74,8 @@ const DEFAULTS = {
   conv_mi_label: "With MI",
   conv_mi_text:
     "That took honesty — thank you. What’s made taking them feel hard lately?",
-  conv_bg: "/card-1-bg.jpg",
-  bio_image: "/ken-thumbnail.png",
+  conv_bg: "/card-1-bg.webp",
+  bio_image: "/ken-thumbnail.webp",
   bio_role: "Chief Science Officer, Chronilogix",
   bio_name: "Dr. Kenneth Resnicow",
   bio_body:
@@ -88,7 +95,7 @@ const DEFAULTS = {
   bridge_body:
     "We’ve translated Dr. Resnicow’s thirty years of Motivational Interviewing research into the AI that powers every Chronilogix conversation — so every member gets the same evidence-based coaching, 24/7, at a fraction of the cost of live care.",
   bridge_primary_label: "Book a Demo",
-  bridge_primary_url: "#book-a-demo",
+  bridge_primary_url: DEMO_BOOKING_URL,
   bridge_secondary_label: "See How Chronilogix Works",
   bridge_secondary_url: "/product",
 };
@@ -152,6 +159,7 @@ export default async function AetnaCaseStudyPage() {
   return (
     <>
       <PageLoader />
+      <YoastSchema slug="case-study-aetna" path="/case-studies/aetna" />
       <Nav />
       <main className="flex flex-col">
         <div className="flex flex-col gap-2 p-2 md:gap-3 md:p-3">
@@ -167,7 +175,6 @@ export default async function AetnaCaseStudyPage() {
       <Footer />
 
       {/* Site-wide "Questions?" widget per CLAUDE.md. */}
-      <CoachLauncher />
     </>
   );
 }
@@ -205,7 +212,9 @@ function Hero({ c }: { c: Content }) {
             alt={c.hero_logo_alt}
             className="mx-auto mt-6 h-9 w-auto md:h-10"
             draggable={false}
-          />
+          loading="lazy"
+          decoding="async"
+        />
 
           <h1
             id="aetna-hero-label"
@@ -235,7 +244,7 @@ function Hero({ c }: { c: Content }) {
           </dl>
 
           <div className="mt-10 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
-            <a href={c.hero_primary_url} className="group/cta btn-primary">
+            <a href={c.hero_primary_url} target="_blank" rel="noopener noreferrer" className="group/cta btn-primary">
               {c.hero_primary_label}
               <Arrow />
             </a>
@@ -387,7 +396,9 @@ function Solution({ c }: { c: Content }) {
               alt={c.bio_name}
               className="h-24 w-24 shrink-0 rounded-full object-cover object-top ring-1 ring-ink/10"
               draggable={false}
-            />
+          loading="lazy"
+          decoding="async"
+        />
             <div>
               <p className="text-[11px] font-medium uppercase tracking-[0.2em] text-brand-700">
                 {c.bio_role}
@@ -412,7 +423,9 @@ function ConversationFrame({ c }: { c: Content }) {
         src={c.conv_bg}
         alt=""
         className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-      />
+          loading="lazy"
+          decoding="async"
+        />
       <div className="absolute inset-0 bg-paper/[0.72]" />
 
       <div className="relative flex h-full flex-col justify-center gap-3.5 p-7 md:p-10">
@@ -662,7 +675,7 @@ function BridgeToChronilogix({ c }: { c: Content }) {
             {c.bridge_body}
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-            <a href={c.bridge_primary_url} className="group/cta btn-primary">
+            <a href={c.bridge_primary_url} target="_blank" rel="noopener noreferrer" className="group/cta btn-primary">
               {c.bridge_primary_label}
               <Arrow />
             </a>

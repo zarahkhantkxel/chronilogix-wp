@@ -210,7 +210,6 @@ describe("buildPartnerToc", () => {
       { id: null, label: "Overview" },
       { id: "ps-zenn-label", label: "ZENN + Balance for Life" },
       { id: "ps-medimart-label", label: "Medimart + Chronilogix" },
-      { id: "ps-your-solution-label", label: "Your solution" },
       { id: "book-a-demo", label: "Book a demo" },
     ]);
   });
@@ -218,8 +217,19 @@ describe("buildPartnerToc", () => {
   it("still emits the head and tail with no bundles", () => {
     expect(buildPartnerToc([])).toEqual([
       { id: null, label: "Overview" },
-      { id: "ps-your-solution-label", label: "Your solution" },
       { id: "book-a-demo", label: "Book a demo" },
     ]);
+  });
+
+  // Regression guard for the rail bug: YourSolutionPanel is a single
+  // <section id="book-a-demo"> whose <h2> also carries
+  // ps-your-solution-label, and the rail resolves every id to its enclosing
+  // <section>. Emitting both ids collapsed two rows onto one target, so
+  // "Your solution" could never activate while still consuming a rail slice
+  // and a slot in the "n / total" counter.
+  it("emits one row for the closing panel, not one per anchor", () => {
+    const ids = buildPartnerToc([]).map((t) => t.id);
+    expect(ids).not.toContain("ps-your-solution-label");
+    expect(ids.filter((id) => id === "book-a-demo")).toHaveLength(1);
   });
 });

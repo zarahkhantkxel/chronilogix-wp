@@ -201,7 +201,9 @@ function AvatarAndChat() {
             alt="Roni, diabetes and chronic care coach."
             className="h-full w-full object-cover"
             draggable={false}
-          />
+          loading="lazy"
+          decoding="async"
+        />
         </div>
       </div>
 

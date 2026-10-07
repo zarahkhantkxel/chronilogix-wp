@@ -23,9 +23,9 @@ chr_fields($home, [
     'hero_subtext_lead'       => 'Built on the life’s work of world renowned',
     'hero_subtext_name'       => 'Dr. Ken Resnicow',
     'hero_subtext_emphasis'   => 'Motivational Interviewing',
-    'hero_cta_label'          => 'Book A Demo',
+    'hero_cta_label'          => 'Book a Demo',
     'hero_cta_url'            => '#book-a-demo',
-    'hero_bg_image'           => chr_media('bg-low-saturation.png'),
+    'hero_bg_image'           => chr_media('bg-low-saturation.webp'),
     'hero_phone_image'        => chr_media('new-mobile.svg'),
     'hero_avatar_image'       => chr_media('millie.png'),
 ]);
@@ -47,8 +47,8 @@ chr_fields($home, [
     'statement_line2'     => 'Motivational Interviewing is designed to change people’s behaviours.',
     'statement_cta_label' => 'Read the full white paper',
     'statement_cta_url'   => '#motivational-interviewing',
-    'statement_bg_full'   => chr_media('statement-bg.png'),
-    'statement_bg_low'    => chr_media('statement-bg-low.png'),
+    'statement_bg_full'   => chr_media('statement-bg.webp'),
+    'statement_bg_low'    => chr_media('statement-bg-low.webp'),
 ]);
 
 // ── MI Explainer ─────────────────────────────────────────────────────────────
@@ -73,12 +73,16 @@ chr_fields($home, [
     'mi_science_heading_muted'  => 'behind our AI.',
     'mi_science_body'           => 'At the heart of our platform is not just technology. It is 30 years of global experience and research from Dr. Ken Resnicow, one of the world’s foremost experts in Motivational Interviewing and Cultural Tailoring. He has spent decades guiding patients across diverse backgrounds, conditions, and cultures toward real, lasting change.',
     'mi_science_cta_label'      => 'About Dr. Resnicow',
-    'mi_science_cta_url'        => '/about',
+    // Deep-links to his section, not the top of /about — the team grid sits
+    // above it, so the visitor would have to hunt for him. AboutScience owns
+    // the #science anchor and its scroll-mt; HashLanding re-aligns once the
+    // image-heavy grid above has settled. Matches the upstream design.
+    'mi_science_cta_url'        => '/about#science',
     'mi_video_src'              => '/video/ken-resnicow-60s.mp4',
     'mi_video_role'             => 'Chief Science Officer',
     'mi_video_name'             => 'Dr. Ken Resnicow',
 ]);
-update_field('mi_video_poster', chr_media('ken-thumbnail.png'), $home);
+update_field('mi_video_poster', chr_media('ken-thumbnail.webp'), $home);
 update_field('mi_avoids', [
     [ 'text' => 'Making the setback seem small' ],
     [ 'text' => 'Adding blame or pressure' ],
@@ -136,7 +140,7 @@ chr_fields($home, [
     'problem_popup_eyebrow'  => 'The problem, in detail',
     'problem_popup_heading'  => 'Where care breaks down between visits.',
 ]);
-update_field('problem_image', chr_media('problem-portrait.png'), $home);
+update_field('problem_image', chr_media('problem-portrait.webp'), $home);
 update_field('problem_observations', [
     [ 'text' => 'The costliest claims almost always begin as small, unaddressed risks between visits.' ],
     [ 'text' => 'The moments that matter most arrive off hours: shift workers and first responders need support at 2 AM, not 2 PM.' ],
@@ -171,8 +175,8 @@ chr_fields($home, [
     'outcome_gallery_subhead' => '(Between visits. After discharge. At 11 PM.)',
 ]);
 update_field('outcome_cards', [
-    [ 'src' => chr_media('for-employees.png'), 'alt' => 'A quiet, open frame, the kind of moment between scheduled care.', 'label' => "The moments care can't schedule for", 'body' => "11 PM stress eating. Anxiety at midnight. The skipped evening dose. Chronilogix is there when the appointment isn't." ],
-    [ 'src' => chr_media('for-universities.png'), 'alt' => 'A still frame from the long stretch after an appointment ends.', 'label' => 'The space after the appointment', 'body' => 'After discharge, after the session, after motivation slips. Continuous reinforcement that keeps people from quietly falling through.' ],
+    [ 'src' => chr_media('for-employees.webp'), 'alt' => 'A quiet, open frame, the kind of moment between scheduled care.', 'label' => "The moments care can't schedule for", 'body' => "11 PM stress eating. Anxiety at midnight. The skipped evening dose. Chronilogix is there when the appointment isn't." ],
+    [ 'src' => chr_media('for-universities.webp'), 'alt' => 'A still frame from the long stretch after an appointment ends.', 'label' => 'The space after the appointment', 'body' => 'After discharge, after the session, after motivation slips. Continuous reinforcement that keeps people from quietly falling through.' ],
 ], $home);
 
 // ── Who We Serve ─────────────────────────────────────────────────────────────
@@ -185,7 +189,7 @@ chr_fields($home, [
     'serve_cta_label'     => 'Talk to our team',
     'serve_cta_url'       => '#book-a-demo',
     'serve_portrait_alt'  => 'Two people in unhurried conversation in a warm, light-filled space.',
-    'serve_portrait_image'=> chr_media('who-we-serve.png'),
+    'serve_portrait_image'=> chr_media('who-we-serve.webp'),
 ]);
 update_field('serve_personas', [
     [
@@ -270,7 +274,6 @@ update_field('stories_proofs', [
         'measure' => 'member engagement',
         'clause' => 'after Aetna’s care teams retrained in Dr. Resnicow’s method — dropouts cut by more than half.',
         'source' => 'Source · Aetna Care Management · post-MI integration',
-        'case_study_href' => '/case-studies/aetna', 'case_study_label' => 'Read the Aetna case study',
     ],
     [
         'logo' => chr_media('us-dpp-logo.png'), 'logo_alt' => 'Centers for Disease Control and Prevention',
@@ -278,7 +281,6 @@ update_field('stories_proofs', [
         'measure' => 'fewer new Type 2 diabetes cases',
         'clause' => 'when lifestyle support continues between appointments — the gap Chronilogix covers.',
         'source' => 'Source · US Diabetes Prevention Program · CDC and NIH',
-        'case_study_href' => '', 'case_study_label' => '',
     ],
 ], $home);
 

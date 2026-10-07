@@ -95,7 +95,9 @@ export default async function Page({
                 className="w-full h-full object-cover"
                 src={featuredMedia.source_url}
                 alt={post.title.rendered}
-              />
+          loading="lazy"
+          decoding="async"
+        />
             </div>
           )}
         </Prose>

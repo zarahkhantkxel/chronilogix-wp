@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 import { useReveal } from "@/components/hooks/useReveal";
 
 /**
@@ -154,13 +156,14 @@ export function VendorsAfterDelivery({
           <div className="reveal-row order-first overflow-hidden rounded-[24px] bg-white p-8 shadow-[0_30px_70px_-24px_rgba(15,20,25,0.35)] md:p-10 lg:order-none lg:-my-8 lg:z-10 [transition-delay:200ms] relative">
             {/* Very subtle Card 3 background — a faint warm blush behind the
                 copy. A white scrim keeps the text fully legible. */}
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src="/card-3-bg.jpg"
               alt=""
               aria-hidden
               className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover opacity-[0.10]"
-            />
+          fill
+          sizes="(max-width: 768px) 100vw, 1280px"
+        />
             <div
               aria-hidden
               className="pointer-events-none absolute inset-0"

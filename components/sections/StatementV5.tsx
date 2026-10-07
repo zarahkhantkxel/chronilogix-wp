@@ -61,8 +61,8 @@ const DEFAULTS = {
     "Motivational Interviewing is designed to change people’s behaviours.",
   ctaLabel: "Read the full white paper",
   ctaUrl: "#motivational-interviewing",
-  bgFull: "/statement-bg.png",
-  bgLow: "/statement-bg-low.png",
+  bgFull: "/statement-bg.webp",
+  bgLow: "/statement-bg-low.webp",
 } satisfies Required<StatementV5Content>;
 
 export function StatementV5({ content }: { content?: StatementV5Content }) {

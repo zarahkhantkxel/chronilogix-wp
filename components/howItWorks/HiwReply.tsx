@@ -59,7 +59,7 @@ const DEFAULTS = {
     { label: "MI technique", value: "Reflect what she noticed, then ask" },
     { label: "Holds back", value: "Direct advice, a checklist, a fix" },
   ],
-  mockupImage: "/hand-tilted-mockup.png",
+  mockupImage: "/hand-tilted-mockup.webp",
   mockupAlt:
     "Chronilogix on a member's phone showing daily greeting, upcoming Roni session, goals in flight",
 } satisfies Required<HiwReplyContent>;
@@ -261,7 +261,9 @@ function DissectionColumn({
                 style={{
                   boxShadow: "0 0 0 1px rgba(249, 144, 77, 0.30)",
                 }}
-              />
+          loading="lazy"
+          decoding="async"
+        />
               <span className="text-[12px] font-medium text-ink-soft">
                 {c.coachName}
               </span>
@@ -485,6 +487,8 @@ function MemberViewColumn({
             animationPlayState: playState,
             opacity: 0,
           }}
+          loading="lazy"
+          decoding="async"
         />
       </div>
     </div>

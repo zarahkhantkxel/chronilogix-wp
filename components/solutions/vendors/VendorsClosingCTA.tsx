@@ -1,5 +1,7 @@
 "use client";
 
+import { DEMO_BOOKING_URL } from "@/site.config";
+
 /**
  * VendorsClosingCTA — the sign-off (Final CTA).
  *
@@ -15,10 +17,10 @@ const CARD_ASPECT = "3/4";
 const CARD_W = "w-[260px] md:w-[300px]";
 
 const DEFAULT_CAROUSEL = [
-  "/card-1-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-senior-portrait.png",
+  "/card-1-bg.webp",
+  "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
   "/card-3-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-family-portrait.png",
+  "/generated-images/chronilogix-soft-flower-family-portrait.webp",
 ];
 
 // Editable content (ACF-backed). Every field falls back to the original
@@ -41,7 +43,7 @@ const DEFAULTS = {
   headingEmph: "Without changing your product.",
   body: "Book a 30 minute demo. We’ll walk through a live coaching session, the clinical method behind it, and how it works alongside the product you already ship.",
   primaryLabel: "Book a Demo",
-  primaryUrl: "#book-a-demo",
+  primaryUrl: DEMO_BOOKING_URL,
   secondaryLabel: "Download the Whitepaper",
   secondaryUrl: "/chronilogix-mi-whitepaper.pdf",
 } satisfies Required<Omit<VendorsClosingCTAContent, "carousel">>;
@@ -99,7 +101,9 @@ export function VendorsClosingCTA({
                       alt=""
                       className="h-full w-full object-cover"
                       draggable={false}
-                    />
+          loading="lazy"
+          decoding="async"
+        />
                   </div>
                 </li>
               );
@@ -122,8 +126,7 @@ export function VendorsClosingCTA({
         </h2>
         <p className="mx-auto mt-7 max-w-[52ch] body-quiet">{c.body}</p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          {/* TODO: Calendly URL */}
-          <a href={c.primaryUrl} className="btn-primary">
+          <a href={c.primaryUrl} target="_blank" rel="noopener noreferrer" className="btn-primary">
             {c.primaryLabel}
           </a>
           <a

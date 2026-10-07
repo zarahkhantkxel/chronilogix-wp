@@ -11,9 +11,41 @@
  * missing, `getPageAcf` returns `null` and callers fall back to the built-in
  * default content, so the UI always renders (matching lib/wordpress.ts).
  */
+import { DEMO_BOOKING_URL } from "@/site.config";
+
 const baseUrl = process.env.WORDPRESS_URL;
 const CACHE_TTL = 3600; // 1 hour, matching lib/wordpress.ts
 const USER_AGENT = "Next.js WordPress Client";
+
+/**
+ * The in-page anchor that demo CTAs used before booking moved to a scheduling
+ * link. ACF still stores it in every `*_cta_url` / `*_primary_url` field, so it
+ * is rewritten on the way in rather than editing dozens of CMS fields by hand.
+ */
+const LEGACY_DEMO_ANCHOR = "#book-a-demo";
+
+/**
+ * Retarget the legacy demo anchor to the booking URL anywhere it appears in an
+ * ACF payload, including inside repeater arrays and nested groups. Any other
+ * value the CMS supplies is passed through untouched, so an editor can still
+ * point an individual CTA somewhere else.
+ */
+export function normalizeAcfDemoUrls<T>(value: T): T {
+  if (typeof value === "string") {
+    return (value === LEGACY_DEMO_ANCHOR ? DEMO_BOOKING_URL : value) as T;
+  }
+  if (Array.isArray(value)) {
+    return value.map((item) => normalizeAcfDemoUrls(item)) as T;
+  }
+  if (value && typeof value === "object") {
+    const out: Record<string, unknown> = {};
+    for (const [key, v] of Object.entries(value)) {
+      out[key] = normalizeAcfDemoUrls(v);
+    }
+    return out as T;
+  }
+  return value;
+}
 
 /**
  * Fetch the ACF field object for a published Page by slug.
@@ -41,7 +73,8 @@ export async function getPageAcf<T = Record<string, unknown>>(
     });
     if (!res.ok) return null;
     const pages = (await res.json()) as Array<{ acf?: T }>;
-    return pages?.[0]?.acf ?? null;
+    const acf = pages?.[0]?.acf;
+    return acf ? normalizeAcfDemoUrls(acf) : null;
   } catch {
     console.warn(`ACF fetch failed for page "${slug}"`);
     return null;

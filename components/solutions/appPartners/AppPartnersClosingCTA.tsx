@@ -1,6 +1,7 @@
 "use client";
 
 import { useReveal } from "@/components/hooks/useReveal";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 export type AppPartnersClosingCTAContent = {
   eyebrow?: string;
@@ -21,7 +22,7 @@ const DEFAULTS = {
   body:
     "Chronilogix is the clinical intelligence layer built to live inside other products. Bring Dr. Resnicow’s methodology to your users — without waiting a decade to build it yourself.",
   primaryLabel: "Explore the partnership",
-  primaryUrl: "#book-a-demo",
+  primaryUrl: DEMO_BOOKING_URL,
   secondaryLabel: "Download the whitepaper",
   secondaryUrl: "/chronilogix-mi-whitepaper.pdf",
   footer:
@@ -102,8 +103,7 @@ export function AppPartnersClosingCTA({
         </div>
 
         <div className="reveal-row mt-12 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4 [transition-delay:440ms]">
-          {/* TODO: Calendly URL */}
-          <a href={c.primaryUrl} className="group/pc btn-primary">
+          <a href={c.primaryUrl} target="_blank" rel="noopener noreferrer" className="group/pc btn-primary">
             {c.primaryLabel}
             <Arrow />
           </a>

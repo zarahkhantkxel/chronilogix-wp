@@ -4,11 +4,13 @@ import { useEffect, useState } from "react";
 
 // The loader stays mounted until web fonts are ready (so the hero headline
 // doesn't swap typefaces under the fade), with a soft minimum display so
-// cached loads don't flicker. It deliberately does NOT wait on images:
-// gating on them used to hold the overlay for megabytes of downloads and
-// competed with the page's own (optimized, prioritized) image requests.
+// cached loads don't flicker. It deliberately does NOT wait on images —
+// not even the hero backdrop: gating on them held the overlay for megabytes
+// of downloads and competed with the page's own (optimized, prioritized)
+// image requests. Anything below the fold has scroll time to load.
 const MIN_DISPLAY_MS = 650;
-const HARD_TIMEOUT_MS = 3000;
+// Ceiling for a slow connection, not a target.
+const HARD_TIMEOUT_MS = 2500;
 const SESSION_KEY = "chronilogix:loader-shown";
 
 export function PageLoader() {

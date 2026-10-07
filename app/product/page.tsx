@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { Footer } from "@/components/Footer";
 import { CoreCapabilities } from "@/components/sections/CoreCapabilities";
@@ -33,11 +35,16 @@ const PRODUCT_TOC: TocItem[] = [
   { id: "platform", label: "Platform" },
 ];
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("product", "/product", {
   title: "Product · Chronilogix",
   description:
     "Two coaches built on thirty years of Motivational Interviewing. Roni for chronic care, Millie for mental health. How Chronilogix turns Dr. Ken Resnicow's life's work into a 24/7 AI coaching platform.",
-};
+});
+}
 
 // ACF returns `false` (not undefined) for an empty repeater, so guard every
 // collection before mapping.
@@ -62,6 +69,7 @@ export default async function ProductPage() {
 
   return (
     <>
+      <YoastSchema slug="product" path="/product" />
       <Nav />
       <main className="flex flex-col">
         {/* Tier 1 — opening: rounded, gapped, matches the home shell.

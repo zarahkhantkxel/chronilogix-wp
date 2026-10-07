@@ -14,7 +14,8 @@
 // - Floating chapter nav (bottom-right) lets a visitor flip between
 //   siblings without closing
 // - Arrow keys flip siblings; ESC / X / backdrop close
-// - Body scroll locks while open; previous focus is restored on close
+// - Page scroll locks while open (via useScrollLock — the scroller here is
+//   <html>, not <body>); previous focus is restored on close
 // - Rendered via portal into document.body so it escapes any parent
 //   stacking context
 
@@ -25,6 +26,8 @@ import {
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
+
+import { useScrollLock } from "./hooks/useScrollLock";
 
 export type DetailModalItem = {
   id: string;
@@ -70,15 +73,12 @@ export function DetailModal({
     setMounted(true);
   }, []);
 
-  // Lock body scroll while open.
-  useEffect(() => {
-    if (!activeId) return;
-    const previous = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = previous;
-    };
-  }, [activeId]);
+  // Lock page scroll while open. This used to set `overflow: hidden` on
+  // <body>, which did nothing: the scrolling element on this site is
+  // <html>, so the page kept scrolling behind the overlay. useScrollLock
+  // locks the real scroller, compensates for the scrollbar gutter so the
+  // layout doesn't jump sideways, and preserves the reader's position.
+  useScrollLock(Boolean(activeId));
 
   // Focus management. On open, focus the close button so ESC and
   // arrow-key nav feel connected. On close, return focus to whichever

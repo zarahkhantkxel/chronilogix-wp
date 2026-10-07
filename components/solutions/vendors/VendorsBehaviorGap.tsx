@@ -125,7 +125,7 @@ const DEFAULTS = {
   headingLead: "The real barriers to adherence aren’t medical.",
   headingEmph: "They’re human.",
   body: "Chronilogix addresses the emotional, behavioral, and socio-economic barriers that cause drop-off, without relying on expensive, hard-to-scale clinical teams.",
-  image: "/behavior-gap-supplements.jpg",
+  image: "/behavior-gap-supplements.webp",
   imageAlt: "A person taking daily supplement capsules alongside breakfast.",
   captionLead: "We close the gap between",
   captionEmph: "prescription and progress.",

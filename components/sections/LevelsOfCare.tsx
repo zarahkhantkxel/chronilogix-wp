@@ -59,10 +59,10 @@ const LEVELS: Level[] = [
       "Bridges the typical 2 to 6 week wait for a human appointment",
       "Cost efficient access for virtually anyone",
     ],
-    visualBg: "/card-1-bg.jpg",
+    visualBg: "/card-1-bg.webp",
     Artifact: AvailabilityArtifact,
     image: {
-      src: "/generated-images/family-low-angle-chronilogix-aesthetic.png",
+      src: "/generated-images/family-low-angle-chronilogix-aesthetic.webp",
       alt: "A family from below, the people who fall through the cracks of traditional care, where Chronilogix steps in as the first line.",
     },
   },
@@ -76,10 +76,10 @@ const LEVELS: Level[] = [
       "Continuously collects information for the therapist so no progress is lost",
       "Delivers cost efficiency and scalability without sacrificing quality of care",
     ],
-    visualBg: "/pattern.png",
+    visualBg: "/pattern.webp",
     Artifact: BriefingArtifact,
     image: {
-      src: "/generated-images/caregiver-senior-chronilogix-aesthetic.png",
+      src: "/generated-images/caregiver-senior-chronilogix-aesthetic.webp",
       alt: "A caregiver beside an older adult, the human plus AI hybrid Chronilogix supports.",
     },
   },
@@ -97,7 +97,7 @@ const LEVELS: Level[] = [
     visualBg: "/card-3-bg.jpg",
     Artifact: ConsistencyArtifact,
     image: {
-      src: "/generated-images/home-phone-man-chronilogix-aesthetic.png",
+      src: "/generated-images/home-phone-man-chronilogix-aesthetic.webp",
       alt: "A man at home with his phone, the members who get better outcomes with a fully digital coach.",
     },
   },
@@ -162,7 +162,12 @@ export function LevelsOfCare({
           above separation is carried by Solution.tsx's wrapper. */}
       <div className="mt-6 flex flex-col md:mt-7">
         {LEVELS.map((level, i) => (
-          <LevelRow key={level.ordinal} level={level} index={i} />
+          <LevelRow
+            key={level.ordinal}
+            level={level}
+            index={i}
+            isLast={i === LEVELS.length - 1}
+          />
         ))}
       </div>
 
@@ -180,7 +185,15 @@ export function LevelsOfCare({
   );
 }
 
-function LevelRow({ level, index }: { level: Level; index: number }) {
+function LevelRow({
+  level,
+  index,
+  isLast,
+}: {
+  level: Level;
+  index: number;
+  isLast: boolean;
+}) {
   const { ref, inView } = useInView<HTMLElement>(0.15);
   const { Artifact } = level;
   // Alternate image/text placement on odd rows so the row cadence
@@ -216,7 +229,7 @@ function LevelRow({ level, index }: { level: Level; index: number }) {
       {index > 0 && (
         <div
           aria-hidden
-          className="pointer-events-none absolute inset-x-0 -top-40 hidden h-40 md:block md:-top-80 md:h-80"
+          className="pointer-events-none absolute inset-x-0 -top-40 hidden h-40 md:block md:-top-40 md:h-40"
           style={{
             // Symmetric smoothstep ramp (eases in AND out) over a taller
             // veil so the previous row dissolves evenly across the whole
@@ -235,8 +248,14 @@ function LevelRow({ level, index }: { level: Level; index: number }) {
           on the same paper-warm background. The fog veil above carries
           the layering transition so the three rows still read as one
           continuous paper surface as they stack. */}
+      {/* Rows that get stacked over (all but the last) carry extra bottom
+          padding so their content clears the next row's incoming fog veil
+          (md:h-40 above) — the whole row reads at rest, and the veil only
+          dissolves empty paper during the scroll-stack transition. */}
       <div
-        className="relative bg-paper-warm pb-8 pt-10 md:pb-10 md:pt-[4.5rem]"
+        className={`relative bg-paper-warm pb-8 pt-10 md:pt-[4.5rem] ${
+          isLast ? "md:pb-10" : "md:pb-40"
+        }`}
       >
         {/* Two-column layout: image in one column, text (header + lead
             + bullets) in the other. The header now sits at the top of
@@ -311,7 +330,9 @@ function LevelImage({
         sizes="(min-width: 1024px) 460px, (min-width: 768px) 420px, 360px"
         className="object-cover"
         draggable={false}
-      />
+          loading="lazy"
+          decoding="async"
+        />
     </div>
   );
 }

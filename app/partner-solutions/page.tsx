@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
 import { Footer } from "@/components/Footer";
-import { CoachLauncher } from "@/components/CoachLauncher";
 import { PartnerHero } from "@/components/partnerSolutions/PartnerHero";
 import { PartnerBundle } from "@/components/partnerSolutions/PartnerBundle";
 import { YourSolutionPanel } from "@/components/partnerSolutions/YourSolutionPanel";
@@ -14,11 +15,16 @@ import {
 } from "@/lib/partnerSolutions";
 import { PageNav } from "@/components/widget/pageNav";
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("partner-solutions", "/partner-solutions", {
   title: "Partner Solutions · Chronilogix",
   description:
     "Chronilogix doesn't replace your product — it makes it smarter, more engaging, and more effective through continuous AI coaching. See how industry leaders like Balance for Life, Medimart, and Hibiscus Health extend their solutions with Chronilogix.",
-};
+});
+}
 
 /**
  * /partner-solutions — the bundled-solutions showcase. Reframes the pitch
@@ -43,6 +49,7 @@ export default async function PartnerSolutionsPage() {
   return (
     <>
       <PageLoader />
+      <YoastSchema slug="partner-solutions" path="/partner-solutions" />
       <Nav />
       <main className="flex flex-col">
         {/* Single padded card system — same rhythm as /solutions/*. */}
@@ -90,7 +97,6 @@ export default async function PartnerSolutionsPage() {
       />
 
       {/* Site-wide "Questions?" widget per CLAUDE.md. */}
-      <CoachLauncher />
     </>
   );
 }

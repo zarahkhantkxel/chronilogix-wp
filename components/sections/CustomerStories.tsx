@@ -75,8 +75,6 @@ type Proof = {
   measure?: string;
   clause?: string;
   source?: string;
-  caseStudyHref?: string;
-  caseStudyLabel?: string;
 };
 
 export type AetnaProofContent = {
@@ -104,8 +102,6 @@ const DEFAULTS = {
       clause:
         "after Aetna’s care teams retrained in Dr. Resnicow’s method — dropouts cut by more than half.",
       source: "Source · Aetna Care Management · post-MI integration",
-      caseStudyHref: "/case-studies/aetna",
-      caseStudyLabel: "Read the Aetna case study",
     },
     {
       logo: "/us-dpp-logo.png",
@@ -235,16 +231,6 @@ function ProofStatement({ proof, index }: { proof: Proof; index: number }) {
         />
         {proof.source}
       </figcaption>
-
-      {proof.caseStudyHref ? (
-        <a
-          href={proof.caseStudyHref}
-          className="group/link mt-6 inline-flex items-center gap-2 text-sm font-medium text-ink transition-colors hover:text-brand-600 md:mt-7"
-        >
-          {proof.caseStudyLabel ?? "Read the Aetna case study"}
-          <Arrow />
-        </a>
-      ) : null}
     </figure>
   );
 }
@@ -291,7 +277,7 @@ function KenVideo() {
           near-square card that matches the MI dialogue panel's height. */}
       <video
         ref={videoRef}
-        poster="/ken-thumbnail.png"
+        poster="/ken-thumbnail.webp"
         src="/video/ken-resnicow-60s.mp4"
         playsInline
         preload="none"

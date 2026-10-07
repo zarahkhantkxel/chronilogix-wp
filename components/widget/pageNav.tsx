@@ -52,6 +52,11 @@ const CARD_WIDTH = 264;
 // Resolve a TOC id to the element the rail should observe and scroll to.
 // Climbs to the nearest <section> so a heading-level anchor still yields a
 // full-height target (accurate intersection ratios, sensible scroll stop).
+// Slack for the top/bottom edge tests. Sub-pixel scroll offsets and
+// zoomed viewports mean `scrollY` and `scrollHeight` rarely land on exact
+// integers, so an equality check would miss the page ends.
+const EDGE_EPSILON = 4;
+
 function resolveTarget(id: string): HTMLElement | null {
   const el = document.getElementById(id);
   if (!el) return null;
@@ -169,12 +174,29 @@ export function usePageNav(
   }, [revealed, revealId]);
 
   // Scroll-spy — track the section with the largest visible ratio, keyed
-  // back to its TOC id. Falls back to the first item when nothing is in view.
+  // back to its TOC id.
+  //
+  // The two page ends need explicit handling, because no section clears the
+  // ratio threshold at either of them. The bug this fixes: at the foot of
+  // the page the footer fills the viewport, the last section is long gone,
+  // so `best` came back empty, `activeId` was set to null, and `activeIndex`
+  // fell back to 0 — the rail jumped to "Overview, 1 / 8" while the reader
+  // sat at the very bottom. An empty result means "nothing to say", not
+  // "back to the top", so it must not clear the active row.
   useEffect(() => {
     const targets = items
       .map((t) => (t.id ? { id: t.id, el: resolveTarget(t.id) } : null))
       .filter((t): t is { id: string; el: HTMLElement } => Boolean(t?.el));
     if (targets.length === 0) return;
+
+    // Last row that actually resolves to a section — what the reader should
+    // be sitting on once the page bottoms out into the footer.
+    const lastId = targets[targets.length - 1].id;
+
+    const atTop = () => window.scrollY <= EDGE_EPSILON;
+    const atBottom = () =>
+      window.innerHeight + window.scrollY >=
+      document.documentElement.scrollHeight - EDGE_EPSILON;
 
     const elToId = new Map(targets.map((t) => [t.el, t.id]));
     const ratios = new Map<string, number>();
@@ -188,13 +210,44 @@ export function usePageNav(
         for (const [id, r] of ratios) {
           if (r > 0.15 && (!best || r > best.r)) best = { id, r };
         }
-        setActiveId(best?.id ?? null);
+        if (best) {
+          setActiveId(best.id);
+          return;
+        }
+        // No section in view. Only the top of the page legitimately means
+        // "Overview"; the footer means "still in the last section", and
+        // anywhere else means "keep whatever we had".
+        if (atBottom()) setActiveId(lastId);
+        else if (atTop()) setActiveId(null);
       },
       { threshold: [0.15, 0.3, 0.5, 0.75] },
     );
 
     targets.forEach((t) => observer.observe(t.el));
-    return () => observer.disconnect();
+
+    // The observer only fires when a ratio crosses a threshold, so scrolling
+    // the last stretch into the footer can produce no callback at all. This
+    // watches the edges directly. rAF-throttled so it costs one comparison
+    // per frame at most.
+    let raf = 0;
+    const syncEdges = () => {
+      raf = 0;
+      if (atBottom()) setActiveId(lastId);
+      else if (atTop()) setActiveId(null);
+    };
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(syncEdges);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    syncEdges();
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
   }, [items]);
 
   const activeIndex = useMemo(() => {
@@ -376,7 +429,7 @@ export function PageNavRail({
                 ? "rgba(15,20,25,0.62)"
                 : "rgba(15,20,25,0.4)";
             return (
-              <li key={item.label}>
+              <li key={item.label} className="cursor-pointer">
                 <button
                   type="button"
                   onClick={() => scrollToItem(item.id)}

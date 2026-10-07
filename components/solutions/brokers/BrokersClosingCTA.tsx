@@ -1,5 +1,7 @@
 "use client";
 
+import { DEMO_BOOKING_URL } from "@/site.config";
+
 /**
  * BrokersClosingCTA — the sign-off (Section 11, Final CTA).
  *
@@ -25,10 +27,10 @@ export type BrokersClosingCTAContent = {
 };
 
 const DEFAULT_CAROUSEL_SRCS = [
-  "/card-1-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-senior-portrait.png",
+  "/card-1-bg.webp",
+  "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
   "/card-3-bg.jpg",
-  "/generated-images/chronilogix-soft-flower-family-portrait.png",
+  "/generated-images/chronilogix-soft-flower-family-portrait.webp",
 ];
 
 const DEFAULTS = {
@@ -36,7 +38,7 @@ const DEFAULTS = {
   headingLine2: "before they become claims.",
   body: "Book a 30 minute demo. We’ll walk through a live coaching session, the clinical method behind it, and how it reduces avoidable spending for your self-funded clients.",
   primaryLabel: "Book a Demo",
-  primaryUrl: "#book-a-demo",
+  primaryUrl: DEMO_BOOKING_URL,
   secondaryLabel: "See How Chronilogix Works",
   secondaryUrl: "#how-it-works",
   signoff: "Chronilogix. Chronic care coaching that actually clicks.",
@@ -103,7 +105,9 @@ export function BrokersClosingCTA({
                       alt=""
                       className="h-full w-full object-cover"
                       draggable={false}
-                    />
+          loading="lazy"
+          decoding="async"
+        />
                   </div>
                 </li>
               );
@@ -127,8 +131,7 @@ export function BrokersClosingCTA({
           {c.body}
         </p>
         <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-          {/* TODO: Calendly URL */}
-          <a href={c.primaryUrl} className="group/cta btn-primary">
+          <a href={c.primaryUrl} target="_blank" rel="noopener noreferrer" className="group/cta btn-primary">
             {c.primaryLabel}
             <Arrow />
           </a>

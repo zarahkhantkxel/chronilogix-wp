@@ -160,9 +160,11 @@ export function Problem() {
           <div className="lg:sticky lg:top-2">
             <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] lg:aspect-auto lg:h-[calc(100vh-1rem)]">
               <img
-                src="/problem-portrait.png"
+                src="/problem-portrait.webp"
                 alt="A man sits cross-legged on a bed in afternoon light, alone, mid-thought."
                 className="absolute inset-0 h-full w-full object-cover"
+                loading="lazy"
+                decoding="async"
               />
               <div
                 aria-hidden

@@ -2,6 +2,7 @@
 
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { AIOrb } from "@/components/AIOrb";
+import { DEMO_BOOKING_URL } from "@/site.config";
 // Hidden for now — restore by un-commenting the import and the <HeroPhoneMockup /> render below.
 // import { HeroPhoneMockup } from "@/components/HeroPhoneMockup";
 
@@ -263,7 +264,7 @@ export function Hero() {
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           className="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-[78%] w-full select-none object-cover object-bottom"
-          src="/hero-bg-enhanced.png"
+          src="/hero-bg-enhanced.webp"
           alt=""
           aria-hidden
           draggable={false}
@@ -300,9 +301,10 @@ export function Hero() {
                 {renderWords(headlineLine2Words, "h2")}
               </h1>
 
-              {/* TODO: Calendly URL */}
               <a
-                href="#book-a-demo"
+                href={DEMO_BOOKING_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="group/herocta btn-primary mt-10 w-fit"
                 style={{
                   opacity: tailReveal,
@@ -310,7 +312,7 @@ export function Hero() {
                   willChange: "opacity, transform",
                 }}
               >
-                Book A Demo
+                Book a Demo
                 <Arrow />
               </a>
             </div>

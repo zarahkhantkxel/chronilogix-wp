@@ -37,6 +37,7 @@ import {
   type Persona,
   type PopupPersona,
 } from "@/components/personas/personaData";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 // Editable content (ACF-backed). Every field falls back to the original
 // hardcoded copy / persona data so the section renders identically when
@@ -61,8 +62,8 @@ const DEFAULTS = {
   headingMuted: "Every side of the system.",
   body: "Employers, brokers, health plans, product vendors, and wellness platforms each get a different return from the same engine — and the people who’d otherwise go unreached get a way in.",
   ctaLabel: "Talk to our team",
-  ctaUrl: "#book-a-demo",
-  portraitImage: "/who-we-serve.png",
+  ctaUrl: DEMO_BOOKING_URL,
+  portraitImage: "/who-we-serve.webp",
   portraitAlt:
     "Two people in unhurried conversation in a warm, light-filled space.",
   personas: PERSONAS,
@@ -134,6 +135,8 @@ export function WhoWeServe({
 
             <a
               href={c.ctaUrl}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group/cta btn-primary mt-6 w-fit"
             >
               {c.ctaLabel}

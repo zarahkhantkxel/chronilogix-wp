@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { YoastSchema } from "@/components/seo/YoastSchema";
+import { yoastMetadata } from "@/lib/yoast";
 import { Nav } from "@/components/Nav";
 import { PageLoader } from "@/components/PageLoader";
-import { CoachLauncher } from "@/components/CoachLauncher";
+import { HashLanding } from "@/components/HashLanding";
 import { AboutTeam } from "@/components/about/AboutTeam";
 import { AboutScience } from "@/components/about/AboutScience";
 import { AboutMission } from "@/components/about/AboutMission";
@@ -21,11 +23,16 @@ const ABOUT_TOC: TocItem[] = [
   { id: "get-in-touch", label: "Get in touch" },
 ];
 
-export const metadata: Metadata = {
+// Title and description come from Yoast's Search appearance panel in
+// wp-admin when set; the object below is the fallback for when they are
+// blank or WordPress is unreachable.
+export async function generateMetadata(): Promise<Metadata> {
+  return yoastMetadata("about", "/about", {
   title: "About · Chronilogix",
   description:
     "Chronilogix is the AI native behavioral health and chronic care coaching platform built on Dr. Ken Resnicow's three decades of Motivational Interviewing research. Meet the team and the mission behind the work.",
-};
+});
+}
 
 // ACF returns `false` (not undefined) for an empty repeater, so guard every
 // collection before mapping.
@@ -38,6 +45,14 @@ export default async function AboutPage() {
   return (
     <>
       <PageLoader />
+      {/* This page is a deep-link destination — the home page's "About Dr.
+          Resnicow" CTA points at /about#science. The image-heavy team grid
+          above that anchor keeps moving for a few hundred ms after first
+          paint, so the browser's own load-time fragment scroll gets abandoned
+          and the visitor lands at the top. HashLanding waits for the layout to
+          settle and puts them where they asked to be. Renders nothing. */}
+      <HashLanding />
+      <YoastSchema slug="about" path="/about" />
       <Nav />
       <main className="flex flex-col">
         <div className="flex flex-col gap-2 p-2 md:gap-3 md:p-3">
@@ -47,9 +62,13 @@ export default async function AboutPage() {
               headingMuted: s.team_heading_muted,
               intro: s.team_intro,
               advisorsLabel: s.team_advisors_label,
+              // `role` is the short title, `bio` the sentence(s) of standing
+              // beneath it. Both render, so an ACF row with no bio field falls
+              // back to an empty string rather than dropping the whole person.
               leaders: arr(s.team_leaders).map((r: any) => ({
                 name: r.name,
                 role: r.role,
+                bio: r.bio ?? "",
                 photo: r.photo,
                 more:
                   r.more_href || r.more_label
@@ -59,6 +78,7 @@ export default async function AboutPage() {
               advisors: arr(s.team_advisors).map((r: any) => ({
                 name: r.name,
                 role: r.role,
+                bio: r.bio ?? "",
                 photo: r.photo,
               })),
             }}
@@ -162,7 +182,6 @@ export default async function AboutPage() {
       {/* "On this page" wayfinder, keyed to this page's own section anchors. */}
       <PageNav items={ABOUT_TOC} revealId="science" navLabel="About sections" />
 
-      <CoachLauncher />
     </>
   );
 }

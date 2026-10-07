@@ -1,15 +1,16 @@
 "use client";
 
 import Image from "next/image";
+import { DEMO_BOOKING_URL } from "@/site.config";
 
 const CAROUSEL = [
   {
-    src: "/card-1-bg.jpg",
+    src: "/card-1-bg.webp",
     aspect: "3/4",
     w: "w-[260px] md:w-[300px]",
   },
   {
-    src: "/generated-images/chronilogix-soft-flower-senior-portrait.png",
+    src: "/generated-images/chronilogix-soft-flower-senior-portrait.webp",
     aspect: "3/4",
     w: "w-[260px] md:w-[300px]",
   },
@@ -19,17 +20,19 @@ const CAROUSEL = [
     w: "w-[260px] md:w-[300px]",
   },
   {
-    src: "/generated-images/chronilogix-soft-flower-family-portrait.png",
+    src: "/generated-images/chronilogix-soft-flower-family-portrait.webp",
     aspect: "3/4",
     w: "w-[260px] md:w-[300px]",
   },
 ];
 
+/* Two documents only. The HIPAA and Security entries were placeholder
+   anchors with no page behind them, and the trust line to their right
+   already carries the data-handling promise — so the strip now links
+   the two documents that actually exist. */
 const LEGAL_LINKS = [
-  { href: "#terms", label: "Terms" },
-  { href: "#privacy", label: "Privacy" },
-  { href: "#hipaa", label: "HIPAA" },
-  { href: "#security", label: "Security" },
+  { href: "/terms-and-conditions", label: "Terms" },
+  { href: "/privacy-policy", label: "Privacy" },
 ];
 
 export function Footer() {
@@ -79,7 +82,9 @@ export function Footer() {
                         sizes="(min-width: 768px) 300px, 260px"
                         className="object-cover"
                         draggable={false}
-                      />
+          loading="lazy"
+          decoding="async"
+        />
                     </div>
                   </li>
                 );
@@ -104,7 +109,12 @@ export function Footer() {
             for your member population.
           </p>
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
-            <a href="#book-a-demo" className="btn-primary">
+            <a
+              href={DEMO_BOOKING_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-primary"
+            >
               Book a Demo
             </a>
             <a
@@ -138,38 +148,63 @@ export function Footer() {
       {/* Bottom legal strip */}
       <div className="border-t border-ink/[0.07]">
         <div className="container-page">
-          <div className="flex flex-col items-center gap-4 py-6 text-xs text-ink-muted md:flex-row md:items-center md:justify-between md:gap-6 md:py-7">
-            {/* Wordmark */}
-            <div className="flex items-center gap-2.5">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/Logo%20Packs/Primary%20Logo/Chronilogix_Logo-FullColor.svg"
-                alt="Chronilogix"
-                width={498}
-                height={126}
-                className="h-5 w-auto"
+          {/* Type ramp bumped a step off `text-xs` — at 12px the strip
+              read as fine print, which is the wrong tone for a line about
+              how member data is handled. 13px, 14px on desktop: still
+              quiet, comfortably legible. */}
+          {/* Two clusters, not three. With four legal links the strip
+              worked as wordmark / links / trust-line, but at two links
+              the middle group was too light to hold the centre: because
+              `justify-between` equalises the gaps rather than the axis,
+              the wide trust line dragged the pair 81px left of true
+              centre and the row read as three unequal islands. Grouping
+              the links with the wordmark puts ~270px of footer meta
+              against ~300px of trust line — balanced on weight, and it
+              also survives the `md` breakpoint without the sentence
+              wrapping, which a three-equal-column grid would not. */}
+          <div className="flex flex-col items-center gap-4 py-6 text-[13px] text-ink-muted md:flex-row md:items-center md:justify-between md:gap-6 md:py-7 md:text-sm">
+            {/* Footer meta — wordmark, year, legal links */}
+            <div className="flex flex-col items-center gap-4 sm:flex-row sm:gap-5 md:gap-6">
+              <div className="flex items-center gap-2.5">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/Logo%20Packs/Primary%20Logo/Chronilogix_Logo-FullColor.svg"
+                  alt="Chronilogix"
+                  width={498}
+                  height={126}
+                  className="h-5 w-auto"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="text-ink-muted">© 2026</span>
+              </div>
+
+              {/* Hairline divider keeps the wordmark reading as identity
+                  rather than as a third link in the row. Hidden when the
+                  cluster stacks, where the gap already separates them. */}
+              <span
+                aria-hidden
+                className="hidden h-3.5 w-px shrink-0 bg-ink/15 sm:block"
               />
-              <span className="text-ink-muted">© 2026</span>
+
+              <nav aria-label="Legal">
+                <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
+                  {LEGAL_LINKS.map((link) => (
+                    <li key={link.href}>
+                      <a
+                        href={link.href}
+                        className="text-ink-muted transition-colors duration-200 ease-out-quart motion-reduce:transition-none hover:text-ink"
+                      >
+                        {link.label}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
             </div>
 
-            {/* Legal links */}
-            <nav aria-label="Legal" className="order-3 md:order-2">
-              <ul className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2">
-                {LEGAL_LINKS.map((link) => (
-                  <li key={link.href}>
-                    <a
-                      href={link.href}
-                      className="text-ink-muted transition-colors duration-200 ease-out-quart motion-reduce:transition-none hover:text-ink"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-
             {/* Trust line */}
-            <p className="order-2 text-center text-ink-muted md:order-3 md:text-right">
+            <p className="text-center text-ink-muted md:text-right">
               Member data is never used to train our models.
             </p>
           </div>
