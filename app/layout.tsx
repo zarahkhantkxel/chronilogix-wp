@@ -75,23 +75,55 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google Tag Manager — must load as high in <head> as possible so the
-            dataLayer exists before any page script pushes to it. */}
+        {/* Third-party tags: GTM, Microsoft Clarity and the NextLevel AI
+            widget. The dataLayer / clarity queue stubs run immediately so
+            nothing pushed early is lost, but the scripts themselves load
+            on the visitor's first interaction (scroll, mouse move, tap or
+            key), or 5s after window load if there is none. Loaded in the
+            head they added ~450KB and 200–700ms of blocking main-thread work
+            and dropped mobile PageSpeed from the 90s to the 70s–80s; even
+            right after load their long tasks still landed in TBT. The widget
+            loader is exposed as window.loadAiAgentsWidget so a CTA clicked
+            before then can start it on demand (see lib/ai-widget.ts). */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-          }}
-        />
-        {/* Microsoft Clarity */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`,
+            __html: `(function(w,d){
+w.dataLayer=w.dataLayer||[];w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+w.clarity=w.clarity||function(){(w.clarity.q=w.clarity.q||[]).push(arguments)};
+function add(src){var s=d.createElement('script');s.async=true;s.src=src;d.head.appendChild(s);return s;}
+w.loadAiAgentsWidget=function(){
+  if(w.AiAgentsWebWidgetLoaded)return w.AiAgentsWebWidgetReady;
+  w.AiAgentsWebWidgetLoaded=true;
+  w.AiAgentsWebWidgetReady=new Promise(function(resolve){
+    var s=add("${AI_WIDGET.scriptSrc}");
+    s.onload=function(){
+      w.AiAgentsWebWidget.init({
+        authUrl:"${AI_WIDGET.authUrl}",
+        authToken:"${AI_WIDGET.authToken}",
+        agentId:"${AI_WIDGET.agentId}",
+        openButtonContainerWebTop:24,
+        openButtonContainerWebRight:32,
+        openButtonContainerMobileTop:100,
+        openButtonContainerMobileRight:32
+      });
+      resolve(true);
+    };
+    s.onerror=function(){console.error('Failed to load AI Widget script');resolve(false);};
+  });
+  return w.AiAgentsWebWidgetReady;
+};
+var started=false,events=['scroll','mousemove','pointerdown','keydown','touchstart'];
+function start(){
+  if(started)return;started=true;
+  events.forEach(function(e){w.removeEventListener(e,start,true);});
+  add('https://www.googletagmanager.com/gtm.js?id=${GTM_ID}');
+  add('https://www.clarity.ms/tag/${CLARITY_ID}');
+  w.loadAiAgentsWidget();
+}
+events.forEach(function(e){w.addEventListener(e,start,{capture:true,passive:true});});
+function later(){setTimeout(start,5000);}
+if(d.readyState==='complete')later();else w.addEventListener('load',later,{once:true});
+})(window,document);`,
           }}
         />
       </head>
@@ -112,45 +144,6 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        {/* NextLevel AI agents widget. Mounts itself onto document.body outside
-            React's tree, so the load guard keeps it a single instance across
-            client-side navigations. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.addEventListener("DOMContentLoaded", () => {
-  function loadAiAgentsWidget() {
-    if (window.AiAgentsWebWidgetLoaded) return;
-    window.AiAgentsWebWidgetLoaded = true;
-    window.AiAgentsWebWidgetReady = new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "${AI_WIDGET.scriptSrc}";
-      script.async = true;
-      script.onload = () => {
-        const config = {
-          authUrl: "${AI_WIDGET.authUrl}",
-          authToken: "${AI_WIDGET.authToken}",
-          agentId: "${AI_WIDGET.agentId}",
-          openButtonContainerWebTop: 24,
-          openButtonContainerWebRight: 32,
-          openButtonContainerMobileTop: 100,
-          openButtonContainerMobileRight: 32
-        };
-        window.AiAgentsWebWidget.init(config);
-        console.log('AI Widget successfully initialized');
-        resolve(true);
-      };
-      script.onerror = () => {
-        console.error('Failed to load AI Widget script');
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
-  }
-
-  loadAiAgentsWidget();
-});`,
-          }}
-        />
         {/* Chronilogix is a light-only marketing site. ThemeProvider is kept
             for next-wp's shadcn components but pinned to light so there is no
             dark-mode flash and the marketing pages render as designed.
