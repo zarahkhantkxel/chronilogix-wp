@@ -2,7 +2,6 @@ import "./globals.css";
 
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { Analytics } from "@vercel/analytics/react";
 
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
@@ -156,7 +155,6 @@ if(d.readyState==='complete')later();else w.addEventListener('load',later,{once:
         >
           {children}
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   );
