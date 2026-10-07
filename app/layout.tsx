@@ -77,11 +77,13 @@ export default function RootLayout({
         {/* Third-party tags: GTM, Microsoft Clarity and the NextLevel AI
             widget. The dataLayer / clarity queue stubs run immediately so
             nothing pushed early is lost, but the scripts themselves load
-            on the visitor's first interaction (scroll, mouse move, tap or
-            key), or 5s after window load if there is none. Loaded in the
-            head they added ~450KB and 200–700ms of blocking main-thread work
-            and dropped mobile PageSpeed from the 90s to the 70s–80s; even
-            right after load their long tasks still landed in TBT. The widget
+            only on the visitor's first interaction (scroll, mouse move, tap
+            or key). Loaded in the head they added ~450KB and 200–700ms of
+            blocking main-thread work and dropped mobile PageSpeed from the
+            90s to the 70s–80s; even right after load their long tasks landed
+            in TBT, and the UAT widget's 403s and Clarity's third-party
+            cookies cost Best Practices. Trade-off: a visitor who never
+            interacts is not recorded in GTM or Clarity. The widget
             loader is exposed as window.loadAiAgentsWidget so a CTA clicked
             before then can start it on demand (see lib/ai-widget.ts). */}
         <script
@@ -120,8 +122,6 @@ function start(){
   w.loadAiAgentsWidget();
 }
 events.forEach(function(e){w.addEventListener(e,start,{capture:true,passive:true});});
-function later(){setTimeout(start,5000);}
-if(d.readyState==='complete')later();else w.addEventListener('load',later,{once:true});
 })(window,document);`,
           }}
         />
