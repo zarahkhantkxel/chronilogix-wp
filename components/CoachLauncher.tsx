@@ -8,6 +8,7 @@
 // promising a specific identity.
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 export function CoachLauncher() {
   const [open, setOpen] = useState(false);
@@ -74,10 +75,12 @@ export function CoachLauncher() {
           aria-expanded={open}
           className="pointer-events-auto block select-none rounded-full transition-transform duration-300 ease-out hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src="/agent.png"
             alt="Talk to a Chronilogix coach"
+            width={231}
+            height={112}
+            sizes="(min-width: 768px) 200px, 110px"
             draggable={false}
             className="h-auto w-[110px] drop-shadow-[0_12px_28px_rgba(15,20,25,0.22)] md:w-[200px]"
           />

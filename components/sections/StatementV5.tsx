@@ -19,6 +19,8 @@
 // dedicated section after this one — see MIExplainer.tsx.
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
+import { useAfterLoad } from "@/components/hooks/useAfterLoad";
 
 // Trigger-then-play. The cross-fade runs on its own timeline once the
 // sticky scene comes into view — no scroll-scrubbing. Beat-1 holds
@@ -68,6 +70,10 @@ export function StatementV5({ content }: { content?: StatementV5Content }) {
   const sectionRef = useRef<HTMLDivElement | null>(null);
   const stickyRef = useRef<HTMLDivElement | null>(null);
   const [reveal, setReveal] = useState(0);
+  // The plates sit just below the hero, inside Chrome's lazy-load distance,
+  // so `loading="lazy"` alone would fetch ~40KB alongside the hero. Defer
+  // them until the page has loaded; the section is still off-screen then.
+  const platesReady = useAfterLoad();
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -154,24 +160,30 @@ export function StatementV5({ content }: { content?: StatementV5Content }) {
           className="sticky top-0 h-svh overflow-hidden rounded-b-[28px]"
         >
           {/* Background plates cross-fade */}
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={c.bgFull}
-            alt=""
-            aria-hidden
-            draggable={false}
-            className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
-            style={{ opacity: crossFade }}
-          />
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={c.bgLow}
-            alt=""
-            aria-hidden
-            draggable={false}
-            className="pointer-events-none absolute inset-0 h-full w-full select-none object-cover"
-            style={{ opacity: 1 - crossFade }}
-          />
+          {platesReady && (
+            <>
+              <Image
+                src={c.bgFull}
+                alt=""
+                aria-hidden
+                draggable={false}
+                fill
+                sizes="100vw"
+                className="pointer-events-none select-none object-cover"
+                style={{ opacity: crossFade }}
+              />
+              <Image
+                src={c.bgLow}
+                alt=""
+                aria-hidden
+                draggable={false}
+                fill
+                sizes="100vw"
+                className="pointer-events-none select-none object-cover"
+                style={{ opacity: 1 - crossFade }}
+              />
+            </>
+          )}
 
           {/* Top scrim — dissolves the top of the image into the white page
               above. Kept short (18%): at 30% it merged with the hero's own

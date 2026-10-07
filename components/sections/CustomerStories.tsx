@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 // ScienceKen — the Dr. Resnicow "science behind Chronilogix" beat.
 // Deliberately mirrors the MIExplainer section's layout/pattern so the
@@ -203,13 +204,17 @@ function ProofStatement({ proof, index }: { proof: Proof; index: number }) {
       }}
     >
       {/* Small source mark — the credential behind the number. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={proof.logo}
-        alt={proof.logoAlt}
-        className={`${logoClass} w-auto`}
-        draggable={false}
-      />
+      {/* width/height only seed the aspect ratio + srcset; CSS sizes it. */}
+      {proof.logo && (
+        <Image
+          src={proof.logo}
+          alt={proof.logoAlt ?? ""}
+          width={171}
+          height={100}
+          className={`${logoClass} w-auto`}
+          draggable={false}
+        />
+      )}
 
       <blockquote>
         <p className="mt-5 font-serif text-[21px] font-normal leading-[1.28] text-ink md:text-[24px] lg:text-[26px]">

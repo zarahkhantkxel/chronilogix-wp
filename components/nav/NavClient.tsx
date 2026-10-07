@@ -369,11 +369,35 @@ export function NavClient({
                 className="relative flex items-center"
                 onMouseEnter={() => hasMenu && setOpenMenu(link.label)}
                 onMouseLeave={() => hasMenu && setOpenMenu(null)}
+                // Keyboard: Escape closes; tabbing out of the trigger + panel
+                // closes too, so the menu never stays open behind focus.
+                onKeyDown={(e) => {
+                  if (hasMenu && isOpen && e.key === "Escape") {
+                    setOpenMenu(null);
+                  }
+                }}
+                onBlur={(e) => {
+                  if (
+                    hasMenu &&
+                    !e.currentTarget.contains(e.relatedTarget as Node | null)
+                  ) {
+                    setOpenMenu(null);
+                  }
+                }}
               >
                 {hasMenu ? (
-                  <span
-                    aria-haspopup="true"
+                  <button
+                    type="button"
                     aria-expanded={isOpen}
+                    aria-controls={`nav-menu-${link.label.toLowerCase()}`}
+                    // Keyboard activation (detail === 0) toggles. Pointer
+                    // clicks only open: hover/tap already fired mouseenter,
+                    // so toggling would snap the menu shut on touch devices.
+                    onClick={(e) =>
+                      setOpenMenu(
+                        e.detail === 0 && isOpen ? null : link.label,
+                      )
+                    }
                     className={`group/navlink relative inline-flex cursor-default items-center gap-1 bg-transparent p-0 text-sm transition-colors duration-200 ease-out-quart motion-reduce:transition-none ${
                       solid
                         ? "text-ink-soft hover:text-ink"
@@ -404,7 +428,7 @@ export function NavClient({
                         solid ? "bg-ink" : "bg-white"
                       }`}
                     />
-                  </span>
+                  </button>
                 ) : (
                   <a
                     href={link.href}
@@ -426,10 +450,13 @@ export function NavClient({
 
                 {hasMenu && (
                   <div
+                    id={`nav-menu-${link.label.toLowerCase()}`}
+                    // `invisible` (visibility) when closed keeps the hidden
+                    // panel's links out of the tab order and a11y tree.
                     className={`absolute left-0 top-full pt-3 transition-all duration-200 ease-out-quart motion-reduce:transition-none ${
                       isOpen
-                        ? "pointer-events-auto translate-y-0 opacity-100"
-                        : "pointer-events-none -translate-y-1 opacity-0"
+                        ? "pointer-events-auto visible translate-y-0 opacity-100"
+                        : "pointer-events-none invisible -translate-y-1 opacity-0"
                     }`}
                   >
                     {link.personaMenu ? (
@@ -463,6 +490,8 @@ export function NavClient({
                 : "/Logo%20Packs/Primary%20Logo/Chronilogix_Logo-White.svg"
             }
             alt="Chronilogix"
+            width={498}
+            height={126}
             className="h-7 w-auto md:h-8"
           />
         </a>

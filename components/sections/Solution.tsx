@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { SessionWalkthrough } from "@/components/sections/SessionWalkthrough";
 import { LevelsOfCare } from "@/components/sections/LevelsOfCare";
 
@@ -190,7 +191,7 @@ export function Solution({ content }: { content?: SolutionContent }) {
           <button
             type="button"
             onClick={handleTalkClick}
-            className="group/talk inline-flex items-center gap-2 rounded-full bg-brand-accent px-6 py-3 text-sm font-medium text-white transition-all duration-300 ease-out motion-reduce:transition-none hover:opacity-95 hover:shadow-[0_8px_28px_-8px_rgba(255,116,52,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
+            className="group/talk inline-flex items-center gap-2 rounded-full bg-brand-800 px-6 py-3 text-sm font-medium text-white transition-all duration-300 ease-out motion-reduce:transition-none hover:opacity-95 hover:shadow-[0_8px_28px_-8px_rgba(255,116,52,0.55)] focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent focus-visible:ring-offset-2"
           >
             {c.primaryCtaLabel}
             <svg
@@ -279,11 +280,13 @@ function AgentCard({ agent }: { agent: Agent }) {
           from the bottom edge and dissolves into white near the top. A
           strong blur dissolves the source dither pattern into a smooth
           color wash so the individual pixels never read at card scale. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={agent.pattern}
         alt=""
-        className="absolute inset-0 h-full w-full scale-110 object-cover"
+        fill
+        sizes="(min-width: 768px) 50vw, 100vw"
+        quality={50}
+        className="scale-110 object-cover"
         draggable={false}
         style={{
           filter: "blur(32px) saturate(0.4) brightness(1.06)",
@@ -568,12 +571,13 @@ function CoachAvatar({ agent, active }: { agent: Agent; active: boolean }) {
       {/* The photo itself — sits inside the rings, with a soft drop
           shadow tinted toward the agent's color. */}
       <div className="absolute inset-[16%]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={agent.image}
           alt={`${agent.name} avatar`}
           draggable={false}
-          className="h-full w-full rounded-full object-cover"
+          fill
+          sizes="240px"
+          className="rounded-full object-cover"
           style={{
             boxShadow: `0 2px 4px rgba(15,20,25,0.08), 0 20px 40px -14px ${agent.haloColor}60`,
           }}

@@ -18,7 +18,9 @@
 //       as one message answered two ways, not a single chat thread.
 
 import React, { useEffect, useRef, useState } from "react";
+import Image, { getImageProps } from "next/image";
 import { AIOrb } from "@/components/AIOrb";
+import { useAfterLoad } from "@/components/hooks/useAfterLoad";
 
 // Warm gradient tiles echo the nav's icon system (rounded tile + white
 // glyph), scaled down to a list row. Three variants span light → deep so
@@ -436,6 +438,34 @@ function KenVideo({
 }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [playing, setPlaying] = useState(false);
+  // <video poster> can't use next/image, but it can use the optimizer URL:
+  // a ~1080px AVIF/WebP (src is the 2x candidate) instead of the 1.6MB PNG.
+  const posterSrc = getImageProps({
+    src: poster,
+    alt: "",
+    width: 540,
+    height: 360,
+  }).props.src;
+  // The section sits well below the fold, but <video poster> downloads
+  // eagerly; only attach it once the player is near the viewport so it
+  // doesn't compete with the hero for bandwidth on first load.
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [nearViewport, setNearViewport] = useState(false);
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setNearViewport(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "600px 0px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const start = () => {
     const el = videoRef.current;
@@ -449,6 +479,7 @@ function KenVideo({
 
   return (
     <div
+      ref={wrapRef}
       onClick={!playing ? start : undefined}
       className={`relative aspect-[3/2] overflow-hidden rounded-[16px] bg-ink lg:aspect-auto lg:h-[420px] ${
         !playing ? "cursor-pointer" : ""
@@ -456,7 +487,7 @@ function KenVideo({
     >
       <video
         ref={videoRef}
-        poster={poster}
+        poster={nearViewport ? posterSrc : undefined}
         src={src}
         playsInline
         preload="none"
@@ -623,6 +654,8 @@ function ComparisonColumn({
   chronoTag: React.ReactNode;
   chronoReply: React.ReactNode;
 }) {
+  // Decorative wash, far below the fold: fetch after the page has loaded.
+  const patternReady = useAfterLoad();
   const { ref, inView } = useInView<HTMLDivElement>(0.2);
   const reduced = usePrefersReducedMotion();
 
@@ -685,13 +718,17 @@ function ComparisonColumn({
       >
         {/* Warm background wash, matching the product page's capability cards:
             a soft reddish texture rather than a near-white veil. */}
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/pattern.png"
-          alt=""
-          aria-hidden
-          className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-        />
+        {patternReady && (
+          <Image
+            src="/pattern.png"
+            alt=""
+            aria-hidden
+            fill
+            sizes="(min-width: 1024px) 50vw, 100vw"
+            quality={50}
+            className="scale-110 object-cover blur-md"
+          />
+        )}
         <div aria-hidden className="absolute inset-0 bg-paper/70" />
 
         <CardEyebrow>{badge}</CardEyebrow>

@@ -2,23 +2,13 @@
 
 import { useEffect, useState } from "react";
 
-// Images that live above the fold across the first three sections
-// (Hero, Statement, Solution) plus the persistent floating agent pill.
-// The loader stays mounted until all of these are decoded, with a soft
-// minimum display so cached loads don't flicker.
-const CRITICAL_IMAGES = [
-  "/hero-bg-enhanced.png",
-  "/roni-pattern.webp",
-  "/roni.png",
-  "/millie-pattern.webp",
-  "/millie.png",
-  "/agent.png",
-  "/Logo Packs/Primary Logo/Chronilogix_Logo-FullColor.svg",
-  "/Logo Packs/Primary Logo/Chronilogix_Logo-White.svg",
-];
-
+// The loader stays mounted until web fonts are ready (so the hero headline
+// doesn't swap typefaces under the fade), with a soft minimum display so
+// cached loads don't flicker. It deliberately does NOT wait on images:
+// gating on them used to hold the overlay for megabytes of downloads and
+// competed with the page's own (optimized, prioritized) image requests.
 const MIN_DISPLAY_MS = 650;
-const HARD_TIMEOUT_MS = 6000;
+const HARD_TIMEOUT_MS = 3000;
 const SESSION_KEY = "chronilogix:loader-shown";
 
 export function PageLoader() {
@@ -52,19 +42,7 @@ export function PageLoader() {
       }, wait);
     };
 
-    let remaining = CRITICAL_IMAGES.length;
-    const tick = () => {
-      remaining -= 1;
-      if (remaining <= 0) finish();
-    };
-
-    CRITICAL_IMAGES.forEach((src) => {
-      const img = new Image();
-      img.onload = tick;
-      img.onerror = tick;
-      img.src = src;
-      if (img.complete) tick();
-    });
+    document.fonts.ready.then(finish, finish);
 
     const hardTimeout = window.setTimeout(finish, HARD_TIMEOUT_MS);
 

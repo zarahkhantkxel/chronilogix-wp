@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 const CAROUSEL = [
   {
     src: "/card-1-bg.jpg",
@@ -67,14 +69,15 @@ export function Footer() {
                     className={`shrink-0 ${img.w} ${offset}`}
                   >
                     <div
-                      className="overflow-hidden rounded-[22px] border border-ink/[0.04] bg-paper shadow-[0_10px_28px_-18px_rgba(20,8,2,0.22)]"
+                      className="relative overflow-hidden rounded-[22px] border border-ink/[0.04] bg-paper shadow-[0_10px_28px_-18px_rgba(20,8,2,0.22)]"
                       style={{ aspectRatio: img.aspect }}
                     >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
+                      <Image
                         src={img.src}
                         alt=""
-                        className="h-full w-full object-cover"
+                        fill
+                        sizes="(min-width: 768px) 300px, 260px"
+                        className="object-cover"
                         draggable={false}
                       />
                     </div>
@@ -142,6 +145,8 @@ export function Footer() {
               <img
                 src="/Logo%20Packs/Primary%20Logo/Chronilogix_Logo-FullColor.svg"
                 alt="Chronilogix"
+                width={498}
+                height={126}
                 className="h-5 w-auto"
               />
               <span className="text-ink-muted">© 2026</span>

@@ -1,6 +1,6 @@
 import "./globals.css";
 
-import { Hanken_Grotesk, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme/theme-provider";
 import { Analytics } from "@vercel/analytics/react";
 
@@ -9,18 +9,38 @@ import { cn } from "@/lib/utils";
 
 import type { Metadata } from "next";
 
-const fontSans = Hanken_Grotesk({
-  subsets: ["latin"],
+// Self-hosted, trimmed copies of the Google Fonts latin subsets (both OFL).
+// The full variable files cost 157KB on every first visit and were the
+// largest thing downloaded before the hero could paint; these keep only the
+// weights the site uses (85KB). Usage today: sans 400–700 (font-light only
+// on a decorative "+"), serif 400–500, serif italic 400 only.
+// To change weights, re-instance from the Google latin woff2 with fontTools:
+//   instancer.instantiateVariableFont(font, {"wght": (min, max)})
+const fontSans = localFont({
+  src: "./fonts/hanken-grotesk-latin-wght-400-700.woff2",
+  weight: "400 700",
+  style: "normal",
   variable: "--font-sans",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
-const fontSerif = Newsreader({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
+const fontSerif = localFont({
+  src: [
+    {
+      path: "./fonts/newsreader-latin-wght-400-500.woff2",
+      weight: "400 500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/newsreader-italic-latin-400.woff2",
+      weight: "400",
+      style: "italic",
+    },
+  ],
   variable: "--font-serif",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
 export const metadata: Metadata = {
