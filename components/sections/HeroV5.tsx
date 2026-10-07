@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Image from "next/image";
 import { DEMO_BOOKING_URL } from "@/site.config";
 
 // V5 Hero — V2's three-band composition, but the static phone is
@@ -28,8 +29,6 @@ const MILLIE_DWELL_MS = 1850;
 const HOLD_MS = 4400;
 const EXIT_MS = 600;
 const RESET_PAUSE_MS = 520;
-
-const REVEAL_DURATION_MS = 2400;
 
 type ChatPhase = "idle" | "running" | "typing" | "hold" | "exit";
 
@@ -64,7 +63,9 @@ const DEFAULTS = {
   subtextEmphasis: "Motivational Interviewing",
   ctaLabel: "Book a Demo",
   ctaUrl: DEMO_BOOKING_URL,
-  phoneImage: "/new-mobile.svg",
+  // Raster of new-mobile.svg (same pixels, 114KB vs 386KB) so next/image
+  // can serve a sized AVIF/WebP; SVGs bypass the optimizer.
+  phoneImage: "/new-mobile.webp",
   avatarImage: "/millie.png",
   stats: [
     { value: "30+", label: "years of MI research" },
@@ -102,7 +103,6 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
   const [typingFor, setTypingFor] = useState<number | null>(null);
   const [phase, setPhase] = useState<ChatPhase>("idle");
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [revealProgress, setRevealProgress] = useState(0);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
@@ -112,22 +112,6 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
     mq.addEventListener("change", on);
     return () => mq.removeEventListener("change", on);
   }, []);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      setRevealProgress(1);
-      return;
-    }
-    let rafId = 0;
-    const start = performance.now();
-    const tick = (now: number) => {
-      const t = Math.min((now - start) / REVEAL_DURATION_MS, 1);
-      setRevealProgress(t);
-      if (t < 1) rafId = requestAnimationFrame(tick);
-    };
-    rafId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(rafId);
-  }, [reducedMotion]);
 
   // Conversation timeline — each Millie reply is preceded by a typing
   // indicator so the rhythm feels like a real coach composing a reply.
@@ -183,13 +167,9 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
     };
   }, [reducedMotion, chat]);
 
-  const eased = easeOutCubic(revealProgress);
-  // Fog lays down first; phone reveals through it; text follows. Same
-  // pacing relationship as V2 so the hero reads as one composed
-  // moment, not three independent fades.
-  const fogFade = clamp01(eased / 0.32);
-  const phoneFade = clamp01((eased - 0.22) / 0.55);
-  const textFade = clamp01((eased - 0.4) / 0.55);
+  // Entrance: fog lays down first; phone reveals through it; text
+  // follows (see .hero-reveal-* in globals.css). Done in CSS so it starts
+  // on first paint and doesn't re-render the hero every frame.
 
   return (
     <section
@@ -244,14 +224,7 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
             in normal column order. Mobile top padding trimmed so short
             viewports (iPhone SE portrait) leave enough middle-band
             space for the phone to render at usable size. */}
-        <div
-          className="relative z-20 flex-none pt-24 sm:pt-24 md:pt-28 min-[900px]:self-start min-[900px]:pt-28 lg:pt-36 xl:pt-44"
-          style={{
-            opacity: textFade,
-            transform: `translateY(${(1 - textFade) * 10}px)`,
-            willChange: "opacity, transform",
-          }}
-        >
+        <div className="hero-reveal-text relative z-20 flex-none pt-24 sm:pt-24 md:pt-28 min-[900px]:self-start min-[900px]:pt-28 lg:pt-36 xl:pt-44">
           <div className="flex w-full flex-col items-center text-center min-[900px]:items-start min-[900px]:text-left">
             <h1
               className="max-w-[20ch] font-serif font-normal leading-[1.06] tracking-[-0.022em] text-ink text-[1.875rem] sm:text-[2.25rem] md:text-[2.75rem] min-[900px]:text-[2.1rem] lg:text-[2.5rem] xl:text-[2.875rem]"
@@ -283,12 +256,7 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
               fill that band — capped at the band width so it never overflows
               on narrow phones. Desktop keeps the bottom-anchored 76% rise. */}
           <div
-            style={{
-              opacity: phoneFade,
-              transform: `translateY(${(1 - phoneFade) * 14}px)`,
-              willChange: "opacity, transform",
-            }}
-            className="aspect-[1013/986] h-full max-h-[96%] w-auto max-w-full sm:max-h-[94%] min-[900px]:h-[76%] min-[900px]:max-h-none min-[900px]:w-auto min-[900px]:max-w-none"
+            className="hero-reveal-phone aspect-[1013/986] h-full max-h-[96%] w-auto max-w-full sm:max-h-[94%] min-[900px]:h-[76%] min-[900px]:max-h-none min-[900px]:w-auto min-[900px]:max-w-none"
           >
             <PhoneFrame
               phase={phase}
@@ -305,14 +273,7 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
             it sits opposite the headline's high anchor across the
             phone, giving the composition a diagonal read. Each child
             is a quiet beat: Resnicow attribution → CTA → stat pills. */}
-        <div
-          className="relative z-20 flex-none pb-8 md:pb-10 min-[900px]:self-end min-[900px]:pb-16 lg:pb-28 xl:pb-32"
-          style={{
-            opacity: textFade,
-            transform: `translateY(${(1 - textFade) * 12}px)`,
-            willChange: "opacity, transform",
-          }}
-        >
+        <div className="hero-reveal-text relative z-20 flex-none pb-8 md:pb-10 min-[900px]:self-end min-[900px]:pb-16 lg:pb-28 xl:pb-32">
           <div className="flex w-full flex-col items-center text-center min-[900px]:items-start min-[900px]:text-left">
             <p
               className="max-w-[36ch] font-serif font-normal italic leading-[1.32] tracking-[-0.01em] text-ink text-base md:text-lg"
@@ -363,26 +324,26 @@ export function HeroV5({ content }: { content?: HeroV5Content }) {
           stark fade to white. Cream rgba mirrors `paper.warm`. */}
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-0 z-10 hidden h-[16svh] min-[900px]:block"
+        className="hero-reveal-fog pointer-events-none absolute inset-x-0 z-10 hidden h-[16svh] min-[900px]:block"
         style={{
           bottom: "8svh",
           background:
             "radial-gradient(ellipse 60% 100% at 50% 50%, rgba(251,248,244,0.75) 0%, rgba(251,248,244,0) 70%)",
           filter: "blur(40px)",
           WebkitFilter: "blur(40px)",
-          opacity: fogFade * 0.7,
+          opacity: 0.7,
         }}
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-x-[-10%] z-10 h-[20svh] min-[900px]:hidden"
+        className="hero-reveal-fog pointer-events-none absolute inset-x-[-10%] z-10 h-[20svh] min-[900px]:hidden"
         style={{
           bottom: "12svh",
           background:
             "radial-gradient(ellipse 70% 100% at 50% 50%, rgba(251,248,244,0.88) 0%, rgba(251,248,244,0) 75%)",
           filter: "blur(36px)",
           WebkitFilter: "blur(36px)",
-          opacity: fogFade * 0.75,
+          opacity: 0.75,
         }}
       />
     </section>
@@ -426,12 +387,18 @@ function PhoneFrame({
           className="absolute inset-y-0 left-0"
           style={{ width: `${(835 / 1013) * 100}%` }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={phoneSrc}
             alt="Chronilogix coaching on a member's phone"
             draggable={false}
-            className="pointer-events-none absolute inset-0 h-full w-full select-none"
+            fill
+            // The hero's LCP candidate: fetch it first.
+            loading="eager"
+            fetchPriority="high"
+            // Desktop: the phone is sized by section height, not width —
+            // 76% of min(100svh, 1000px) x aspect ≈ 0.65 x viewport height.
+            sizes="(min-width: 900px) min(65vh, 650px), 85vw"
+            className="pointer-events-none select-none"
             style={{
               // Top edge is feathered over the first ~2.6%: the source SVG's
               // backdrop rect is very slightly rotated, so its top edge
@@ -515,7 +482,7 @@ function ScreenChrome() {
           <span className="md:hidden">Check-in</span>
           <span className="hidden md:inline">Mental Health Check-in</span>
         </div>
-        <div className="mt-[1px] whitespace-nowrap text-[5px] text-[#9CA3AF] md:text-[6.5px] lg:text-[7.5px]">
+        <div className="mt-[1px] whitespace-nowrap text-[5px] text-[#6B7280] md:text-[6.5px] lg:text-[7.5px]">
           listening...
         </div>
       </div>
@@ -529,12 +496,13 @@ function ScreenAvatar({ src }: { src: string }) {
   return (
     <div className="absolute inset-x-0 top-[13%] flex justify-center">
       <div className="relative h-[22px] w-[22px] md:h-[28px] md:w-[28px] lg:h-[32px] lg:w-[32px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={src}
           alt=""
           aria-hidden
           draggable={false}
+          width={64}
+          height={64}
           className="h-full w-full rounded-full object-cover"
         />
         <span
@@ -577,7 +545,7 @@ function ScreenBottomBar() {
           +
         </span>
         <div className="flex flex-1 items-center gap-[4px] rounded-full bg-[#F2F3F4] px-[8px] py-[5px] md:px-[10px] md:py-[6.5px] lg:py-[7.5px]">
-          <span className="flex-1 truncate whitespace-nowrap text-[5.5px] text-[#7C818A] md:text-[7.5px] lg:text-[8.5px]">
+          <span className="flex-1 truncate whitespace-nowrap text-[5.5px] text-ink-muted md:text-[7.5px] lg:text-[8.5px]">
             Ask anything
           </span>
           <span
@@ -657,7 +625,7 @@ function ChatMessage({
       <span className="max-w-[88%] text-[6.5px] leading-[1.35] text-[#111827] md:text-[8px] lg:text-[9px]">
         {turn.text}
       </span>
-      <span className="text-[4.5px] leading-none text-[#9CA3AF] md:text-[5.5px] lg:text-[6.5px]">
+      <span className="text-[4.5px] leading-none text-[#6B7280] md:text-[5.5px] lg:text-[6.5px]">
         {turn.time}
       </span>
     </div>
@@ -694,12 +662,4 @@ function clean<T extends object>(obj: T | undefined): Partial<T> {
       ([, v]) => v !== null && v !== undefined && v !== "" && v !== false,
     ),
   ) as Partial<T>;
-}
-
-function clamp01(n: number) {
-  return Math.min(Math.max(n, 0), 1);
-}
-
-function easeOutCubic(t: number) {
-  return 1 - Math.pow(1 - t, 3);
 }

@@ -2,25 +2,14 @@
 
 import { useEffect, useState } from "react";
 
-// Only what is genuinely painted above the fold on arrival: the hero
-// backdrop and the wordmark in the loader itself.
-//
-// This list used to cover the first THREE sections — the Roni and Millie
-// portraits and their pattern backdrops sit in Statement and Solution,
-// below the fold, so nobody could see the page until assets they were not
-// looking at had finished decoding. Combined with a 5.18MB PNG hero that
-// meant ~6MB gating first paint: roughly four seconds on a 10Mbps line and
-// about eight on 4G, behind a spinner. Anything below the fold has scroll
-// time to load on its own; keep this list to the arrival viewport.
-const CRITICAL_IMAGES = [
-  "/hero-bg-enhanced.webp",
-  "/Logo Packs/Primary Logo/Chronilogix_Logo-FullColor.svg",
-];
-
+// The loader stays mounted until web fonts are ready (so the hero headline
+// doesn't swap typefaces under the fade), with a soft minimum display so
+// cached loads don't flicker. It deliberately does NOT wait on images —
+// not even the hero backdrop: gating on them held the overlay for megabytes
+// of downloads and competed with the page's own (optimized, prioritized)
+// image requests. Anything below the fold has scroll time to load.
 const MIN_DISPLAY_MS = 650;
-// Ceiling for a slow connection, not a target. Was 6000, when the gate had
-// ~6MB to pull; the payload is now well under 500KB, so a visitor who would
-// have waited the full six seconds is revealed far sooner.
+// Ceiling for a slow connection, not a target.
 const HARD_TIMEOUT_MS = 2500;
 const SESSION_KEY = "chronilogix:loader-shown";
 
@@ -55,19 +44,7 @@ export function PageLoader() {
       }, wait);
     };
 
-    let remaining = CRITICAL_IMAGES.length;
-    const tick = () => {
-      remaining -= 1;
-      if (remaining <= 0) finish();
-    };
-
-    CRITICAL_IMAGES.forEach((src) => {
-      const img = new Image();
-      img.onload = tick;
-      img.onerror = tick;
-      img.src = src;
-      if (img.complete) tick();
-    });
+    document.fonts.ready.then(finish, finish);
 
     const hardTimeout = window.setTimeout(finish, HARD_TIMEOUT_MS);
 

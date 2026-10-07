@@ -27,6 +27,7 @@
 //                        rippling outward from it.
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import {
   ArrowRight,
   GlyphTile,
@@ -187,13 +188,12 @@ function PortraitVisual({ image, alt }: { image: string; alt: string }) {
   return (
     <div className="relative h-full overflow-hidden rounded-[24px] ring-1 ring-ink/8">
       <div className="relative aspect-[4/3] w-full sm:aspect-[16/9] lg:aspect-auto lg:h-full lg:min-h-[320px]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
+        <Image
           src={image}
           alt={alt}
-          className="absolute inset-0 h-full w-full object-cover object-[50%_45%]"
-          loading="lazy"
-          decoding="async"
+          fill
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="object-cover object-[50%_45%]"
         />
         <div
           aria-hidden
@@ -314,7 +314,6 @@ function PopupRow({
         type="button"
         onClick={onOpen}
         aria-haspopup="dialog"
-        aria-label={`See details: ${persona.label}`}
         className="group grid w-full grid-cols-[auto_1fr_auto] items-center gap-x-4 py-4 text-left md:py-[1.15rem] lg:h-full"
       >
         <GlyphTile glyph={persona.glyph} variant={persona.iconVariant} />
@@ -349,7 +348,7 @@ function LinkAudioRow({ persona }: { persona: LinkPersona }) {
           >
             {persona.label}
           </a>
-          <span className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.06em] text-brand-700 ring-1 ring-brand-200/60">
+          <span className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-2 py-0.5 text-[10px] font-medium uppercase tracking-[0.06em] text-brand-800 ring-1 ring-brand-200/60">
             Listen
           </span>
         </div>
@@ -460,8 +459,11 @@ function InlineAudioPlayer({
 
   return (
     <div className="flex items-center gap-2.5">
+      {/* preload="none": the tracks sit far below the fold, and fetching
+          their metadata at load competed with the hero on mobile. The
+          duration shows from durationHint until playback starts. */}
       {/* eslint-disable-next-line jsx-a11y/media-has-caption */}
-      <audio ref={audioRef} src={src} preload="metadata" />
+      <audio ref={audioRef} src={src} preload="none" />
 
       <button
         type="button"

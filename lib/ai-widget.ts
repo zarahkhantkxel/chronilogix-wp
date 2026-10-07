@@ -17,6 +17,9 @@ declare global {
     // a CTA clicked mid-load still waits rather than no-oping.
     AiAgentsWebWidgetReady?: Promise<boolean>;
     AiAgentsWebWidgetLoaded?: boolean;
+    // Starts loading the widget now (idempotent). The layout defers it until
+    // after page load, so a CTA clicked earlier kicks it off on demand.
+    loadAiAgentsWidget?: () => Promise<boolean> | undefined;
   }
 }
 
@@ -28,7 +31,9 @@ declare global {
 export async function openAiWidget(): Promise<boolean> {
   if (typeof window === "undefined") return false;
 
-  const ready = await (window.AiAgentsWebWidgetReady ?? Promise.resolve(false));
+  const ready = await (window.AiAgentsWebWidgetReady ??
+    window.loadAiAgentsWidget?.() ??
+    Promise.resolve(false));
   if (!ready || !window.AiAgentsWebWidget) return false;
 
   window.AiAgentsWebWidget.show();

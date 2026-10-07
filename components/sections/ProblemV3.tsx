@@ -22,6 +22,7 @@
 //   - Respects prefers-reduced-motion (rests at final state).
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import { useScrollLock } from "@/components/hooks/useScrollLock";
 import { createPortal } from "react-dom";
 
@@ -259,14 +260,13 @@ export function ProblemV3({ content }: { content?: ProblemV3Content }) {
         {/* Left — portrait. Frames the human consequence the numbers describe. */}
         <div className="relative p-2 lg:p-2">
           <div className="relative aspect-[4/3] overflow-hidden rounded-[24px] lg:aspect-auto lg:h-full lg:min-h-[calc(100vh-1rem)]">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
+            <Image
               src={c.imageUrl}
               alt={c.imageAlt}
-              className="absolute inset-0 h-full w-full object-cover"
-          loading="lazy"
-          decoding="async"
-        />
+              fill
+              sizes="(min-width: 1024px) 50vw, 100vw"
+              className="object-cover"
+            />
             <div
               aria-hidden
               className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/30 to-transparent"
@@ -309,7 +309,6 @@ export function ProblemV3({ content }: { content?: ProblemV3Content }) {
             type="button"
             onClick={() => setOpen(true)}
             aria-haspopup="dialog"
-            aria-label="See the full picture — where care breaks down between visits"
             className="group mt-10 flex w-full max-w-xl items-center justify-between gap-6 rounded-2xl bg-paper px-7 py-6 text-left shadow-[0_1px_2px_rgba(72,40,20,0.05),0_18px_40px_-28px_rgba(72,40,20,0.35)] ring-1 ring-ink/10 transition-all duration-300 ease-out-quart hover:-translate-y-0.5 hover:shadow-[0_2px_6px_rgba(72,40,20,0.06),0_26px_50px_-28px_rgba(72,40,20,0.42)] hover:ring-brand-accent/40 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-accent/60 motion-reduce:transition-none md:mt-12 md:px-9 md:py-7"
           >
             <span className="flex min-w-0 flex-col gap-1.5">

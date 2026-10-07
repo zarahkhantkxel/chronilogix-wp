@@ -1,26 +1,45 @@
 import "./globals.css";
 
-import { Hanken_Grotesk, Newsreader } from "next/font/google";
+import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme/theme-provider";
-import { Analytics } from "@vercel/analytics/react";
 
 import { siteConfig } from "@/site.config";
 import { cn } from "@/lib/utils";
 
 import type { Metadata } from "next";
 
-const fontSans = Hanken_Grotesk({
-  subsets: ["latin"],
+// Self-hosted, trimmed copies of the Google Fonts latin subsets (both OFL).
+// The full variable files cost 157KB on every first visit and were the
+// largest thing downloaded before the hero could paint; these keep only the
+// weights the site uses (85KB). Usage today: sans 400–700 (font-light only
+// on a decorative "+"), serif 400–500, serif italic 400 only.
+// To change weights, re-instance from the Google latin woff2 with fontTools:
+//   instancer.instantiateVariableFont(font, {"wght": (min, max)})
+const fontSans = localFont({
+  src: "./fonts/hanken-grotesk-latin-wght-400-700.woff2",
+  weight: "400 700",
+  style: "normal",
   variable: "--font-sans",
   display: "swap",
+  adjustFontFallback: "Arial",
 });
 
-const fontSerif = Newsreader({
-  subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
-  style: ["normal", "italic"],
+const fontSerif = localFont({
+  src: [
+    {
+      path: "./fonts/newsreader-latin-wght-400-500.woff2",
+      weight: "400 500",
+      style: "normal",
+    },
+    {
+      path: "./fonts/newsreader-italic-latin-400.woff2",
+      weight: "400",
+      style: "italic",
+    },
+  ],
   variable: "--font-serif",
   display: "swap",
+  adjustFontFallback: "Times New Roman",
 });
 
 const GTM_ID = "GTM-K9WKCPXV";
@@ -55,23 +74,55 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        {/* Google Tag Manager — must load as high in <head> as possible so the
-            dataLayer exists before any page script pushes to it. */}
+        {/* Third-party tags: GTM, Microsoft Clarity and the NextLevel AI
+            widget. The dataLayer / clarity queue stubs run immediately so
+            nothing pushed early is lost, but the scripts themselves load
+            only on the visitor's first interaction (scroll, mouse move, tap
+            or key). Loaded in the head they added ~450KB and 200–700ms of
+            blocking main-thread work and dropped mobile PageSpeed from the
+            90s to the 70s–80s; even right after load their long tasks landed
+            in TBT, and the UAT widget's 403s and Clarity's third-party
+            cookies cost Best Practices. Trade-off: a visitor who never
+            interacts is not recorded in GTM or Clarity. The widget
+            loader is exposed as window.loadAiAgentsWidget so a CTA clicked
+            before then can start it on demand (see lib/ai-widget.ts). */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','${GTM_ID}');`,
-          }}
-        />
-        {/* Microsoft Clarity */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","${CLARITY_ID}");`,
+            __html: `(function(w,d){
+w.dataLayer=w.dataLayer||[];w.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+w.clarity=w.clarity||function(){(w.clarity.q=w.clarity.q||[]).push(arguments)};
+function add(src){var s=d.createElement('script');s.async=true;s.src=src;d.head.appendChild(s);return s;}
+w.loadAiAgentsWidget=function(){
+  if(w.AiAgentsWebWidgetLoaded)return w.AiAgentsWebWidgetReady;
+  w.AiAgentsWebWidgetLoaded=true;
+  w.AiAgentsWebWidgetReady=new Promise(function(resolve){
+    var s=add("${AI_WIDGET.scriptSrc}");
+    s.onload=function(){
+      w.AiAgentsWebWidget.init({
+        authUrl:"${AI_WIDGET.authUrl}",
+        authToken:"${AI_WIDGET.authToken}",
+        agentId:"${AI_WIDGET.agentId}",
+        openButtonContainerWebTop:24,
+        openButtonContainerWebRight:32,
+        openButtonContainerMobileTop:100,
+        openButtonContainerMobileRight:32
+      });
+      resolve(true);
+    };
+    s.onerror=function(){console.error('Failed to load AI Widget script');resolve(false);};
+  });
+  return w.AiAgentsWebWidgetReady;
+};
+var started=false,events=['scroll','mousemove','pointerdown','keydown','touchstart'];
+function start(){
+  if(started)return;started=true;
+  events.forEach(function(e){w.removeEventListener(e,start,true);});
+  add('https://www.googletagmanager.com/gtm.js?id=${GTM_ID}');
+  add('https://www.clarity.ms/tag/${CLARITY_ID}');
+  w.loadAiAgentsWidget();
+}
+events.forEach(function(e){w.addEventListener(e,start,{capture:true,passive:true});});
+})(window,document);`,
           }}
         />
       </head>
@@ -92,45 +143,6 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document
             style={{ display: "none", visibility: "hidden" }}
           />
         </noscript>
-        {/* NextLevel AI agents widget. Mounts itself onto document.body outside
-            React's tree, so the load guard keeps it a single instance across
-            client-side navigations. */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `document.addEventListener("DOMContentLoaded", () => {
-  function loadAiAgentsWidget() {
-    if (window.AiAgentsWebWidgetLoaded) return;
-    window.AiAgentsWebWidgetLoaded = true;
-    window.AiAgentsWebWidgetReady = new Promise((resolve) => {
-      const script = document.createElement("script");
-      script.src = "${AI_WIDGET.scriptSrc}";
-      script.async = true;
-      script.onload = () => {
-        const config = {
-          authUrl: "${AI_WIDGET.authUrl}",
-          authToken: "${AI_WIDGET.authToken}",
-          agentId: "${AI_WIDGET.agentId}",
-          openButtonContainerWebTop: 24,
-          openButtonContainerWebRight: 32,
-          openButtonContainerMobileTop: 100,
-          openButtonContainerMobileRight: 32
-        };
-        window.AiAgentsWebWidget.init(config);
-        console.log('AI Widget successfully initialized');
-        resolve(true);
-      };
-      script.onerror = () => {
-        console.error('Failed to load AI Widget script');
-        resolve(false);
-      };
-      document.body.appendChild(script);
-    });
-  }
-
-  loadAiAgentsWidget();
-});`,
-          }}
-        />
         {/* Chronilogix is a light-only marketing site. ThemeProvider is kept
             for next-wp's shadcn components but pinned to light so there is no
             dark-mode flash and the marketing pages render as designed.
@@ -143,7 +155,6 @@ y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document
         >
           {children}
         </ThemeProvider>
-        <Analytics />
       </body>
     </html>
   );

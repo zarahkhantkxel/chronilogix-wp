@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 /**
  * Three Levels of Care
@@ -322,11 +323,12 @@ function LevelImage({
           "opacity 700ms cubic-bezier(0.22, 0.61, 0.36, 1), transform 700ms cubic-bezier(0.22, 0.61, 0.36, 1)",
       }}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={image.src}
         alt={image.alt}
-        className="absolute inset-0 h-full w-full object-cover"
+        fill
+        sizes="(min-width: 1024px) 460px, (min-width: 768px) 420px, 360px"
+        className="object-cover"
         draggable={false}
           loading="lazy"
           decoding="async"
@@ -358,14 +360,14 @@ function ArtifactFrame({
   const playState = active ? "running" : "paused";
   return (
     <div className="relative min-h-[340px] overflow-hidden rounded-2xl bg-white">
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={bg}
         alt=""
-        className="absolute inset-0 h-full w-full scale-110 object-cover blur-md"
-          loading="lazy"
-          decoding="async"
-        />
+        fill
+        sizes="(min-width: 1024px) 50vw, 100vw"
+        quality={50}
+        className="scale-110 object-cover blur-md"
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-paper/65 via-paper/55 to-paper/70" />
 
       <div className="relative flex h-full items-center justify-center p-6 md:p-7">

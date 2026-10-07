@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import Image from "next/image";
 
 type Testimonial = {
   name: string;
@@ -211,7 +212,7 @@ export function Testimonials({ content }: { content?: TestimonialsContent }) {
         {/* Dot indicators — sit below the carousel, clickable, also reflect
             scroll position via the active index. */}
         <div
-          className="mt-10 flex items-center justify-center gap-2"
+          className="mt-10 flex items-center justify-center"
           role="tablist"
           aria-label="Select testimonial"
         >
@@ -225,12 +226,19 @@ export function Testimonials({ content }: { content?: TestimonialsContent }) {
                 aria-selected={isActive}
                 aria-label={`Show testimonial from ${t.name}`}
                 onClick={() => scrollToIndex(i)}
-                className={`h-1.5 cursor-pointer rounded-full transition-all duration-300 ease-out-quart ${
-                  isActive
-                    ? "w-8 bg-brand-600"
-                    : "w-1.5 bg-ink/20 hover:bg-ink/40"
-                }`}
-              />
+                // 24px hit area (WCAG 2.5.8 target size) around the small
+                // visual dot; the gap between dots now comes from the padding.
+                className="group/dot flex h-6 min-w-6 items-center justify-center px-1"
+              >
+                <span
+                  aria-hidden
+                  className={`block h-1.5 rounded-full transition-all duration-300 ease-out-quart ${
+                    isActive
+                      ? "w-8 bg-brand-600"
+                      : "w-1.5 bg-ink/20 group-hover/dot:bg-ink/40"
+                  }`}
+                />
+              </button>
             );
           })}
         </div>
@@ -256,40 +264,41 @@ function Slide({
   isActive: boolean;
 }) {
   return (
-    <figure
+    // The slide role lives on a wrapper: <figure> may not take role="group",
+    // and keeping <figure>/<figcaption> preserves the quote's attribution.
+    <div
       role="group"
       aria-roledescription="slide"
       aria-label={`${index + 1} of ${count}`}
       aria-hidden={!isActive}
       className="flex w-full shrink-0 snap-center flex-col items-center justify-center px-5 md:px-10 lg:px-16"
     >
-      <blockquote
-        className={`max-w-3xl text-center font-serif font-normal leading-snug tracking-tight text-ink transition-opacity duration-500 ease-out-quart md:text-3xl lg:text-[2.25rem] lg:leading-[1.15] text-2xl ${
-          isActive ? "opacity-100" : "opacity-40"
-        }`}
-      >
-        {testimonial.quote}
-      </blockquote>
-      <figcaption className="mt-8 flex items-center justify-center gap-3 text-sm text-ink-muted">
-        {testimonial.avatar ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img
-            src={testimonial.avatar}
-            alt=""
-            aria-hidden
-            width={40}
-            height={40}
-            className="inline-flex shrink-0 rounded-full object-cover"
-            style={{ width: 40, height: 40 }}
-          loading="lazy"
-          decoding="async"
-        />
-        ) : (
-          <Avatar name={testimonial.name} size={40} />
-        )}
-        <span className="font-medium text-ink-soft">{testimonial.name}</span>
-      </figcaption>
-    </figure>
+      <figure className="flex flex-col items-center">
+        <blockquote
+          className={`max-w-3xl text-center font-serif font-normal leading-snug tracking-tight text-ink transition-opacity duration-500 ease-out-quart md:text-3xl lg:text-[2.25rem] lg:leading-[1.15] text-2xl ${
+            isActive ? "opacity-100" : "opacity-40"
+          }`}
+        >
+          {testimonial.quote}
+        </blockquote>
+        <figcaption className="mt-8 flex items-center justify-center gap-3 text-sm text-ink-muted">
+          {testimonial.avatar ? (
+            <Image
+              src={testimonial.avatar}
+              alt=""
+              aria-hidden
+              width={40}
+              height={40}
+              className="inline-flex shrink-0 rounded-full object-cover"
+              style={{ width: 40, height: 40 }}
+            />
+          ) : (
+            <Avatar name={testimonial.name} size={40} />
+          )}
+          <span className="font-medium text-ink-soft">{testimonial.name}</span>
+        </figcaption>
+      </figure>
+    </div>
   );
 }
 

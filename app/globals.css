@@ -387,6 +387,33 @@
   to   { opacity: 1; transform: translateY(0);   }
 }
 
+/* Home hero entrance (HeroV5). Pure CSS so the reveal starts on first
+   paint instead of waiting for hydration, and never re-renders React.
+   Only `from` is declared: each layer animates to its own resting
+   opacity/transform. Delays/durations reproduce the old JS timeline
+   (2.4s easeOutCubic): fog, then phone, then text. */
+@keyframes heroReveal {
+  from { transform: translateY(var(--hero-rise, 0px)); }
+}
+.hero-reveal-fog {
+  animation: heroReveal 300ms ease-out both;
+}
+.hero-reveal-phone {
+  --hero-rise: 14px;
+  animation: heroReveal 740ms cubic-bezier(0.22, 0.61, 0.36, 1) 190ms both;
+}
+.hero-reveal-text {
+  --hero-rise: 10px;
+  animation: heroReveal 1140ms cubic-bezier(0.22, 0.61, 0.36, 1) 380ms both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-reveal-fog,
+  .hero-reveal-phone,
+  .hero-reveal-text {
+    animation: none;
+  }
+}
+
 /* Phone illustration rising into view from below the frame — the taller
    translate distance sells the "handset poking up" idea; used by the
    White-label visual on the product page. */
@@ -672,8 +699,9 @@
      Calmer than the typical uppercase-mono treatment: medium-weight sans,
      14px, brand-orange. No horizontal bar, no all-caps, no wide tracking.
      The job is to introduce the heading, not to compete with it. */
+  /* brand-800: brand-700 measured 3.4:1 on paper-warm (WCAG AA needs 4.5). */
   .eyebrow {
-    @apply text-[14px] font-medium tracking-[-0.005em] text-brand-700;
+    @apply text-[14px] font-medium tracking-[-0.005em] text-brand-800;
   }
   /* Variant — quieter, for nested sections or rows where orange would be
      too loud. Same weight and size as .eyebrow so rhythm stays unified. */
