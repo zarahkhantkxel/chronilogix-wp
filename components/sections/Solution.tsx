@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { SessionWalkthrough } from "@/components/sections/SessionWalkthrough";
 import { LevelsOfCare } from "@/components/sections/LevelsOfCare";
-import { openAiWidget } from "@/lib/ai-widget";
+import { talkToCoach } from "@/lib/ai-widget";
 
 type Agent = {
   name: string;
@@ -140,7 +140,7 @@ export function Solution({ content }: { content?: SolutionContent }) {
   const c = { ...DEFAULTS, ...clean(content) };
   const agents = content?.agents?.length ? content.agents : DEFAULTS.agents;
   const handleTalkClick = () => {
-    void openAiWidget();
+    void talkToCoach();
   };
 
   return (
